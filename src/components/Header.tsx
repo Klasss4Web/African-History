@@ -3,6 +3,7 @@ import { Search, Menu, X, Globe } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { useNavigation } from "./Navigation";
+import { AfricanMap } from "./icons/african-map";
 
 export default function Header() {
   const { state, navigateTo } = useNavigation();
@@ -35,7 +36,8 @@ export default function Header() {
             className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
           >
             <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
-              <Globe className="w-6 h-6 text-white" />
+              {/* <Globe className="w-6 h-6 text-white" /> */}
+              <AfricanMap />
             </div>
             <div className="hidden sm:block">
               <h1 className="text-xl text-gray-900">AfricanHistory</h1>

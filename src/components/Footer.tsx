@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { useNavigation } from "./Navigation";
+import { AfricanMap } from "./icons/african-map";
 
 export default function Footer() {
   const { navigateTo } = useNavigation();
@@ -22,7 +23,8 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
-                <Globe className="w-6 h-6 text-white" />
+                {/* <Globe className="w-6 h-6 text-white" /> */}
+                <AfricanMap />
               </div>
               <div>
                 <h3 className="text-xl">AfricanHistory</h3>
