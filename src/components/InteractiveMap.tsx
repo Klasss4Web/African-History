@@ -28,6 +28,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { useNavigation } from "./Navigation";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
+import { LeafletMap } from "./LeafletMap";
 
 // Map data for African historical sites
 const mapData = {
@@ -301,7 +302,7 @@ function SimpleMap({
     <div className="relative w-full h-full bg-gradient-to-br from-blue-100 to-green-100 overflow-hidden rounded-lg">
       {/* Map Background with Africa shape */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <svg
+        {/* <svg
           viewBox="0 0 100 120"
           className="w-full h-full opacity-20"
           style={{ maxWidth: "400px", maxHeight: "480px" }}
@@ -319,7 +320,7 @@ function SimpleMap({
             fill="currentColor"
             className="text-green-300"
           />
-        </svg>
+        </svg> */}
       </div>
 
       {/* Site Markers */}
@@ -431,6 +432,22 @@ function SimpleMap({
     </div>
   );
 }
+
+const getPositionOnMap = (lat: number, lng: number) => {
+  // Africa rough bounds: North: 37°, South: -35°, West: -25°, East: 52°
+  const northBound = 37;
+  const southBound = -35;
+  const westBound = -25;
+  const eastBound = 52;
+
+  const x = ((lng - westBound) / (eastBound - westBound)) * 100;
+  const y = ((northBound - lat) / (northBound - southBound)) * 100;
+
+  return {
+    x: Math.max(0, Math.min(100, x)),
+    y: Math.max(0, Math.min(100, y)),
+  };
+};
 
 export default function InteractiveMap() {
   const { navigateTo } = useNavigation();
@@ -545,14 +562,77 @@ export default function InteractiveMap() {
           {/* Map Area */}
           <div className="lg:col-span-2">
             <Card className="h-[600px] overflow-hidden">
-              <SimpleMap
+              {/* <SimpleMap
                 sites={filteredSites}
                 selectedSite={selectedSite}
                 onSiteSelect={setSelectedSite}
                 showTradeRoutes={showTradeRoutes}
                 center={[0, 20]}
                 zoom={4}
-              />
+              /> */}
+              <div className="relative w-full h-full bg-gradient-to-br from-blue-100 to-green-100 overflow-hidden rounded-lg">
+                <div className="absolute inset-0 flex items-center justify-center z-1">
+                  <LeafletMap
+                    sites={filteredSites}
+                    selectedSite={selectedSite}
+                    onSiteSelect={setSelectedSite}
+                    showTradeRoutes={showTradeRoutes}
+                    mapData={mapData}
+                  />
+                </div>
+
+                {/* Trade Routes */}
+                {showTradeRoutes && (
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none z-5">
+                    {mapData.tradeRoutes.map((route) => {
+                      const pathPoints = route.path.map((point) =>
+                        getPositionOnMap(point.lat, point.lng)
+                      );
+                      const pathString = pathPoints
+                        .map(
+                          (point, index) =>
+                            `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`
+                        )
+                        .join(" ");
+
+                      return (
+                        <path
+                          key={route.id}
+                          d={pathString}
+                          stroke="rgba(234, 179, 8, 0.7)"
+                          strokeWidth="2"
+                          strokeDasharray="5,5"
+                          fill="none"
+                          className="animate-pulse"
+                        />
+                      );
+                    })}
+                  </svg>
+                )}
+
+                {/* Map Legend */}
+                <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 z-20">
+                  <h4 className="text-sm text-gray-900 mb-2">Legend</h4>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
+                      Archaeological
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                      Historic Cities
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
+                      Religious Sites
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
+                      Trade Routes
+                    </div>
+                  </div>
+                </div>
+              </div>
             </Card>
           </div>
 
@@ -779,7 +859,7 @@ export default function InteractiveMap() {
               Historic Trade Routes
             </h2>
             <div className="grid lg:grid-cols-2 gap-6">
-              {mapData.tradeRoutes.map((route) => (
+              {mapData?.tradeRoutes?.map((route) => (
                 <Card key={route.id}>
                   <CardContent className="p-6">
                     <div className="space-y-4">
