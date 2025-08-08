@@ -40,3 +40,21 @@
 .read-the-docs {
   color: #888;
 } */
+
+/* LEAFLET */
+/* Add this to your global CSS file for custom Leaflet markers */
+.custom-div-icon .lucide-map-pin {
+  transition: transform 0.2s ease-in-out;
+}
+.custom-div-icon:hover .lucide-map-pin {
+  transform: translateY(-2px);
+}
+.custom-div-icon.selected {
+  z-index: 1000 !important;
+}
+.custom-div-icon.selected .lucide-map-pin {
+  transform: scale(1.2);
+}
+.leaflet-popup-content-wrapper {
+  border-radius: 0.5rem;
+}
