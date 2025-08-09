@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Search,
-  Filter,
-  Calendar,
-  MapPin,
+  Clock,
   BookOpen,
   Users,
+  MapPin,
   ArrowRight,
+  Filter,
 } from "lucide-react";
-import { Card, CardContent } from "./ui/card";
-import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { Badge } from "./ui/badge";
+import { Card, CardContent } from "./ui/card";
 import {
   Select,
   SelectContent,
@@ -19,510 +20,425 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { useNavigation } from "./Navigation";
+import { Link } from "react-router-dom";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 
-// Mock search data
-const searchData = {
-  periods: [
-    {
-      id: 1,
-      title: "Ancient Egypt",
-      period: "3100-30 BCE",
-      description:
-        "The civilization that built the pyramids and developed hieroglyphics along the Nile River.",
-      region: "North Africa",
-      relevance: 95,
-    },
-    {
-      id: 2,
-      title: "Kingdom of Kush",
-      period: "1070 BCE - 350 CE",
-      description:
-        "A powerful kingdom that ruled over Egypt and established trade networks across Africa.",
-      region: "East Africa",
-      relevance: 87,
-    },
-  ],
-  stories: [
-    {
-      id: 1,
-      title: "The Wealth of Mansa Musa: Richest Person in History",
-      excerpt:
-        "Discover how the ruler of the Mali Empire became the wealthiest person who ever lived...",
-      category: "Biography",
-      readTime: "8 min read",
-      author: "Dr. Amina Hassan",
-      relevance: 92,
-      image:
-        "https://images.unsplash.com/photo-1568366515672-33dfb61dc38c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwYW5jaWVudCUyMGFyY2hpdGVjdHVyZSUyMHB5cmFtaWR8ZW58MXx8fHwxNzU0NDY5ODUyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    },
-    {
-      id: 2,
-      title: "Queen Nzinga: The Warrior Queen of Angola",
-      excerpt:
-        "Learn about the brilliant military strategist who resisted Portuguese colonization...",
-      category: "Biography",
-      readTime: "10 min read",
-      author: "Dr. Fatima Mbeki",
-      relevance: 89,
-      image:
-        "https://images.unsplash.com/photo-1627837586900-56adbee910a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwY3VsdHVyYWwlMjBoZXJpdGFnZSUyMG1hc2t8ZW58MXx8fHwxNzU0NDY5ODU2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    },
-  ],
-  people: [
-    {
-      id: 1,
-      name: "Mansa Musa",
-      title: "Emperor of Mali",
-      period: "1280-1337 CE",
-      description:
-        "Wealthiest person in history, made famous pilgrimage to Mecca",
-      relevance: 94,
-    },
-    {
-      id: 2,
-      name: "Queen Nzinga",
-      title: "Queen of Ndongo and Matamba",
-      period: "1583-1663 CE",
-      description:
-        "Brilliant military strategist who resisted Portuguese colonization",
-      relevance: 91,
-    },
-    {
-      id: 3,
-      name: "Hatshepsut",
-      title: "Pharaoh of Egypt",
-      period: "1479-1458 BCE",
-      description:
-        "One of the most successful female pharaohs, ruled for 22 years",
-      relevance: 88,
-    },
-  ],
-  regions: [
-    {
-      id: 1,
-      name: "West Africa",
-      description:
-        "Birthplace of powerful trading empires and rich cultural traditions",
-      countries: 16,
-      featuredCivilization: "Mali Empire",
-      relevance: 85,
-    },
-  ],
-};
+// Mock search data - in a real app this would come from an API
+const searchData = [
+  {
+    id: 1,
+    type: "story",
+    title:
+      "The Great Library of Alexandria: Africa's Ancient Center of Learning",
+    excerpt:
+      "Discover how Alexandria became the intellectual heart of the ancient world, attracting scholars from across Africa and beyond to its legendary library and museum.",
+    category: "Ancient Learning",
+    author: "Dr. Amara Okonkwo",
+    date: "2024-01-15",
+    image:
+      "https://images.unsplash.com/photo-1568366515672-33dfb61dc38c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwYW5jaWVudCUyMGFyY2hpdGVjdHVyZSUyMHB5cmFtaWR8ZW58MXx8fHwxNzU0NDY5ODUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    url: "/stories/1",
+    tags: ["Ancient Egypt", "Education", "Library", "Scholarship"],
+  },
+  {
+    id: 2,
+    type: "person",
+    title: "Queen Nzinga of Ndongo and Matamba",
+    excerpt:
+      "The remarkable story of Queen Nzinga, who led resistance against Portuguese colonization for over 30 years in 17th-century Angola.",
+    category: "Historical Figures",
+    period: "1583-1663",
+    date: "17th Century",
+    image:
+      "https://images.unsplash.com/photo-1627837586900-56adbee910a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwY3VsdHVyYWwlMjBoZXJpdGFnZSUyMG1hc2t8ZW58MXx8fHwxNzU0NDY5ODU2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    url: "/people/nzinga",
+    tags: ["Angola", "Leadership", "Resistance", "Women in History"],
+  },
+  {
+    id: 3,
+    type: "region",
+    title: "Ancient Egypt",
+    excerpt:
+      "Home to one of the world's oldest civilizations, featuring the pyramids, pharaohs, and the mighty Nile River that sustained this remarkable culture for millennia.",
+    category: "North Africa",
+    countries: "Egypt, Sudan",
+    date: "3100 BCE - 641 CE",
+    image:
+      "https://images.unsplash.com/photo-1568366515672-33dfb61dc38c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwYW5jaWVudCUyMGFyY2hpdGVjdHVyZSUyMHB5cmFtaWR8ZW58MXx8fHwxNzU0NDY5ODUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    url: "/regions/1",
+    tags: ["Pyramids", "Pharaohs", "Nile River", "Hieroglyphs"],
+  },
+  {
+    id: 4,
+    type: "resource",
+    title: "Mali Empire Educational Guide",
+    excerpt:
+      "Comprehensive teaching resource about the Mali Empire, including interactive timelines, primary sources, and classroom activities.",
+    category: "Teacher Guides",
+    author: "Education Team",
+    date: "2024-01-10",
+    image:
+      "https://images.unsplash.com/photo-1627837586900-56adbee910a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwY3VsdHVyYWwlMjBoZXJpdGFnZSUyMG1hc2t8ZW58MXx8fHwxNzU0NDY5ODU2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    url: "/resources/teacher-guides",
+    tags: ["Mali Empire", "Teaching", "Interactive", "Primary Sources"],
+  },
+  {
+    id: 5,
+    type: "site",
+    title: "Great Zimbabwe",
+    excerpt:
+      "Medieval stone city that showcases the advanced engineering and architectural skills of African civilizations in the 11th-15th centuries.",
+    category: "Archaeological Sites",
+    location: "Zimbabwe",
+    date: "11th-15th Century",
+    image:
+      "https://images.unsplash.com/photo-1696224742102-26309ea4d181?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhbmNpZW50JTIwYWZyaWNhbiUyMGNpdmlsaXphdGlvbiUyMHNjdWxwdHVyZXxlbnwxfHx8fDE3NTQ0Njk4NjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    url: "/sites/great-zimbabwe",
+    tags: ["Architecture", "Medieval", "Stone City", "Trade"],
+  },
+  {
+    id: 6,
+    type: "story",
+    title: "Mansa Musa's Legendary Pilgrimage",
+    excerpt:
+      "Follow the epic journey of Mansa Musa to Mecca in 1324-1325, a pilgrimage so lavish it put the Mali Empire on medieval world maps.",
+    category: "Medieval Empires",
+    author: "Dr. Bakary Traore",
+    date: "2024-01-01",
+    image:
+      "https://images.unsplash.com/photo-1627837586900-56adbee910a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwY3VsdHVyYWwlMjBoZXJpdGFnZSUyMG1hc2t8ZW58MXx8fHwxNzU0NDY5ODU2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    url: "/stories/4",
+    tags: ["Mali Empire", "Pilgrimage", "Trade", "Mansa Musa"],
+  },
+];
 
-interface SearchResultsProps {
-  query: string;
-}
+export default function SearchResults() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get("q") || "";
+  const [localQuery, setLocalQuery] = useState(query);
+  const [results, setResults] = useState<any[]>([]);
+  const [filteredResults, setFilteredResults] = useState<any[]>([]);
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [typeFilter, setTypeFilter] = useState("all");
 
-export default function SearchResults({ query }: SearchResultsProps) {
-  const { navigateTo } = useNavigation();
-  const [sortBy, setSortBy] = useState("relevance");
-  const [filterType, setFilterType] = useState("all");
+  // Simulate search functionality
+  useEffect(() => {
+    if (query) {
+      const filtered = searchData.filter(
+        (item) =>
+          item.title.toLowerCase().includes(query.toLowerCase()) ||
+          item.excerpt.toLowerCase().includes(query.toLowerCase()) ||
+          item.category.toLowerCase().includes(query.toLowerCase()) ||
+          item.tags.some((tag) =>
+            tag.toLowerCase().includes(query.toLowerCase())
+          )
+      );
+      setResults(filtered);
+      setFilteredResults(filtered);
+    } else {
+      setResults([]);
+      setFilteredResults([]);
+    }
+  }, [query]);
 
-  const getCategoryColor = (category: string) => {
-    const colors = {
-      Biography: "bg-purple-100 text-purple-700",
-      "Art & Culture": "bg-green-100 text-green-700",
-      Education: "bg-blue-100 text-blue-700",
-      Politics: "bg-red-100 text-red-700",
-    };
-    return (
-      colors[category as keyof typeof colors] || "bg-gray-100 text-gray-700"
-    );
+  // Apply filters
+  useEffect(() => {
+    let filtered = results;
+
+    if (categoryFilter !== "all") {
+      filtered = filtered.filter((item) => item.category === categoryFilter);
+    }
+
+    if (typeFilter !== "all") {
+      filtered = filtered.filter((item) => item.type === typeFilter);
+    }
+
+    setFilteredResults(filtered);
+  }, [results, categoryFilter, typeFilter]);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (localQuery.trim()) {
+      setSearchParams({ q: localQuery.trim() });
+    }
   };
 
-  const totalResults =
-    searchData.periods.length +
-    searchData.stories.length +
-    searchData.people.length +
-    searchData.regions.length;
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case "story":
+        return BookOpen;
+      case "person":
+        return Users;
+      case "region":
+        return MapPin;
+      case "resource":
+        return BookOpen;
+      case "site":
+        return MapPin;
+      default:
+        return BookOpen;
+    }
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case "story":
+        return "bg-blue-100 text-blue-800";
+      case "person":
+        return "bg-green-100 text-green-800";
+      case "region":
+        return "bg-purple-100 text-purple-800";
+      case "resource":
+        return "bg-amber-100 text-amber-800";
+      case "site":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  const categories = [...new Set(results.map((item) => item.category))];
+  const types = [...new Set(results.map((item) => item.type))];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="container mx-auto px-4">
         {/* Search Header */}
         <div className="mb-8">
-          <div className="flex items-center space-x-2 text-gray-600 mb-4">
-            <Search className="w-5 h-5" />
-            <span>Search results for:</span>
-          </div>
-          <h1 className="text-3xl lg:text-4xl text-gray-900 mb-2">"{query}"</h1>
-          <p className="text-gray-600">{totalResults} results found</p>
+          <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-6">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Input
+                type="text"
+                placeholder="Search African history..."
+                value={localQuery}
+                onChange={(e) => setLocalQuery(e.target.value)}
+                className="pl-12 pr-4 py-3 text-lg w-full border-2 border-gray-200 focus:border-amber-500 focus:ring-amber-500"
+              />
+              <Button
+                type="submit"
+                className="absolute right-2 top-2 bg-amber-600 hover:bg-amber-700"
+              >
+                Search
+              </Button>
+            </div>
+          </form>
+
+          {query && (
+            <div className="text-center">
+              <h1 className="text-2xl text-gray-900 mb-2">
+                Search Results for "{query}"
+              </h1>
+              <p className="text-gray-600">
+                Found {filteredResults.length} result
+                {filteredResults.length !== 1 ? "s" : ""}
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <div className="flex items-center space-x-4">
-            <Filter className="w-4 h-4 text-gray-600" />
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Sort by" />
+        {results.length > 0 && (
+          <div className="flex flex-col sm:flex-row gap-4 mb-8 p-4 bg-white rounded-lg shadow-sm">
+            <div className="flex items-center gap-2">
+              <Filter className="w-4 h-4 text-gray-600" />
+              <span className="text-sm text-gray-600">Filter by:</span>
+            </div>
+
+            <Select value={typeFilter} onValueChange={setTypeFilter}>
+              <SelectTrigger className="w-40">
+                <SelectValue placeholder="Content Type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="relevance">Most Relevant</SelectItem>
-                <SelectItem value="date">Most Recent</SelectItem>
-                <SelectItem value="alphabetical">Alphabetical</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={filterType} onValueChange={setFilterType}>
-              <SelectTrigger className="w-48">
-                <SelectValue placeholder="Content type" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Content</SelectItem>
-                <SelectItem value="periods">Historical Periods</SelectItem>
-                <SelectItem value="stories">Stories</SelectItem>
-                <SelectItem value="people">People</SelectItem>
-                <SelectItem value="regions">Regions</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        {/* Results Tabs */}
-        <Tabs defaultValue="all" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 max-w-2xl">
-            <TabsTrigger value="all">All ({totalResults})</TabsTrigger>
-            <TabsTrigger value="periods">
-              Periods ({searchData.periods.length})
-            </TabsTrigger>
-            <TabsTrigger value="stories">
-              Stories ({searchData.stories.length})
-            </TabsTrigger>
-            <TabsTrigger value="people">
-              People ({searchData.people.length})
-            </TabsTrigger>
-            <TabsTrigger value="regions">
-              Regions ({searchData.regions.length})
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="all" className="space-y-8">
-            {/* Top Results */}
-            <div className="space-y-4">
-              <h2 className="text-xl text-gray-900">Top Results</h2>
-              <div className="grid gap-4">
-                {searchData.stories.slice(0, 2).map((story) => (
-                  <Card
-                    key={story.id}
-                    className="hover:shadow-lg transition-shadow cursor-pointer"
-                  >
-                    <CardContent className="p-6">
-                      <div className="flex space-x-4">
-                        <div className="relative overflow-hidden rounded-lg flex-shrink-0">
-                          <ImageWithFallback
-                            src={story.image}
-                            alt={story.title}
-                            className="w-24 h-24 object-cover"
-                          />
-                        </div>
-                        <div className="flex-1 space-y-2">
-                          <div className="flex items-center space-x-2">
-                            <Badge className={getCategoryColor(story.category)}>
-                              {story.category}
-                            </Badge>
-                            <Badge variant="outline" className="text-xs">
-                              {story.relevance}% match
-                            </Badge>
-                          </div>
-                          <h3 className="text-lg text-gray-900 hover:text-amber-600 transition-colors">
-                            {story.title}
-                          </h3>
-                          <p className="text-gray-600 text-sm line-clamp-2">
-                            {story.excerpt}
-                          </p>
-                          <div className="flex items-center justify-between text-sm text-gray-500">
-                            <span>{story.author}</span>
-                            <span>{story.readTime}</span>
-                          </div>
-                        </div>
-                        <ArrowRight className="w-5 h-5 text-gray-400" />
-                      </div>
-                    </CardContent>
-                  </Card>
+                <SelectItem value="all">All Types</SelectItem>
+                {types.map((type) => (
+                  <SelectItem key={type} value={type}>
+                    {type.charAt(0).toUpperCase() + type.slice(1)}s
+                  </SelectItem>
                 ))}
-              </div>
-            </div>
+              </SelectContent>
+            </Select>
 
-            {/* All Results by Category */}
-            <div className="space-y-8">
-              {/* Historical Periods */}
-              <div className="space-y-4">
-                <h2 className="text-xl text-gray-900 flex items-center">
-                  <Calendar className="w-5 h-5 mr-2" />
-                  Historical Periods
-                </h2>
-                <div className="grid md:grid-cols-2 gap-4">
-                  {searchData.periods.map((period) => (
-                    <Card
-                      key={period.id}
-                      className="hover:shadow-lg transition-shadow cursor-pointer"
-                    >
-                      <CardContent
-                        className="p-6"
-                        onClick={() =>
-                          navigateTo("period-detail", { id: period.id })
-                        }
-                      >
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <h3 className="text-lg text-gray-900 hover:text-amber-600 transition-colors">
-                              {period.title}
-                            </h3>
-                            <Badge variant="outline" className="text-xs">
-                              {period.relevance}% match
-                            </Badge>
-                          </div>
-                          <div className="flex items-center text-sm text-gray-500">
-                            <Calendar className="w-4 h-4 mr-1" />
-                            {period.period}
-                            <span className="mx-2">•</span>
-                            <MapPin className="w-4 h-4 mr-1" />
-                            {period.region}
-                          </div>
-                          <p className="text-gray-600 text-sm">
-                            {period.description}
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
+            <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Categories</SelectItem>
+                {categories.map((category) => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-              {/* People */}
-              <div className="space-y-4">
-                <h2 className="text-xl text-gray-900 flex items-center">
-                  <Users className="w-5 h-5 mr-2" />
-                  Historical Figures
-                </h2>
-                <div className="grid md:grid-cols-3 gap-4">
-                  {searchData.people.map((person) => (
-                    <Card
-                      key={person.id}
-                      className="hover:shadow-lg transition-shadow cursor-pointer"
-                    >
-                      <CardContent className="p-6">
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
-                              <Users className="w-6 h-6 text-white" />
-                            </div>
-                            <Badge variant="outline" className="text-xs">
-                              {person.relevance}% match
-                            </Badge>
-                          </div>
-                          <div>
-                            <h3 className="text-lg text-gray-900 hover:text-amber-600 transition-colors">
-                              {person.name}
-                            </h3>
-                            <p className="text-sm text-amber-600">
-                              {person.title}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              {person.period}
-                            </p>
-                          </div>
-                          <p className="text-gray-600 text-sm">
-                            {person.description}
-                          </p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </TabsContent>
+            {(typeFilter !== "all" || categoryFilter !== "all") && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setTypeFilter("all");
+                  setCategoryFilter("all");
+                }}
+              >
+                Clear Filters
+              </Button>
+            )}
+          </div>
+        )}
 
-          <TabsContent value="periods" className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              {searchData.periods.map((period) => (
+        {/* Results */}
+        {query && filteredResults.length === 0 && (
+          <div className="text-center py-12">
+            <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h2 className="text-xl text-gray-900 mb-2">No results found</h2>
+            <p className="text-gray-600 mb-6">
+              Try adjusting your search terms or filters to find what you're
+              looking for.
+            </p>
+            <Button asChild variant="outline">
+              <Link to="/">Explore Homepage</Link>
+            </Button>
+          </div>
+        )}
+
+        {filteredResults.length > 0 && (
+          <div className="space-y-6">
+            {filteredResults.map((result) => {
+              const TypeIcon = getTypeIcon(result.type);
+
+              return (
                 <Card
-                  key={period.id}
-                  className="hover:shadow-lg transition-shadow cursor-pointer"
-                >
-                  <CardContent
-                    className="p-6"
-                    onClick={() =>
-                      navigateTo("period-detail", { id: period.id })
-                    }
-                  >
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-xl text-gray-900 hover:text-amber-600 transition-colors">
-                          {period.title}
-                        </h3>
-                        <Badge variant="outline">
-                          {period.relevance}% match
-                        </Badge>
-                      </div>
-                      <div className="flex items-center text-gray-500">
-                        <Calendar className="w-4 h-4 mr-1" />
-                        {period.period}
-                        <span className="mx-2">•</span>
-                        <MapPin className="w-4 h-4 mr-1" />
-                        {period.region}
-                      </div>
-                      <p className="text-gray-600">{period.description}</p>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-amber-600 hover:bg-amber-50 p-0"
-                      >
-                        Learn more →
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="stories" className="space-y-6">
-            <div className="space-y-4">
-              {searchData.stories.map((story) => (
-                <Card
-                  key={story.id}
-                  className="hover:shadow-lg transition-shadow cursor-pointer"
+                  key={result.id}
+                  className="hover:shadow-lg transition-shadow"
                 >
                   <CardContent className="p-6">
-                    <div className="flex space-x-4">
-                      <div className="relative overflow-hidden rounded-lg flex-shrink-0">
+                    <div className="flex flex-col md:flex-row gap-4">
+                      {/* Image */}
+                      <div className="w-full md:w-48 h-32 rounded-lg overflow-hidden bg-gray-200 flex-shrink-0">
                         <ImageWithFallback
-                          src={story.image}
-                          alt={story.title}
-                          className="w-32 h-32 object-cover"
+                          src={result.image}
+                          alt={result.title}
+                          className="w-full h-full object-cover"
                         />
                       </div>
+
+                      {/* Content */}
                       <div className="flex-1 space-y-3">
-                        <div className="flex items-center space-x-2">
-                          <Badge className={getCategoryColor(story.category)}>
-                            {story.category}
-                          </Badge>
-                          <Badge variant="outline">
-                            {story.relevance}% match
-                          </Badge>
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Badge className={getTypeColor(result.type)}>
+                              <TypeIcon className="w-3 h-3 mr-1" />
+                              {result.type.charAt(0).toUpperCase() +
+                                result.type.slice(1)}
+                            </Badge>
+                            <Badge variant="outline">{result.category}</Badge>
+                          </div>
                         </div>
-                        <h3 className="text-xl text-gray-900 hover:text-amber-600 transition-colors">
-                          {story.title}
-                        </h3>
-                        <p className="text-gray-600">{story.excerpt}</p>
-                        <div className="flex items-center justify-between text-sm text-gray-500">
-                          <span>By {story.author}</span>
-                          <span>{story.readTime}</span>
+
+                        <div>
+                          <h3 className="text-lg text-gray-900 mb-2 hover:text-amber-600 transition-colors">
+                            <Link to={result.url}>{result.title}</Link>
+                          </h3>
+                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
+                            {result.excerpt}
+                          </p>
+                        </div>
+
+                        {/* Tags */}
+                        <div className="flex flex-wrap gap-1">
+                          {result.tags
+                            .slice(0, 4)
+                            .map((tag: string, index: number) => (
+                              <Badge
+                                key={index}
+                                variant="outline"
+                                className="text-xs"
+                              >
+                                {tag}
+                              </Badge>
+                            ))}
+                          {result.tags.length > 4 && (
+                            <Badge variant="outline" className="text-xs">
+                              +{result.tags.length - 4} more
+                            </Badge>
+                          )}
+                        </div>
+
+                        {/* Meta info */}
+                        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                          <div className="flex items-center gap-4 text-sm text-gray-500">
+                            {result.author && (
+                              <div className="flex items-center">
+                                <Users className="w-3 h-3 mr-1" />
+                                {result.author}
+                              </div>
+                            )}
+                            {result.location && (
+                              <div className="flex items-center">
+                                <MapPin className="w-3 h-3 mr-1" />
+                                {result.location}
+                              </div>
+                            )}
+                            <div className="flex items-center">
+                              <Clock className="w-3 h-3 mr-1" />
+                              {result.date}
+                            </div>
+                          </div>
+
+                          <Button
+                            asChild
+                            size="sm"
+                            variant="outline"
+                            className="hover:bg-amber-50 hover:border-amber-600"
+                          >
+                            <Link to={result.url}>
+                              View <ArrowRight className="w-3 h-3 ml-1" />
+                            </Link>
+                          </Button>
                         </div>
                       </div>
-                      <ArrowRight className="w-5 h-5 text-gray-400" />
                     </div>
                   </CardContent>
                 </Card>
-              ))}
-            </div>
-          </TabsContent>
+              );
+            })}
+          </div>
+        )}
 
-          <TabsContent value="people" className="space-y-6">
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {searchData.people.map((person) => (
-                <Card
-                  key={person.id}
-                  className="hover:shadow-lg transition-shadow cursor-pointer"
+        {!query && (
+          <div className="text-center py-12">
+            <Search className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h2 className="text-xl text-gray-900 mb-2">
+              Search African History
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Search through our extensive collection of stories, historical
+              figures, regions, and educational resources.
+            </p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {[
+                "Ancient Egypt",
+                "Mali Empire",
+                "Queen Nzinga",
+                "Great Zimbabwe",
+                "Lalibela",
+              ].map((suggestion) => (
+                <Button
+                  key={suggestion}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setLocalQuery(suggestion);
+                    setSearchParams({ q: suggestion });
+                  }}
                 >
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
-                          <Users className="w-8 h-8 text-white" />
-                        </div>
-                        <Badge variant="outline">
-                          {person.relevance}% match
-                        </Badge>
-                      </div>
-                      <div>
-                        <h3 className="text-xl text-gray-900 hover:text-amber-600 transition-colors">
-                          {person.name}
-                        </h3>
-                        <p className="text-amber-600 mb-1">{person.title}</p>
-                        <p className="text-sm text-gray-500">{person.period}</p>
-                      </div>
-                      <p className="text-gray-600">{person.description}</p>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-amber-600 hover:bg-amber-50 p-0"
-                      >
-                        View biography →
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                  {suggestion}
+                </Button>
               ))}
             </div>
-          </TabsContent>
-
-          <TabsContent value="regions" className="space-y-6">
-            <div className="grid md:grid-cols-2 gap-6">
-              {searchData.regions.map((region) => (
-                <Card
-                  key={region.id}
-                  className="hover:shadow-lg transition-shadow cursor-pointer"
-                >
-                  <CardContent className="p-6">
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-xl text-gray-900 hover:text-amber-600 transition-colors">
-                          {region.name}
-                        </h3>
-                        <Badge variant="outline">
-                          {region.relevance}% match
-                        </Badge>
-                      </div>
-                      <div className="flex items-center text-gray-500">
-                        <MapPin className="w-4 h-4 mr-1" />
-                        {region.countries} countries
-                        <span className="mx-2">•</span>
-                        <span className="text-sm">
-                          Featured: {region.featuredCivilization}
-                        </span>
-                      </div>
-                      <p className="text-gray-600">{region.description}</p>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-amber-600 hover:bg-amber-50 p-0"
-                      >
-                        Explore region →
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
-
-        {/* No Results */}
-        {totalResults === 0 && (
-          <Card className="text-center py-12">
-            <CardContent>
-              <Search className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h2 className="text-xl text-gray-900 mb-2">
-                No results found for "{query}"
-              </h2>
-              <p className="text-gray-600 mb-6">
-                Try using different keywords or check your spelling.
-              </p>
-              <Button
-                onClick={() => navigateTo("home")}
-                className="bg-amber-600 hover:bg-amber-700"
-              >
-                Back to Home
-              </Button>
-            </CardContent>
-          </Card>
+          </div>
         )}
       </div>
     </div>

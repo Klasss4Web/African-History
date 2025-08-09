@@ -6,15 +6,14 @@ import {
   Facebook,
   Instagram,
   Youtube,
-  Globe,
+  // Globe,
 } from "lucide-react";
 import { Button } from "./ui/button";
-import { useNavigation } from "./Navigation";
+import { Link } from "react-router-dom";
+import { LanguageStats } from "./LanguageSwitcher";
 import { AfricanMap } from "./icons/african-map";
 
 export default function Footer() {
-  const { navigateTo } = useNavigation();
-
   return (
     <footer className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-12">
@@ -72,36 +71,42 @@ export default function Footer() {
           <div className="space-y-4">
             <h4 className="text-lg">Explore</h4>
             <div className="space-y-2">
-              <button
-                onClick={() => navigateTo("timeline")}
+              <Link
+                to="/timeline"
                 className="block text-gray-400 hover:text-white text-sm transition-colors"
               >
                 Interactive Timeline
-              </button>
-              <button
-                onClick={() => navigateTo("regions")}
+              </Link>
+              <Link
+                to="/regions"
                 className="block text-gray-400 hover:text-white text-sm transition-colors"
               >
                 African Regions
-              </button>
-              <button
-                onClick={() => navigateTo("stories")}
+              </Link>
+              <Link
+                to="/stories"
                 className="block text-gray-400 hover:text-white text-sm transition-colors"
               >
                 Historical Stories
-              </button>
-              <button
-                onClick={() => navigateTo("people")}
+              </Link>
+              <Link
+                to="/people"
                 className="block text-gray-400 hover:text-white text-sm transition-colors"
               >
                 Historical Figures
-              </button>
-              <button
-                onClick={() => navigateTo("interactive-map")}
+              </Link>
+              <Link
+                to="/interactive-map"
                 className="block text-gray-400 hover:text-white text-sm transition-colors"
               >
                 Interactive Map
-              </button>
+              </Link>
+              <Link
+                to="/contributors"
+                className="block text-gray-400 hover:text-white text-sm transition-colors"
+              >
+                Contributors
+              </Link>
             </div>
           </div>
 
@@ -109,40 +114,40 @@ export default function Footer() {
           <div className="space-y-4">
             <h4 className="text-lg">Educational Resources</h4>
             <div className="space-y-2">
-              <button
-                onClick={() => navigateTo("educational-resources")}
+              <Link
+                to="/resources"
                 className="block text-gray-400 hover:text-white text-sm transition-colors"
               >
                 Resource Center
-              </button>
-              <button
-                onClick={() => navigateTo("teacher-guides")}
+              </Link>
+              <Link
+                to="/resources/teacher-guides"
                 className="block text-gray-400 hover:text-white text-sm transition-colors"
               >
                 Teacher Guides
-              </button>
-              <button
-                onClick={() => navigateTo("student-activities")}
+              </Link>
+              <Link
+                to="/resources/student-activities"
                 className="block text-gray-400 hover:text-white text-sm transition-colors"
               >
                 Student Activities
-              </button>
-              <button
-                onClick={() => navigateTo("virtual-tours")}
+              </Link>
+              <Link
+                to="/resources/virtual-tours"
                 className="block text-gray-400 hover:text-white text-sm transition-colors"
               >
                 Virtual Tours
-              </button>
-              <button
-                onClick={() => navigateTo("research-papers")}
+              </Link>
+              <Link
+                to="/resources/research-papers"
                 className="block text-gray-400 hover:text-white text-sm transition-colors"
               >
                 Research Papers
-              </button>
+              </Link>
             </div>
           </div>
 
-          {/* Contact */}
+          {/* Connect */}
           <div className="space-y-4">
             <h4 className="text-lg">Connect</h4>
             <div className="space-y-3">
@@ -167,7 +172,14 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        {/* Language Support Section */}
+        <div className="mt-12 pt-8 border-t border-gray-800">
+          <div className="mb-8">
+            <LanguageStats />
+          </div>
+        </div>
+
+        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-gray-400 text-sm mb-4 md:mb-0">
             © 2024 AfricanHistory. All rights reserved.
           </div>

@@ -31,7 +31,7 @@ const CustomMarkerIcon = new L.DivIcon({
 interface Site {
   id: number;
   name: string;
-  location: {
+  coordinates: {
     lat: number;
     lng: number;
     country: string;
@@ -42,6 +42,7 @@ interface Site {
     | "Archaeological Site"
     | "Historic City"
     | "Religious Site"
+    | "Trading City"
     | "Natural Site";
   significance: string;
   description: string;
@@ -79,6 +80,46 @@ interface LeafletMapProps {
   mapData: MapData;
 }
 
+function SiteMarker({
+  site,
+  onClick,
+  isSelected,
+}: {
+  site: any;
+  onClick: () => void;
+  isSelected: boolean;
+}) {
+  return (
+    <div
+      className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-200 hover:scale-110 ${
+        isSelected ? "scale-125 z-20" : "z-10"
+      }`}
+      style={{ left: site?.coordinates?.lat, top: site?.coordinates?.lng }}
+      onClick={onClick}
+    >
+      <div className={`relative ${isSelected ? "animate-pulse" : ""}`}>
+        <div
+          className={`w-4 h-4 rounded-full ${
+            site.category === "Ancient Architecture"
+              ? "bg-amber-500"
+              : site.category === "Medieval Architecture"
+              ? "bg-green-500"
+              : site.category === "Religious Architecture"
+              ? "bg-blue-500"
+              : "bg-purple-500"
+          } border-2 border-white shadow-lg`}
+        ></div>
+
+        {isSelected && (
+          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap bg-black text-white px-2 py-1 rounded text-xs">
+            {site.name}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function LeafletMap({
   sites,
   selectedSite,
@@ -94,7 +135,8 @@ export function LeafletMap({
     let colorClass;
     if (site.type === "Archaeological Site") colorClass = "bg-red-500";
     else if (site.type === "Historic City") colorClass = "bg-blue-500";
-    else if (site.type === "Religious Site") colorClass = "bg-purple-500";
+    else if (site.type === "Religious Site") colorClass = "bg-blue-500";
+    else if (site.type === "Trading City") colorClass = "bg-purple-500";
     else colorClass = "bg-yellow-500";
 
     const isSelected = selectedSite?.id === site.id;
@@ -129,19 +171,38 @@ export function LeafletMap({
       {sites.map((site) => (
         <Marker
           key={site.id}
-          position={[site.location.lat, site.location.lng]}
+          position={[site?.coordinates?.lat, site?.coordinates?.lng]}
           icon={getMarkerIcon(site)}
           eventHandlers={{
             click: () => onSiteSelect(site),
           }}
         >
-          <Popup>{site.name}</Popup>
+          <div
+            className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-200 hover:scale-110 
+             animate-pulse
+            `}
+            style={{
+              left: site?.coordinates?.lat,
+              top: site?.coordinates?.lng,
+            }}
+          >
+            <div className="relative">
+              <Popup className="w-1000px">
+                <div
+                  className="absolute top-0 left-1/2 transform -translate-x-1/2 whitespace-nowrap bg-black text-white px-2 py-3 rounded text-xs animate-pulse rounded-lg px-7 min-w-30 text-center cursor-pointer"
+                  onClick={() => onSiteSelect(site)}
+                >
+                  {site.name}
+                </div>
+              </Popup>
+            </div>
+          </div>
         </Marker>
       ))}
 
       {/* Render trade routes as polylines */}
       {showTradeRoutes &&
-        mapData.tradeRoutes.map((route: TradeRoute) => (
+        mapData?.tradeRoutes?.map((route: TradeRoute) => (
           <Polyline
             key={route.id}
             positions={route.path.map((p) => [p.lat, p.lng])}

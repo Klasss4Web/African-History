@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   Clock,
   User,
@@ -11,15 +12,14 @@ import {
   Tag,
   ArrowRight,
   Eye,
+  ArrowLeft,
 } from "lucide-react";
-import { Card, CardContent } from "./ui/card";
+import { Card } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Avatar } from "./ui/avatar";
-import { Separator } from "./ui/separator";
 import { Textarea } from "./ui/textarea";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
-import { useNavigation } from "./Navigation";
 
 const storyData: { [key: number]: any } = {
   1: {
@@ -33,7 +33,7 @@ const storyData: { [key: number]: any } = {
     excerpt:
       "Discover how the ruler of the Mali Empire became the wealthiest person who ever lived and changed the course of African and world history.",
     image:
-      "https://images.unsplash.com/photo-1568366515672-33dfb61dc38c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwYW5jaWVudCUyMGFyY2hpdGVjdHVyZSUyMHB5cmFtaWR8ZW58MXx8fHwxNzU0NDY5ODUyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1568366515672-33dfb61dc38c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwYW5jaWVudCUyMGFyY2hpdGVjdHVyZSUyMHB5cmFtaWR8ZW58MXx8fHwxNzU0NDY5ODUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
     content: `
 In the early 14th century, when Europe was struggling through famines and political upheaval, a king in West Africa possessed wealth so vast that his generosity single-handedly disrupted the economies of entire regions. This was Mansa Musa, ruler of the Mali Empire, whose legendary pilgrimage to Mecca in 1324 CE revealed to the world the extraordinary riches of medieval Africa.
 
@@ -150,7 +150,7 @@ Today, as we seek to understand Africa's place in global history, Mansa Musa's r
     excerpt:
       "Learn about the brilliant military strategist who resisted Portuguese colonization for over 30 years and became one of Africa's greatest leaders.",
     image:
-      "https://images.unsplash.com/photo-1627837586900-56adbee910a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwY3VsdHVyYWwlMjBoZXJpdGFnZSUyMG1hc2t8ZW58MXx8fHwxNzU0NDY5ODU2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1627837586900-56adbee910a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwY3VsdHVyYWwlMjBoZXJpdGFnZSUyMG1hc2t8ZW58MXx8fHwxNzU0NDY5ODU2fDA&ixlib=rb-4.1.0&q=80&w=1080",
     content: `
 Queen Nzinga Mbandi was one of the most formidable rulers in African history, leading the resistance against Portuguese colonization in Angola for over three decades. Her tactical brilliance, diplomatic acumen, and unwavering commitment to her people's freedom made her a legendary figure whose influence extends far beyond her lifetime.
 
@@ -360,18 +360,16 @@ const comments = [
   },
 ];
 
-interface StoryDetailProps {
-  storyId: number;
-}
-
-export default function StoryDetail({ storyId }: StoryDetailProps) {
-  const { navigateTo } = useNavigation();
+export default function StoryDetail() {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [newComment, setNewComment] = useState("");
   const [storyComments, setStoryComments] = useState(comments);
 
-  const story = storyData[storyId];
+  const storyId = id ? parseInt(id) : null;
+  const story = storyId ? storyData[storyId] : null;
 
   if (!story) {
     return (
@@ -381,7 +379,9 @@ export default function StoryDetail({ storyId }: StoryDetailProps) {
           <p className="text-gray-600 mb-4">
             The requested story could not be found.
           </p>
-          <Button onClick={() => navigateTo("stories")}>Back to Stories</Button>
+          <Link to="/stories">
+            <Button>Back to Stories</Button>
+          </Link>
         </div>
       </div>
     );
@@ -450,6 +450,16 @@ export default function StoryDetail({ storyId }: StoryDetailProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Link to="/stories">
+            <Button variant="outline" size="sm">
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Stories
+            </Button>
+          </Link>
+        </div>
+
         {/* Article Header */}
         <article className="bg-white rounded-2xl shadow-sm overflow-hidden mb-8">
           <div className="relative">
@@ -683,36 +693,22 @@ export default function StoryDetail({ storyId }: StoryDetailProps) {
             <h3 className="text-xl text-gray-900 mb-4">Related Stories</h3>
             <div className="space-y-4">
               {story.relatedStories.map((relatedStory: any, index: number) => (
-                <div
+                <Link
                   key={index}
-                  className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors"
-                  onClick={() =>
-                    navigateTo("story-detail", { id: relatedStory.id })
-                  }
+                  to={`/stories/${relatedStory.id}`}
+                  className="flex items-center justify-between p-4 hover:bg-gray-50 rounded-lg transition-colors block"
                 >
                   <div className="flex-1">
                     <h4 className="text-gray-900 hover:text-amber-600 transition-colors">
                       {relatedStory.title}
                     </h4>
-                    <div className="flex items-center text-sm text-gray-500 mt-1">
-                      <Clock className="w-3 h-3 mr-1" />
+                    <p className="text-sm text-gray-500 mt-1">
                       {relatedStory.readTime}
-                    </div>
+                    </p>
                   </div>
                   <ArrowRight className="w-4 h-4 text-gray-400" />
-                </div>
+                </Link>
               ))}
-            </div>
-
-            <Separator className="my-6" />
-
-            <div className="text-center">
-              <Button
-                onClick={() => navigateTo("stories")}
-                className="bg-amber-600 hover:bg-amber-700"
-              >
-                View All Stories
-              </Button>
             </div>
           </div>
         </Card>
