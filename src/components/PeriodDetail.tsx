@@ -1,231 +1,269 @@
+import { useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import {
   Calendar,
-  MapPin,
   Users,
+  Lightbulb,
+  MapPin,
+  Crown,
   Scroll,
+  ArrowLeft,
   BookOpen,
-  ArrowRight,
-  Heart,
-  Share2,
+  Star,
+  ChevronRight,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { Progress } from "./ui/progress";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
-import { useNavigation } from "./Navigation";
 
+// Period data (same as before)
 const periodData: { [key: number]: any } = {
   1: {
-    title: "Ancient Egypt",
-    period: "3100 - 30 BCE",
-    location: "Northeast Africa (Nile River Valley)",
+    title: "Ancient Kingdoms",
+    subtitle: "3000 BCE - 500 CE",
     description:
-      "One of the world's earliest and most enduring civilizations, Ancient Egypt flourished along the Nile River for over 3,000 years. Known for monumental architecture, sophisticated writing systems, and complex religious beliefs.",
-    icon: "🏛️",
-    color: "from-yellow-400 to-orange-500",
-    image:
-      "https://images.unsplash.com/photo-1568366515672-33dfb61dc38c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwYW5jaWVudCUyMGFyY2hpdGVjdHVyZSUyMHB5cmFtaWR8ZW58MXx8fHwxNzU0NDY5ODUyfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "The rise of Africa's first great civilizations, from the pharaohs of Egypt to the kingdoms of Nubia and Aksum.",
+    overview:
+      "This period saw the emergence of some of the world's most influential ancient civilizations. Ancient Egypt developed along the Nile River, creating monuments that still inspire awe today. Meanwhile, the Kingdom of Kush controlled trade routes and even ruled Egypt for a period, while the Kingdom of Aksum became a major trading power connecting Africa with the Mediterranean and Indian Ocean worlds.",
+    keyDevelopments: [
+      "Development of hieroglyphic writing systems",
+      "Construction of pyramids and monumental architecture",
+      "Establishment of complex trade networks",
+      "Advancement in mathematics, astronomy, and medicine",
+      "Development of sophisticated political systems",
+    ],
+    majorCivilizations: [
+      {
+        name: "Ancient Egypt",
+        period: "3100-30 BCE",
+        region: "North Africa",
+        achievements: [
+          "Pyramid construction",
+          "Hieroglyphic writing",
+          "Medical advances",
+          "Calendar system",
+        ],
+        legacy:
+          "Influenced art, architecture, and culture across the Mediterranean world",
+      },
+      {
+        name: "Kingdom of Kush",
+        period: "1070 BCE-350 CE",
+        region: "North Africa",
+        achievements: [
+          "Iron working",
+          "Pyramid building",
+          "Trade networks",
+          "Conquest of Egypt",
+        ],
+        legacy:
+          "Preserved Egyptian traditions and spread ironworking technology",
+      },
+      {
+        name: "Kingdom of Aksum",
+        period: "100-960 CE",
+        region: "East Africa",
+        achievements: [
+          "International trade",
+          "Coinage system",
+          "Monumental obelisks",
+          "Early Christianity",
+        ],
+        legacy:
+          "Connected Africa to global trade networks and preserved ancient Ethiopian traditions",
+      },
+    ],
     timeline: [
-      {
-        year: "3100 BCE",
-        event: "Unification of Upper and Lower Egypt by Menes",
-        type: "political",
-      },
-      {
-        year: "2686-2181 BCE",
-        event: "Old Kingdom - Age of Pyramid Building",
-        type: "cultural",
-      },
-      {
-        year: "2055-1650 BCE",
-        event: "Middle Kingdom - Classical Period",
-        type: "political",
-      },
-      {
-        year: "1550-1077 BCE",
-        event: "New Kingdom - Egyptian Empire",
-        type: "expansion",
-      },
-      {
-        year: "30 BCE",
-        event: "Roman conquest ends Ptolemaic rule",
-        type: "decline",
-      },
-    ],
-    achievements: [
-      {
-        title: "Hieroglyphic Writing",
-        description:
-          "Complex writing system using pictographs and phonetic symbols",
-        impact: "Foundation for later writing systems",
-      },
-      {
-        title: "Pyramid Construction",
-        description:
-          "Monumental architecture including the Great Pyramid of Giza",
-        impact: "Engineering marvels that still inspire today",
-      },
-      {
-        title: "Mummification",
-        description: "Sophisticated preservation techniques for the afterlife",
-        impact: "Advanced understanding of anatomy and chemistry",
-      },
-      {
-        title: "Mathematical Advances",
-        description: "Decimal system, geometry, and engineering mathematics",
-        impact: "Influenced Greek and Roman mathematics",
-      },
-    ],
-    keyFigures: [
-      {
-        name: "Imhotep",
-        role: "Architect & Physician",
-        contribution: "Designer of first pyramid",
-      },
-      {
-        name: "Hatshepsut",
-        role: "Female Pharaoh",
-        contribution: "Peaceful reign and trade expansion",
-      },
-      {
-        name: "Akhenaten",
-        role: "Pharaoh",
-        contribution: "Religious revolutionary",
-      },
-      {
-        name: "Tutankhamun",
-        role: "Boy King",
-        contribution: "Restored traditional religion",
-      },
-    ],
-    relatedStories: [
-      {
-        id: 1,
-        title: "The Mystery of the Great Pyramid's Construction",
-        readTime: "12 min",
-      },
-      {
-        id: 2,
-        title: "Cleopatra: The Last Pharaoh of Egypt",
-        readTime: "15 min",
-      },
-      {
-        id: 3,
-        title: "Deciphering Hieroglyphs: The Rosetta Stone",
-        readTime: "8 min",
-      },
-    ],
-  },
-  2: {
-    title: "Kingdom of Kush",
-    period: "1070 BCE - 350 CE",
-    location: "Sudan (Ancient Nubia)",
-    description:
-      "A powerful African kingdom that conquered and ruled Egypt, establishing a rich tradition of learning, trade, and monumental architecture in the heart of Africa.",
-    icon: "👑",
-    color: "from-purple-400 to-pink-500",
-    image:
-      "https://images.unsplash.com/photo-1627837586900-56adbee910a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwY3VsdHVyYWwlMjBoZXJpdGFnZSUyMG1hc2t8ZW58MXx8fHwxNzU0NDY5ODU2fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    timeline: [
+      { year: "3100 BCE", event: "Unification of Egypt under Pharaoh Menes" },
+      { year: "2580 BCE", event: "Great Pyramid of Giza constructed" },
       {
         year: "1070 BCE",
-        event: "Emergence of independent Kushite kingdom",
-        type: "political",
+        event: "Kingdom of Kush gains independence from Egypt",
+      },
+      { year: "750 BCE", event: "Kushite pharaohs conquer and rule Egypt" },
+      {
+        year: "100 CE",
+        event: "Kingdom of Aksum emerges as major trading power",
+      },
+      { year: "330 CE", event: "Aksum adopts Christianity" },
+    ],
+    culturalAspects: [
+      "Religious beliefs centered on divine kingship",
+      "Monumental architecture as symbols of power",
+      "Complex burial practices and afterlife beliefs",
+      "Advanced artistic traditions in sculpture and painting",
+      "Development of written languages and literature",
+    ],
+    modernLegacy:
+      "These ancient kingdoms laid the foundation for African civilization and continue to influence modern African identity, art, and culture.",
+    color: "from-amber-400 to-orange-500",
+    image:
+      "https://images.unsplash.com/photo-1568366515672-33dfb61dc38c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwYW5jaWVudCUyMGFyY2hpdGVjdHVyZSUyMHB5cmFtaWR8ZW58MXx8fHwxNzU0NDY5ODUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+  },
+  2: {
+    title: "Medieval Empires",
+    subtitle: "500-1500 CE",
+    description:
+      "The golden age of African empires, featuring the wealth of Mali, the scholarship of Timbuktu, and the stone cities of Zimbabwe.",
+    overview:
+      "The medieval period marked the height of African political and economic power. Great trading empires like Ghana, Mali, and Songhai controlled trans-Saharan trade routes, accumulating immense wealth from gold and salt. Meanwhile, the Swahili coast flourished with Indian Ocean trade, and Great Zimbabwe became the largest ancient structure south of the Sahara.",
+    keyDevelopments: [
+      "Control of trans-Saharan and Indian Ocean trade",
+      "Development of Islamic scholarship centers",
+      "Construction of impressive stone architecture",
+      "Emergence of sophisticated urban centers",
+      "Cultural synthesis between African and Islamic traditions",
+    ],
+    majorCivilizations: [
+      {
+        name: "Mali Empire",
+        period: "1230-1600 CE",
+        region: "West Africa",
+        achievements: [
+          "Gold trade monopoly",
+          "Islamic scholarship",
+          "Timbuktu university",
+          "Architectural marvels",
+        ],
+        legacy: "Established enduring trade networks and centers of learning",
       },
       {
-        year: "760-656 BCE",
-        event: "Kushite conquest and rule of Egypt",
-        type: "expansion",
+        name: "Songhai Empire",
+        period: "1464-1591 CE",
+        region: "West Africa",
+        achievements: [
+          "Largest African empire",
+          "Military innovations",
+          "Administrative systems",
+          "Cultural preservation",
+        ],
+        legacy:
+          "Advanced government structures that influenced regional politics",
       },
       {
-        year: "591 BCE",
-        event: "Capital moved from Napata to Meroë",
-        type: "political",
-      },
-      {
-        year: "100-300 CE",
-        event: "Golden age of Meroitic civilization",
-        type: "cultural",
-      },
-      {
-        year: "350 CE",
-        event: "Conquest by Kingdom of Aksum",
-        type: "decline",
+        name: "Great Zimbabwe",
+        period: "1100-1450 CE",
+        region: "Southern Africa",
+        achievements: [
+          "Stone architecture",
+          "Gold trade",
+          "Urban planning",
+          "Artistic traditions",
+        ],
+        legacy:
+          "Demonstrated sophisticated African engineering and urban design",
       },
     ],
-    achievements: [
+    timeline: [
+      { year: "800 CE", event: "Swahili city-states begin to flourish" },
+      { year: "1100 CE", event: "Great Zimbabwe construction begins" },
+      { year: "1235 CE", event: "Mali Empire founded by Sundiata Keita" },
+      { year: "1324 CE", event: "Mansa Musa's famous pilgrimage to Mecca" },
+      { year: "1464 CE", event: "Songhai Empire rises to power" },
+      { year: "1591 CE", event: "Moroccan invasion ends Songhai Empire" },
+    ],
+    culturalAspects: [
+      "Synthesis of Islamic and traditional African cultures",
+      "Development of centers of learning and scholarship",
+      "Growth of long-distance trade networks",
+      "Architectural innovations in stone and mud-brick",
+      "Oral traditions and griots preserving history",
+    ],
+    modernLegacy:
+      "These empires demonstrated Africa's central role in medieval global trade and scholarship, influencing education, architecture, and governance across the continent.",
+    color: "from-emerald-400 to-green-500",
+    image:
+      "https://images.unsplash.com/photo-1627837586900-56adbee910a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwY3VsdHVyYWwlMjBoZXJpdGFnZSUyMG1hc2t8ZW58MXx8fHwxNzU0NDY5ODU2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+  },
+  3: {
+    title: "Colonial Period",
+    subtitle: "1500-1960 CE",
+    description:
+      "The era of European colonization, resistance movements, and the eventual struggle for independence across Africa.",
+    overview:
+      "The colonial period fundamentally transformed African societies through European imperialism. Despite facing immense challenges, African communities showed remarkable resilience, maintaining cultural traditions while adapting to new realities. This period also saw the rise of influential resistance leaders and independence movements that would ultimately lead to decolonization.",
+    keyDevelopments: [
+      "European colonization and partition of Africa",
+      "Introduction of new technologies and systems",
+      "Resistance movements and independence struggles",
+      "Cultural preservation amidst change",
+      "Development of pan-African consciousness",
+    ],
+    majorCivilizations: [
       {
-        title: "Iron Technology",
-        description: "Advanced metallurgy and iron working techniques",
-        impact: "Spread ironworking throughout Africa",
+        name: "Ethiopian Empire",
+        period: "1270-1974 CE",
+        region: "East Africa",
+        achievements: [
+          "Maintained independence",
+          "Victory at Adwa",
+          "Ancient traditions",
+          "Diplomatic relations",
+        ],
+        legacy: "Symbol of African independence and resistance to colonialism",
       },
       {
-        title: "Meroitic Script",
-        description: "Unique writing system adapted from hieroglyphs",
-        impact: "Independent African writing tradition",
+        name: "Ashanti Empire",
+        period: "1670-1902 CE",
+        region: "West Africa",
+        achievements: [
+          "Military resistance",
+          "Golden Stool traditions",
+          "Trade networks",
+          "Cultural preservation",
+        ],
+        legacy: "Inspired later independence movements across West Africa",
       },
       {
-        title: "Trade Networks",
-        description: "Connected Africa to Mediterranean and India",
-        impact: "Economic prosperity and cultural exchange",
-      },
-      {
-        title: "Pyramid Building",
-        description: "Over 200 pyramids built at Nuri and Meroë",
-        impact: "Architectural legacy in Sudan",
+        name: "Zulu Kingdom",
+        period: "1816-1897 CE",
+        region: "Southern Africa",
+        achievements: [
+          "Military innovations",
+          "Resistance to colonialism",
+          "Cultural unity",
+          "Leadership traditions",
+        ],
+        legacy: "Influenced South African nationalism and cultural identity",
       },
     ],
-    keyFigures: [
+    timeline: [
+      { year: "1652 CE", event: "Dutch establish Cape Colony in South Africa" },
+      { year: "1884 CE", event: "Berlin Conference partitions Africa" },
+      { year: "1896 CE", event: "Ethiopia defeats Italy at Battle of Adwa" },
       {
-        name: "Piye",
-        role: "Kushite King",
-        contribution: "Conquered Egypt, founded 25th Dynasty",
+        year: "1957 CE",
+        event: "Ghana becomes first African nation to gain independence",
       },
       {
-        name: "Taharqa",
-        role: "Pharaoh of Egypt",
-        contribution: "Greatest of the Kushite pharaohs",
+        year: "1960 CE",
+        event: "Year of Africa - 17 nations gain independence",
       },
-      {
-        name: "Amanitore",
-        role: "Queen Mother",
-        contribution: "Powerful female ruler of Meroë",
-      },
-      {
-        name: "Natakamani",
-        role: "King",
-        contribution: "Builder of temples and monuments",
-      },
+      { year: "1994 CE", event: "End of apartheid in South Africa" },
     ],
-    relatedStories: [
-      {
-        id: 4,
-        title: "The Black Pharaohs: Kushite Rulers of Egypt",
-        readTime: "14 min",
-      },
-      {
-        id: 5,
-        title: "Meroë: Africa's Iron Age Metropolis",
-        readTime: "10 min",
-      },
-      {
-        id: 6,
-        title: "Queen Amanitore: Warrior Queen of Kush",
-        readTime: "12 min",
-      },
+    culturalAspects: [
+      "Preservation of traditional languages and customs",
+      "Adaptation and resistance to colonial rule",
+      "Development of new forms of artistic expression",
+      "Growth of educational and religious movements",
+      "Pan-African cultural and political consciousness",
     ],
+    modernLegacy:
+      "The colonial period shaped modern African borders and institutions while also fostering unity and independence movements that continue to influence contemporary African politics and culture.",
+    color: "from-red-400 to-rose-500",
+    image:
+      "https://images.unsplash.com/photo-1652355008626-22da23215341?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwdHJhZGl0aW9uYWwlMjBhcnQlMjB0ZXh0aWxlfGVufDF8fHx8MTc1NDQ2OTg1OXww&ixlib=rb-4.1.0&q=80&w=1080",
   },
 };
 
-interface PeriodDetailProps {
-  periodId: number;
-}
+export default function PeriodDetail() {
+  const { id } = useParams<{ id: string }>();
+  const [selectedTab, setSelectedTab] = useState("overview");
 
-export default function PeriodDetail({ periodId }: PeriodDetailProps) {
-  const { navigateTo } = useNavigation();
-  const period = periodData[periodId];
+  const periodId = id ? parseInt(id) : null;
+  const period = periodId ? periodData[periodId] : null;
 
   if (!period) {
     return (
@@ -235,234 +273,242 @@ export default function PeriodDetail({ periodId }: PeriodDetailProps) {
           <p className="text-gray-600 mb-4">
             The requested historical period could not be found.
           </p>
-          <Button onClick={() => navigateTo("home")}>Return Home</Button>
+          <Link to="/timeline">
+            <Button>Back to Timeline</Button>
+          </Link>
         </div>
       </div>
     );
   }
 
-  const getEventTypeColor = (type: string) => {
-    const colors = {
-      political: "bg-blue-100 text-blue-700",
-      cultural: "bg-purple-100 text-purple-700",
-      expansion: "bg-green-100 text-green-700",
-      decline: "bg-red-100 text-red-700",
-    };
-    return colors[type as keyof typeof colors] || "bg-gray-100 text-gray-700";
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-white">
-        <div className="container mx-auto px-4 py-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <div className="flex items-center space-x-4">
-                <div
-                  className={`w-16 h-16 rounded-xl bg-gradient-to-br ${period.color} flex items-center justify-center text-3xl`}
+      <section className="relative bg-black">
+        <div className="relative">
+          <ImageWithFallback
+            src={period.image}
+            alt={period.title}
+            className="w-full h-96 lg:h-[500px] object-cover opacity-70"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+
+          <div className="absolute inset-0 flex items-end">
+            <div className="container mx-auto px-4 pb-16">
+              <div className="max-w-4xl">
+                <Link to="/timeline">
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    className="mb-6 bg-white/20 text-white border-white/30 hover:bg-white/30"
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Back to Timeline
+                  </Button>
+                </Link>
+
+                <Badge
+                  className={`mb-4 bg-gradient-to-r ${period.color} text-white border-0`}
                 >
-                  {period.icon}
-                </div>
-                <div>
-                  <h1 className="text-4xl lg:text-5xl text-gray-900">
-                    {period.title}
-                  </h1>
-                  <div className="flex items-center text-gray-600 mt-2">
-                    <Calendar className="w-5 h-5 mr-2" />
-                    {period.period}
-                  </div>
-                </div>
+                  <Calendar className="w-4 h-4 mr-2" />
+                  Historical Period
+                </Badge>
+
+                <h1 className="text-5xl lg:text-7xl text-white mb-4">
+                  {period.title}
+                </h1>
+                <p className="text-xl lg:text-2xl text-white/90 mb-6">
+                  {period.subtitle}
+                </p>
+                <p className="text-lg text-white/80 max-w-3xl leading-relaxed">
+                  {period.description}
+                </p>
               </div>
-
-              <div className="flex items-center text-gray-600">
-                <MapPin className="w-5 h-5 mr-2" />
-                {period.location}
-              </div>
-
-              <p className="text-lg text-gray-700 leading-relaxed">
-                {period.description}
-              </p>
-
-              <div className="flex space-x-4">
-                <Button size="lg" className="bg-amber-600 hover:bg-amber-700">
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  Read Stories
-                </Button>
-                <Button variant="outline" size="lg">
-                  <Heart className="w-4 h-4 mr-2" />
-                  Bookmark
-                </Button>
-                <Button variant="outline" size="lg">
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Share
-                </Button>
-              </div>
-            </div>
-
-            <div className="relative">
-              <ImageWithFallback
-                src={period.image}
-                alt={period.title}
-                className="w-full h-96 object-cover rounded-2xl shadow-lg"
-              />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Content Tabs */}
-      <section className="py-12">
+      {/* Content */}
+      <section className="py-16">
         <div className="container mx-auto px-4">
-          <Tabs defaultValue="timeline" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto">
+          <Tabs
+            value={selectedTab}
+            onValueChange={setSelectedTab}
+            className="max-w-6xl mx-auto"
+          >
+            <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto mb-12">
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="civilizations">Civilizations</TabsTrigger>
               <TabsTrigger value="timeline">Timeline</TabsTrigger>
-              <TabsTrigger value="achievements">Achievements</TabsTrigger>
-              <TabsTrigger value="people">Key Figures</TabsTrigger>
-              <TabsTrigger value="stories">Stories</TabsTrigger>
+              <TabsTrigger value="culture">Culture</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="timeline" className="space-y-6">
-              <div className="max-w-4xl mx-auto">
-                <h2 className="text-2xl text-gray-900 mb-8 text-center">
-                  Historical Timeline
-                </h2>
-                <div className="space-y-6">
-                  {period.timeline.map((event: any, index: number) => (
-                    <Card key={index} className="relative">
-                      <CardContent className="p-6">
-                        <div className="flex items-start space-x-4">
-                          <div className="flex-shrink-0">
-                            <Badge className={getEventTypeColor(event.type)}>
-                              {event.year}
-                            </Badge>
+            <TabsContent value="overview" className="space-y-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <BookOpen className="w-6 h-6 mr-3" />
+                    Period Overview
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <p className="text-gray-700 text-lg leading-relaxed">
+                    {period.overview}
+                  </p>
+
+                  <div>
+                    <h3 className="text-xl text-gray-900 mb-4">
+                      Key Developments
+                    </h3>
+                    <div className="grid md:grid-cols-2 gap-3">
+                      {period.keyDevelopments.map(
+                        (development: string, index: number) => (
+                          <div
+                            key={index}
+                            className="flex items-start space-x-3"
+                          >
+                            <div className="w-2 h-2 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <p className="text-gray-700">{development}</p>
                           </div>
-                          <div className="flex-1">
-                            <h3 className="text-lg text-gray-900 mb-2">
-                              {event.event}
-                            </h3>
-                            <Badge variant="outline" className="text-xs">
-                              {event.type}
-                            </Badge>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
+                        )
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl text-gray-900 mb-4">
+                      Modern Legacy
+                    </h3>
+                    <p className="text-gray-700 leading-relaxed">
+                      {period.modernLegacy}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
 
-            <TabsContent value="achievements" className="space-y-6">
-              <div className="max-w-4xl mx-auto">
-                <h2 className="text-2xl text-gray-900 mb-8 text-center">
-                  Major Achievements
+            <TabsContent value="civilizations" className="space-y-8">
+              <div className="grid gap-8">
+                <h2 className="text-3xl text-gray-900 text-center">
+                  Major Civilizations
                 </h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                  {period.achievements.map(
-                    (achievement: any, index: number) => (
-                      <Card key={index}>
-                        <CardHeader>
-                          <CardTitle className="text-lg">
-                            {achievement.title}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                          <p className="text-gray-600">
-                            {achievement.description}
-                          </p>
-                          <div className="border-t pt-4">
-                            <h4 className="text-sm text-amber-600 mb-2">
-                              Historical Impact:
-                            </h4>
-                            <p className="text-sm text-gray-700">
-                              {achievement.impact}
-                            </p>
-                          </div>
-                        </CardContent>
-                      </Card>
-                    )
-                  )}
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="people" className="space-y-6">
-              <div className="max-w-4xl mx-auto">
-                <h2 className="text-2xl text-gray-900 mb-8 text-center">
-                  Key Historical Figures
-                </h2>
-                <div className="grid md:grid-cols-2 gap-6">
-                  {period.keyFigures.map((figure: any, index: number) => (
-                    <Card
-                      key={index}
-                      className="hover:shadow-lg transition-shadow cursor-pointer"
-                    >
-                      <CardContent className="p-6">
-                        <div className="flex items-start space-x-4">
-                          <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center">
-                            <Users className="w-6 h-6 text-white" />
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="text-lg text-gray-900 mb-1">
-                              {figure.name}
+                {period.majorCivilizations.map((civ: any, index: number) => (
+                  <Card
+                    key={index}
+                    className="hover:shadow-lg transition-shadow"
+                  >
+                    <CardContent className="p-8">
+                      <div className="space-y-6">
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h3 className="text-2xl text-gray-900 mb-2">
+                              {civ.name}
                             </h3>
-                            <Badge variant="outline" className="mb-2 text-xs">
-                              {figure.role}
-                            </Badge>
-                            <p className="text-sm text-gray-600">
-                              {figure.contribution}
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="stories" className="space-y-6">
-              <div className="max-w-4xl mx-auto">
-                <h2 className="text-2xl text-gray-900 mb-8 text-center">
-                  Related Stories
-                </h2>
-                <div className="space-y-4">
-                  {period.relatedStories.map((story: any, index: number) => (
-                    <Card
-                      key={index}
-                      className="hover:shadow-lg transition-shadow cursor-pointer"
-                    >
-                      <CardContent className="p-6">
-                        <div className="flex items-center justify-between">
-                          <div className="flex-1">
-                            <h3 className="text-lg text-gray-900 hover:text-amber-600 transition-colors">
-                              {story.title}
-                            </h3>
-                            <div className="flex items-center text-sm text-gray-500 mt-1">
-                              <Scroll className="w-4 h-4 mr-1" />
-                              {story.readTime} read
+                            <div className="flex items-center space-x-4 text-gray-600">
+                              <div className="flex items-center">
+                                <Calendar className="w-4 h-4 mr-2" />
+                                {civ.period}
+                              </div>
+                              <div className="flex items-center">
+                                <MapPin className="w-4 h-4 mr-2" />
+                                {civ.region}
+                              </div>
                             </div>
                           </div>
-                          <ArrowRight className="w-5 h-5 text-gray-400" />
+                          <Crown className="w-8 h-8 text-amber-500" />
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-                <div className="text-center">
-                  <Button
-                    onClick={() =>
-                      navigateTo("stories", {
-                        filters: { period: period.title },
-                      })
-                    }
-                    className="bg-amber-600 hover:bg-amber-700"
-                  >
-                    View All Stories
-                  </Button>
-                </div>
+
+                        <div className="grid md:grid-cols-2 gap-6">
+                          <div>
+                            <h4 className="text-lg text-gray-900 mb-3">
+                              Major Achievements
+                            </h4>
+                            <div className="space-y-2">
+                              {civ.achievements.map(
+                                (achievement: string, achIndex: number) => (
+                                  <div
+                                    key={achIndex}
+                                    className="flex items-center space-x-2"
+                                  >
+                                    <Star className="w-4 h-4 text-amber-500" />
+                                    <span className="text-gray-700">
+                                      {achievement}
+                                    </span>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          </div>
+
+                          <div>
+                            <h4 className="text-lg text-gray-900 mb-3">
+                              Historical Legacy
+                            </h4>
+                            <p className="text-gray-700">{civ.legacy}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
+            </TabsContent>
+
+            <TabsContent value="timeline" className="space-y-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Scroll className="w-6 h-6 mr-3" />
+                    Historical Timeline
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-6">
+                    {period.timeline.map((event: any, index: number) => (
+                      <div key={index} className="flex items-start space-x-4">
+                        <div className="flex-shrink-0">
+                          <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+                            <Calendar className="w-6 h-6 text-amber-600" />
+                          </div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="text-lg text-amber-600 mb-1">
+                            {event.year}
+                          </div>
+                          <p className="text-gray-900">{event.event}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="culture" className="space-y-8">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Users className="w-6 h-6 mr-3" />
+                    Cultural Aspects
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {period.culturalAspects.map(
+                      (aspect: string, index: number) => (
+                        <div
+                          key={index}
+                          className="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg"
+                        >
+                          <Lightbulb className="w-5 h-5 text-amber-500 mt-1 flex-shrink-0" />
+                          <p className="text-gray-700">{aspect}</p>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
             </TabsContent>
           </Tabs>
         </div>

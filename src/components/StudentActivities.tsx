@@ -4,7 +4,6 @@ import {
   Trophy,
   Star,
   Clock,
-  Users,
   BookOpen,
   MapPin,
   Lightbulb,
@@ -12,17 +11,20 @@ import {
   XCircle,
   RotateCcw,
   ArrowRight,
+  Gamepad2,
 } from "lucide-react";
+import { Link } from "react-router-dom";
+
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Label } from "./ui/label";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
+import AnimatedCounter from "./AnimatedCounter";
 
-// Activity data
+// Activity data with artifact matcher included
 const activities = [
   {
     id: 1,
@@ -104,41 +106,51 @@ const activities = [
   },
   {
     id: 3,
-    title: "Cultural Artifacts Match",
-    description: "Match African cultural artifacts to their regions of origin",
-    type: "matching",
+    title: "Cultural Artifacts Matcher",
+    description:
+      "Match African cultural artifacts to their regions of origin - Interactive game",
+    type: "game",
     difficulty: "Advanced",
     duration: "12 min",
     points: 200,
     image:
       "https://images.unsplash.com/photo-1652355008626-22da23215341?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwdHJhZGl0aW9uYWwlMjBhcnQlMjB0ZXh0aWxlfGVufDF8fHx8MTc1NDQ2OTg1OXww&ixlib=rb-4.1.0&q=80&w=1080",
-    artifacts: [
-      {
-        name: "Benin Bronze",
-        region: "West Africa",
-        description: "Intricate bronze plaques from Kingdom of Benin",
-      },
-      {
-        name: "Ethiopian Cross",
-        region: "East Africa",
-        description: "Ornate religious crosses from Ethiopian Christianity",
-      },
-      {
-        name: "Kente Cloth",
-        region: "West Africa",
-        description: "Colorful woven textile from Ghana",
-      },
-      {
-        name: "Great Zimbabwe Bird",
-        region: "Southern Africa",
-        description: "Stone carved birds from Great Zimbabwe",
-      },
-      {
-        name: "Coptic Textiles",
-        region: "North Africa",
-        description: "Early Christian textiles from Egypt",
-      },
-    ],
+    isExternal: true,
+    externalLink: "/games/artifact-matcher",
+  },
+  {
+    id: 4,
+    title: "West African Kingdoms",
+    description:
+      "Learn about the great empires of West Africa through interactive content",
+    type: "exploration",
+    difficulty: "Intermediate",
+    duration: "20 min",
+    points: 180,
+    image:
+      "https://images.unsplash.com/photo-1627837586900-56adbee910a1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwY3VsdHVyYWwlMjBoZXJpdGFnZSUyMG1hc2t8ZW58MXx8fHwxNzU0NDY5ODU2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    content: {
+      sections: [
+        {
+          title: "Mali Empire",
+          description: "The wealthiest empire in medieval Africa",
+          facts: [
+            "Founded by Sundiata Keita",
+            "Mansa Musa was the richest person in history",
+            "Timbuktu was a center of learning",
+          ],
+        },
+        {
+          title: "Songhai Empire",
+          description: "The largest empire in African history",
+          facts: [
+            "Controlled the Niger River trade routes",
+            "Had a professional army",
+            "Fell to Moroccan invasion in 1591",
+          ],
+        },
+      ],
+    },
   },
 ];
 
@@ -209,10 +221,12 @@ function QuizActivity({
           </div>
           <h3 className="text-2xl text-gray-900 mb-2">Quiz Complete!</h3>
           <p className="text-gray-600 mb-4">
-            You scored {score} out of {activity.questions.length} questions
-            correctly
+            You scored <AnimatedCounter target={score} /> out of{" "}
+            {activity.questions.length} questions correctly
           </p>
-          <div className="text-3xl text-amber-600 mb-4">{finalScore}%</div>
+          <div className="text-3xl text-amber-600 mb-4">
+            <AnimatedCounter target={finalScore} suffix="%" />
+          </div>
           <Progress value={finalScore} className="max-w-xs mx-auto mb-6" />
         </div>
 
@@ -450,6 +464,91 @@ function TimelineActivity({
   );
 }
 
+// Exploration Activity Component
+function ExplorationActivity({
+  activity,
+  onComplete,
+}: {
+  activity: any;
+  onComplete: (score: number) => void;
+}) {
+  const [currentSection, setCurrentSection] = useState(0);
+  const [completedSections, setCompletedSections] = useState<boolean[]>([]);
+
+  const markSectionComplete = (sectionIndex: number) => {
+    const newCompleted = [...completedSections];
+    newCompleted[sectionIndex] = true;
+    setCompletedSections(newCompleted);
+
+    if (newCompleted.every((completed) => completed)) {
+      onComplete(100);
+    }
+  };
+
+  const section = activity.content.sections[currentSection];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <Badge variant="outline">
+          Section {currentSection + 1} of {activity.content.sections.length}
+        </Badge>
+        <Progress
+          value={
+            ((currentSection + 1) / activity.content.sections.length) * 100
+          }
+          className="w-32"
+        />
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>{section.title}</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-gray-600">{section.description}</p>
+
+          <div>
+            <h4 className="text-sm text-gray-900 mb-2">Key Facts:</h4>
+            <ul className="space-y-2">
+              {section.facts.map((fact: string, index: number) => (
+                <li key={index} className="flex items-start text-sm">
+                  <Star className="w-4 h-4 text-amber-500 mr-2 mt-0.5 flex-shrink-0" />
+                  {fact}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="flex justify-between pt-4">
+            <Button
+              variant="outline"
+              disabled={currentSection === 0}
+              onClick={() => setCurrentSection(currentSection - 1)}
+            >
+              Previous
+            </Button>
+
+            <Button
+              onClick={() => {
+                markSectionComplete(currentSection);
+                if (currentSection < activity.content.sections.length - 1) {
+                  setCurrentSection(currentSection + 1);
+                }
+              }}
+              className="bg-amber-600 hover:bg-amber-700"
+            >
+              {currentSection < activity.content.sections.length - 1
+                ? "Next Section"
+                : "Complete"}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 export default function StudentActivities() {
   const [selectedActivity, setSelectedActivity] = useState<any>(null);
   const [completedActivities, setCompletedActivities] = useState<number[]>([]);
@@ -465,6 +564,11 @@ export default function StudentActivities() {
   };
 
   const startActivity = (activity: any) => {
+    if (activity.isExternal) {
+      // For external activities like the artifact matcher, redirect
+      window.location.href = activity.externalLink;
+      return;
+    }
     setSelectedActivity(activity);
   };
 
@@ -506,15 +610,13 @@ export default function StudentActivities() {
               />
             )}
 
-            {selectedActivity.type === "matching" && (
-              <div className="text-center py-12">
-                <p className="text-gray-600 mb-4">
-                  Matching activity coming soon!
-                </p>
-                <Button onClick={() => setSelectedActivity(null)}>
-                  Back to Activities
-                </Button>
-              </div>
+            {selectedActivity.type === "exploration" && (
+              <ExplorationActivity
+                activity={selectedActivity}
+                onComplete={(score) =>
+                  handleActivityComplete(selectedActivity.id, score)
+                }
+              />
             )}
           </div>
         </div>
@@ -524,7 +626,7 @@ export default function StudentActivities() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
+      {/* Hero Section with Animated Stats */}
       <section className="bg-gradient-to-br from-purple-50 to-blue-100 py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
@@ -536,13 +638,46 @@ export default function StudentActivities() {
               Interactive Learning
             </Badge>
             <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
-              Try Activities
+              Student Activities
             </h1>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
               Learn African history through fun, interactive activities and
               games. Test your knowledge, build timelines, and explore cultural
               artifacts.
             </p>
+          </div>
+
+          {/* Enhanced Stats */}
+          <div className="grid md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-8">
+            <div className="text-center">
+              <div className="text-3xl text-purple-600 mb-1">
+                <AnimatedCounter target={activities.length} />
+              </div>
+              <div className="text-sm text-gray-600">Total Activities</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl text-blue-600 mb-1">
+                <AnimatedCounter target={completedActivities.length} />
+              </div>
+              <div className="text-sm text-gray-600">Completed</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl text-amber-600 mb-1">
+                <AnimatedCounter target={totalPoints} />
+              </div>
+              <div className="text-sm text-gray-600">Points Earned</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl text-green-600 mb-1">
+                <AnimatedCounter
+                  target={activities.reduce(
+                    (total, activity) => total + activity.points,
+                    0
+                  )}
+                />
+              </div>
+              <div className="text-sm text-gray-600">Max Points</div>
+            </div>
           </div>
 
           {/* Progress Stats */}
@@ -552,19 +687,19 @@ export default function StudentActivities() {
                 <div className="flex items-center justify-between">
                   <div className="text-center">
                     <div className="text-2xl text-purple-600 mb-1">
-                      {completedActivities.length}
+                      <AnimatedCounter target={completedActivities.length} />
                     </div>
                     <div className="text-sm text-gray-600">Completed</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl text-amber-600 mb-1">
-                      {totalPoints}
+                      <AnimatedCounter target={totalPoints} />
                     </div>
                     <div className="text-sm text-gray-600">Points</div>
                   </div>
                   <div className="text-center">
                     <div className="text-2xl text-green-600 mb-1">
-                      {activities.length}
+                      <AnimatedCounter target={activities.length} />
                     </div>
                     <div className="text-sm text-gray-600">Available</div>
                   </div>
@@ -606,13 +741,23 @@ export default function StudentActivities() {
                         {activity.type === "timeline" && (
                           <Clock className="w-3 h-3 mr-1" />
                         )}
-                        {activity.type === "matching" && (
-                          <Star className="w-3 h-3 mr-1" />
+                        {activity.type === "game" && (
+                          <Gamepad2 className="w-3 h-3 mr-1" />
+                        )}
+                        {activity.type === "exploration" && (
+                          <MapPin className="w-3 h-3 mr-1" />
                         )}
                         {activity.type.charAt(0).toUpperCase() +
                           activity.type.slice(1)}
                       </Badge>
                     </div>
+                    {activity.isExternal && (
+                      <div className="absolute top-3 left-3">
+                        <Badge className="bg-blue-600 text-white">
+                          Interactive Game
+                        </Badge>
+                      </div>
+                    )}
                   </div>
 
                   <CardContent className="p-6">
@@ -647,27 +792,39 @@ export default function StudentActivities() {
                         </div>
                         <div className="flex items-center text-amber-600">
                           <Trophy className="w-4 h-4 mr-1" />
-                          {activity.points} pts
+                          <AnimatedCounter target={activity.points} /> pts
                         </div>
                       </div>
 
-                      <Button
-                        onClick={() => startActivity(activity)}
-                        className="w-full bg-amber-600 hover:bg-amber-700"
-                        disabled={isCompleted}
-                      >
-                        {isCompleted ? (
-                          <>
-                            <CheckCircle className="w-4 h-4 mr-2" />
-                            Completed
-                          </>
-                        ) : (
-                          <>
-                            <Play className="w-4 h-4 mr-2" />
-                            Start Activity
-                          </>
-                        )}
-                      </Button>
+                      {activity.isExternal ? (
+                        <Button
+                          asChild
+                          className="w-full bg-blue-600 hover:bg-blue-700"
+                        >
+                          <Link to={activity.externalLink}>
+                            <Gamepad2 className="w-4 h-4 mr-2" />
+                            Play Game
+                          </Link>
+                        </Button>
+                      ) : (
+                        <Button
+                          onClick={() => startActivity(activity)}
+                          className="w-full bg-amber-600 hover:bg-amber-700"
+                          disabled={isCompleted}
+                        >
+                          {isCompleted ? (
+                            <>
+                              <CheckCircle className="w-4 h-4 mr-2" />
+                              Completed
+                            </>
+                          ) : (
+                            <>
+                              <Play className="w-4 h-4 mr-2" />
+                              Start Activity
+                            </>
+                          )}
+                        </Button>
+                      )}
                     </div>
                   </CardContent>
                 </Card>
@@ -691,8 +848,10 @@ export default function StudentActivities() {
               </Badge>
               <h2 className="text-2xl text-gray-900 mb-4">Great Progress!</h2>
               <p className="text-gray-600 mb-6">
-                You've completed {completedActivities.length} activities and
-                earned {totalPoints} points. Keep exploring African history!
+                You've completed{" "}
+                <AnimatedCounter target={completedActivities.length} />{" "}
+                activities and earned <AnimatedCounter target={totalPoints} />{" "}
+                points. Keep exploring African history!
               </p>
               <div className="flex justify-center space-x-4">
                 <div className="text-center">

@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Calendar, MapPin, Users, Filter, Search } from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  Calendar,
+  MapPin,
+  Users,
+  Filter,
+  Search,
+  ArrowRight,
+} from "lucide-react";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -12,7 +20,6 @@ import {
   SelectValue,
 } from "./ui/select";
 import { Slider } from "./ui/slider";
-import { useNavigation } from "./Navigation";
 
 const timelineData = [
   {
@@ -69,7 +76,7 @@ const timelineData = [
     region: "East Africa",
     type: "political",
     description: "Ethiopian trading empire emerges",
-    periodId: 4,
+    periodId: 1,
   },
   {
     year: 300,
@@ -77,7 +84,7 @@ const timelineData = [
     region: "West Africa",
     type: "economic",
     description: "Gold and salt trade routes established",
-    periodId: 5,
+    periodId: 2,
   },
   {
     year: 700,
@@ -85,7 +92,7 @@ const timelineData = [
     region: "East Africa",
     type: "cultural",
     description: "Trading cities along East African coast",
-    periodId: 6,
+    periodId: 2,
   },
   {
     year: 1000,
@@ -93,7 +100,7 @@ const timelineData = [
     region: "Southern Africa",
     type: "political",
     description: "Stone city becomes trade center",
-    periodId: 3,
+    periodId: 2,
   },
   {
     year: 1235,
@@ -101,7 +108,7 @@ const timelineData = [
     region: "West Africa",
     type: "political",
     description: "Sundiata founds the Mali Empire",
-    periodId: 4,
+    periodId: 2,
   },
   {
     year: 1324,
@@ -109,7 +116,7 @@ const timelineData = [
     region: "West Africa",
     type: "cultural",
     description: "Legendary pilgrimage displays Mali's wealth",
-    periodId: 4,
+    periodId: 2,
   },
   {
     year: 1400,
@@ -117,7 +124,7 @@ const timelineData = [
     region: "West Africa",
     type: "political",
     description: "Last great West African empire",
-    periodId: 5,
+    periodId: 2,
   },
   {
     year: 1450,
@@ -125,12 +132,11 @@ const timelineData = [
     region: "All Regions",
     type: "contact",
     description: "European contact begins",
-    periodId: 6,
+    periodId: 3,
   },
 ];
 
 export default function InteractiveTimeline() {
-  const { navigateTo } = useNavigation();
   const [yearRange, setYearRange] = useState([-3500, 1500]);
   const [selectedRegion, setSelectedRegion] = useState<string>("all");
   const [selectedType, setSelectedType] = useState<string>("all");
@@ -280,14 +286,8 @@ export default function InteractiveTimeline() {
                 </div>
 
                 {/* Event card */}
-                <Card className="flex-1 hover:shadow-lg transition-shadow cursor-pointer group">
-                  <CardContent
-                    className="p-6"
-                    onClick={() =>
-                      event.periodId &&
-                      navigateTo("period-detail", { id: event.periodId })
-                    }
-                  >
+                <Card className="flex-1 hover:shadow-lg transition-shadow group">
+                  <CardContent className="p-6">
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
                         <h3 className="text-xl text-gray-900 group-hover:text-amber-600 transition-colors">
@@ -308,11 +308,15 @@ export default function InteractiveTimeline() {
 
                       {event.periodId && (
                         <Button
+                          asChild
                           variant="ghost"
                           size="sm"
                           className="text-amber-600 hover:bg-amber-50 p-0"
                         >
-                          Learn more about this period →
+                          <Link to={`/timeline/period/${event.periodId}`}>
+                            Learn more about this period{" "}
+                            <ArrowRight className="w-3 h-3 ml-1" />
+                          </Link>
                         </Button>
                       )}
                     </div>
