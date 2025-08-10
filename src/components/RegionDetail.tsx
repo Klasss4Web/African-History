@@ -1,35 +1,156 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   MapPin,
   Calendar,
-  Users,
   Globe,
   BookOpen,
   ArrowRight,
   Heart,
   Share2,
-  Filter,
   Landmark,
   Mountain,
   Waves,
   TreePine,
   ArrowLeft,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "./ui/select";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
-// [Keep the existing regionData object exactly as it was - I'll abbreviate here for space]
+// Country flags mapping
+const countryFlags: { [key: string]: string } = {
+  // North Africa
+  Egypt: "🇪🇬",
+  Libya: "🇱🇾",
+  Tunisia: "🇹🇳",
+  Algeria: "🇩🇿",
+  Morocco: "🇲🇦",
+  Sudan: "🇸🇩",
+  Chad: "🇹🇩",
+
+  // West Africa
+  Nigeria: "🇳🇬",
+  Ghana: "🇬🇭",
+  Mali: "🇲🇱",
+  Senegal: "🇸🇳",
+  "Burkina Faso": "🇧🇫",
+  "Ivory Coast": "🇨🇮",
+  Guinea: "🇬🇳",
+  Benin: "🇧🇯",
+  Togo: "🇹🇬",
+  "Sierra Leone": "🇸🇱",
+  Liberia: "🇱🇷",
+  "Guinea-Bissau": "🇬🇼",
+  Gambia: "🇬🇲",
+  "Cape Verde": "🇨🇻",
+  Mauritania: "🇲🇷",
+  Niger: "🇳🇪",
+
+  // East Africa
+  Kenya: "🇰🇪",
+  Tanzania: "🇹🇿",
+  Ethiopia: "🇪🇹",
+  Uganda: "🇺🇬",
+  Rwanda: "🇷🇼",
+  Somalia: "🇸🇴",
+  Burundi: "🇧🇮",
+  "South Sudan": "🇸🇸",
+  Eritrea: "🇪🇷",
+  Djibouti: "🇩🇯",
+  Comoros: "🇰🇲",
+  Madagascar: "🇲🇬",
+
+  // Central Africa
+  "Democratic Republic of Congo": "🇨🇩",
+  Cameroon: "🇨🇲",
+  "Central African Republic": "🇨🇫",
+  Gabon: "🇬🇦",
+  "Republic of Congo": "🇨🇬",
+  "Equatorial Guinea": "🇬🇶",
+  "São Tomé and Príncipe": "🇸🇹",
+  Angola: "🇦🇴",
+
+  // Southern Africa
+  "South Africa": "🇿🇦",
+  Zimbabwe: "🇿🇼",
+  Botswana: "🇧🇼",
+  Namibia: "🇳🇦",
+  Zambia: "🇿🇲",
+  Mozambique: "🇲🇿",
+  Malawi: "🇲🇼",
+  Lesotho: "🇱🇸",
+  Eswatini: "🇸🇿",
+};
+
+// Country code mapping for URLs
+const countryCodeMapping: { [key: string]: string } = {
+  // North Africa
+  Egypt: "egypt",
+  Libya: "libya",
+  Tunisia: "tunisia",
+  Algeria: "algeria",
+  Morocco: "morocco",
+  Sudan: "sudan",
+  Chad: "chad",
+
+  // West Africa
+  Nigeria: "nigeria",
+  Ghana: "ghana",
+  Mali: "mali",
+  Senegal: "senegal",
+  "Burkina Faso": "burkina-faso",
+  "Ivory Coast": "ivory-coast",
+  Guinea: "guinea",
+  Benin: "benin",
+  Togo: "togo",
+  "Sierra Leone": "sierra-leone",
+  Liberia: "liberia",
+  "Guinea-Bissau": "guinea-bissau",
+  Gambia: "gambia",
+  "Cape Verde": "cape-verde",
+  Mauritania: "mauritania",
+  Niger: "niger",
+
+  // East Africa
+  Kenya: "kenya",
+  Tanzania: "tanzania",
+  Ethiopia: "ethiopia",
+  Uganda: "uganda",
+  Rwanda: "rwanda",
+  Somalia: "somalia",
+  Burundi: "burundi",
+  "South Sudan": "south-sudan",
+  Eritrea: "eritrea",
+  Djibouti: "djibouti",
+  Comoros: "comoros",
+  Madagascar: "madagascar",
+
+  // Central Africa
+  "Democratic Republic of Congo": "drc",
+  Cameroon: "cameroon",
+  "Central African Republic": "car",
+  Gabon: "gabon",
+  "Republic of Congo": "congo",
+  "Equatorial Guinea": "equatorial-guinea",
+  "São Tomé and Príncipe": "sao-tome",
+  Angola: "angola",
+
+  // Southern Africa
+  "South Africa": "south-africa",
+  Zimbabwe: "zimbabwe",
+  Botswana: "botswana",
+  Namibia: "namibia",
+  Zambia: "zambia",
+  Mozambique: "mozambique",
+  Malawi: "malawi",
+  Lesotho: "lesotho",
+  Eswatini: "eswatini",
+};
+
 const regionData: { [key: number]: any } = {
   1: {
     name: "North Africa",
@@ -772,7 +893,40 @@ const regionData: { [key: number]: any } = {
   },
 };
 
-// Regional map component (keeping the same)
+// Clickable Country Chip Component
+function CountryChip({
+  country,
+  regionId,
+}: {
+  country: string;
+  regionId: number;
+}) {
+  const navigate = useNavigate();
+  const flag = countryFlags[country];
+  const countryCode = countryCodeMapping[country];
+
+  const handleCountryClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (countryCode) {
+      navigate(`/regions/${regionId}/countries/${countryCode}`);
+    }
+  };
+
+  return (
+    <Badge
+      variant="outline"
+      className="text-xs px-3 py-1 flex items-center gap-2 cursor-pointer hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-colors"
+      onClick={handleCountryClick}
+    >
+      <span>{flag}</span>
+      <span>{country}</span>
+      <ArrowRight className="w-3 h-3 opacity-50" />
+    </Badge>
+  );
+}
+
+// Regional map component
 function RegionalMap({
   regionId,
   regionName,
@@ -780,7 +934,6 @@ function RegionalMap({
   regionId: number;
   regionName: string;
 }) {
-  // ... (same implementation as before)
   return (
     <div className="relative w-full h-80 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg overflow-hidden border">
       <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-2">
@@ -845,125 +998,120 @@ export default function RegionDetail() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-white">
-        <div className="container mx-auto px-4 py-16">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <Link to="/regions">
-                <Button variant="outline" size="sm" className="mb-4">
-                  <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back to Regions
-                </Button>
-              </Link>
+      <section className="relative">
+        <div className="h-96 overflow-hidden">
+          <ImageWithFallback
+            src={region.heroImage}
+            alt={region.name}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+        </div>
 
-              <div className="flex items-center space-x-4">
-                <div
-                  className={`w-16 h-16 rounded-xl bg-gradient-to-br ${region.color} flex items-center justify-center text-3xl`}
-                >
-                  {region.icon}
-                </div>
-                <div>
-                  <h1 className="text-4xl lg:text-5xl text-gray-900">
-                    {region.name}
-                  </h1>
-                  <div className="flex items-center text-gray-600 mt-2">
-                    <MapPin className="w-5 h-5 mr-2" />
-                    {region.countries.length} countries • {region.population}{" "}
-                    people
-                  </div>
-                </div>
+        <div className="absolute top-4 left-4">
+          <Link to="/regions">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-white hover:bg-white/20"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back to Regions
+            </Button>
+          </Link>
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0 p-8">
+          <div className="container mx-auto">
+            <div className="flex items-center space-x-4 mb-4">
+              <div
+                className={`w-16 h-16 rounded-full bg-gradient-to-br ${region.color} flex items-center justify-center text-2xl`}
+              >
+                {region.icon}
               </div>
-
-              <p className="text-lg text-gray-700 leading-relaxed">
-                {region.description}
-              </p>
-
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <span className="text-gray-500">Area:</span>
-                  <div className="text-gray-900">{region.area}</div>
-                </div>
-                <div>
-                  <span className="text-gray-500">Languages:</span>
-                  <div className="text-gray-900">
-                    {region.languages.slice(0, 3).join(", ")}
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex space-x-4">
-                <Button size="lg" className="bg-amber-600 hover:bg-amber-700">
-                  <BookOpen className="w-4 h-4 mr-2" />
-                  Explore History
-                </Button>
-                <Button variant="outline" size="lg">
-                  <Heart className="w-4 h-4 mr-2" />
-                  Save Region
-                </Button>
-                <Button variant="outline" size="lg">
-                  <Share2 className="w-4 h-4 mr-2" />
-                  Share
-                </Button>
-              </div>
-            </div>
-
-            <div className="relative">
-              <ImageWithFallback
-                src={region.heroImage}
-                alt={region.name}
-                className="w-full h-96 object-cover rounded-2xl shadow-lg"
-              />
-              <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3">
-                <div className="text-center">
-                  <div className="text-2xl text-amber-600">
-                    {region.countries.length}
-                  </div>
-                  <div className="text-xs text-gray-600">Countries</div>
-                </div>
+              <div>
+                <h1 className="text-4xl lg:text-5xl text-white mb-2">
+                  {region.name}
+                </h1>
+                <p className="text-lg text-white/90 max-w-2xl">
+                  {region.description}
+                </p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Content Tabs */}
-      <section className="py-12">
+      {/* Quick Stats */}
+      <section className="py-8 bg-white border-b">
         <div className="container mx-auto px-4">
-          <Tabs defaultValue="overview" className="space-y-8">
-            <TabsList className="grid w-full grid-cols-5 max-w-3xl mx-auto">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="history">History</TabsTrigger>
-              <TabsTrigger value="culture">Culture</TabsTrigger>
-              <TabsTrigger value="geography">Geography</TabsTrigger>
-              <TabsTrigger value="sites">Sites</TabsTrigger>
-            </TabsList>
+          <div className="grid md:grid-cols-4 gap-6 text-center">
+            <div>
+              <div className="text-2xl text-gray-900 mb-1">
+                {region.countries.length}
+              </div>
+              <div className="text-sm text-gray-600">Countries</div>
+            </div>
+            <div>
+              <div className="text-2xl text-gray-900 mb-1">
+                {region.population}
+              </div>
+              <div className="text-sm text-gray-600">Population</div>
+            </div>
+            <div>
+              <div className="text-2xl text-gray-900 mb-1">{region.area}</div>
+              <div className="text-sm text-gray-600">Area</div>
+            </div>
+            <div>
+              <div className="text-2xl text-gray-900 mb-1">
+                {region.languages.length}
+              </div>
+              <div className="text-sm text-gray-600">Major Languages</div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <TabsContent value="overview" className="space-y-8">
-              <div className="max-w-4xl mx-auto">
+      {/* Main Content */}
+      <div className="container mx-auto px-4 py-12">
+        <Tabs defaultValue="overview" className="space-y-8">
+          <TabsList className="grid w-full grid-cols-5 max-w-2xl mx-auto">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="countries">Countries</TabsTrigger>
+            <TabsTrigger value="history">History</TabsTrigger>
+            <TabsTrigger value="culture">Culture</TabsTrigger>
+            <TabsTrigger value="sites">Sites</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview">
+            <div className="grid lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-8">
                 <Card>
                   <CardHeader>
                     <CardTitle>Regional Overview</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-6">
-                    <p className="text-gray-700 leading-relaxed">
+                  <CardContent>
+                    <p className="text-gray-700 leading-relaxed mb-6">
                       {region.overview}
                     </p>
 
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <h4 className="text-lg text-gray-900 mb-3">
-                          Countries in this Region
+                          Geography
                         </h4>
-                        <div className="grid grid-cols-2 gap-2">
-                          {region.countries.map(
-                            (country: string, index: number) => (
-                              <Badge
+                        <div className="space-y-2">
+                          {region.geography.landscapes.map(
+                            (landscape: string, index: number) => (
+                              <div
                                 key={index}
-                                variant="outline"
-                                className="justify-center p-2"
+                                className="flex items-center space-x-2 text-sm"
                               >
-                                {country}
-                              </Badge>
+                                {getGeographyIcon(landscape)}
+                                <span className="text-gray-700">
+                                  {landscape}
+                                </span>
+                              </div>
                             )
                           )}
                         </div>
@@ -971,18 +1119,18 @@ export default function RegionDetail() {
 
                       <div>
                         <h4 className="text-lg text-gray-900 mb-3">
-                          Modern Significance
+                          Languages
                         </h4>
-                        <div className="space-y-2">
-                          {region.modernSignificance.map(
-                            (significance: string, index: number) => (
-                              <div
+                        <div className="flex flex-wrap gap-2">
+                          {region.languages.map(
+                            (language: string, index: number) => (
+                              <Badge
                                 key={index}
-                                className="flex items-center text-sm text-gray-600"
+                                variant="secondary"
+                                className="text-xs"
                               >
-                                <div className="w-2 h-2 bg-amber-500 rounded-full mr-3"></div>
-                                {significance}
-                              </div>
+                                {language}
+                              </Badge>
                             )
                           )}
                         </div>
@@ -990,130 +1138,235 @@ export default function RegionDetail() {
                     </div>
                   </CardContent>
                 </Card>
-              </div>
-            </TabsContent>
 
-            <TabsContent value="history" className="space-y-8">
-              <div className="max-w-4xl mx-auto">
-                <div className="grid gap-6">
-                  <div>
-                    <h2 className="text-2xl text-gray-900 mb-6 text-center">
-                      Major Civilizations
-                    </h2>
-                    <div className="space-y-6">
-                      {region.civilizations.map((civ: any, index: number) => (
-                        <Card key={index}>
-                          <CardContent className="p-6">
-                            <div className="space-y-4">
-                              <div className="flex items-start justify-between">
-                                <div>
-                                  <h3 className="text-xl text-gray-900">
-                                    {civ.name}
-                                  </h3>
-                                  <div className="flex items-center text-amber-600 mt-1">
-                                    <Calendar className="w-4 h-4 mr-2" />
-                                    {civ.period}
-                                  </div>
-                                </div>
-                                <Badge className="bg-amber-100 text-amber-800">
-                                  Major Civilization
-                                </Badge>
-                              </div>
-
-                              <p className="text-gray-700">{civ.description}</p>
-
-                              <div className="grid md:grid-cols-2 gap-4">
-                                <div>
-                                  <h4 className="text-sm text-gray-900 mb-2">
-                                    Key Achievements:
-                                  </h4>
-                                  <div className="space-y-1">
-                                    {civ.achievements.map(
-                                      (
-                                        achievement: string,
-                                        achIndex: number
-                                      ) => (
-                                        <div
-                                          key={achIndex}
-                                          className="flex items-center text-sm text-gray-600"
-                                        >
-                                          <div className="w-1.5 h-1.5 bg-green-500 rounded-full mr-2"></div>
-                                          {achievement}
-                                        </div>
-                                      )
-                                    )}
-                                  </div>
-                                </div>
-
-                                <div>
-                                  <h4 className="text-sm text-gray-900 mb-2">
-                                    Historical Legacy:
-                                  </h4>
-                                  <p className="text-sm text-gray-600">
-                                    {civ.legacy}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Modern Significance</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {region.modernSignificance.map(
+                        (significance: string, index: number) => (
+                          <div
+                            key={index}
+                            className="flex items-start space-x-3"
+                          >
+                            <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <span className="text-gray-700">
+                              {significance}
+                            </span>
+                          </div>
+                        )
+                      )}
                     </div>
-                  </div>
+                  </CardContent>
+                </Card>
+              </div>
 
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Historical Timeline</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        {Object.entries(region.history).map(
-                          ([period, description], index) => (
+              <div className="space-y-6">
+                <RegionalMap regionId={regionId!} regionName={region.name} />
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Climate & Features</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div>
+                      <h5 className="text-gray-900 mb-2">Climate</h5>
+                      <p className="text-sm text-gray-600">
+                        {region.geography.climate}
+                      </p>
+                    </div>
+
+                    <div>
+                      <h5 className="text-gray-900 mb-2">Key Features</h5>
+                      <div className="space-y-1">
+                        {region.geography.features.map(
+                          (feature: string, index: number) => (
                             <div
                               key={index}
-                              className="flex items-start space-x-4"
+                              className="flex items-center text-sm text-gray-600"
                             >
-                              <div className="w-3 h-3 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
-                              <div>
-                                <h4 className="text-lg text-gray-900 capitalize">
-                                  {period} Period
-                                </h4>
-                                <p className="text-gray-600">{description}</p>
-                              </div>
+                              <MapPin className="w-3 h-3 mr-2" />
+                              {feature}
                             </div>
                           )
                         )}
                       </div>
-                    </CardContent>
-                  </Card>
-                </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </div>
-            </TabsContent>
+            </div>
+          </TabsContent>
 
-            <TabsContent value="culture" className="space-y-8">
-              <div className="max-w-4xl mx-auto">
-                <div className="grid md:grid-cols-2 gap-6">
-                  {Object.entries(region.culture).map(
-                    ([category, items], index) => (
+          <TabsContent value="countries">
+            <div className="space-y-6">
+              <div className="text-center">
+                <h2 className="text-3xl text-gray-900 mb-4">
+                  Countries in {region.name}
+                </h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  Explore the diverse nations that make up this region. Click on
+                  any country to learn about its unique history, culture, and
+                  heritage sites.
+                </p>
+              </div>
+
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="flex items-center text-blue-800 mb-2">
+                  <Globe className="w-4 h-4 mr-2" />
+                  <span className="text-sm font-medium">
+                    Interactive Country Navigation
+                  </span>
+                </div>
+                <p className="text-sm text-blue-700">
+                  Click on any country below to view detailed information about
+                  its history, culture, heritage sites, and available tour
+                  guides.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-3">
+                {region.countries.map((country: string, index: number) => (
+                  <CountryChip
+                    key={index}
+                    country={country}
+                    regionId={regionId!}
+                  />
+                ))}
+              </div>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Regional Statistics</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <div className="flex justify-between mb-2">
+                        <span className="text-gray-600">Total Countries:</span>
+                        <span className="text-gray-900 font-medium">
+                          {region.countries.length}
+                        </span>
+                      </div>
+                      <div className="flex justify-between mb-2">
+                        <span className="text-gray-600">
+                          Combined Population:
+                        </span>
+                        <span className="text-gray-900 font-medium">
+                          {region.population}
+                        </span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-600">Total Area:</span>
+                        <span className="text-gray-900 font-medium">
+                          {region.area}
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <h5 className="text-gray-900 mb-2">Regional Languages</h5>
+                      <div className="flex flex-wrap gap-1">
+                        {region.languages.map(
+                          (language: string, index: number) => (
+                            <Badge
+                              key={index}
+                              variant="outline"
+                              className="text-xs"
+                            >
+                              {language}
+                            </Badge>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="history">
+            <div className="space-y-8">
+              <div className="text-center">
+                <h2 className="text-3xl text-gray-900 mb-4">
+                  Historical Timeline
+                </h2>
+                <p className="text-gray-600">
+                  Discover the rich historical legacy of {region.name} through
+                  major periods and civilizations.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {Object.entries(region.history).map(
+                  ([period, description], index) => (
+                    <Card key={period}>
+                      <CardHeader>
+                        <CardTitle className="capitalize flex items-center">
+                          <Calendar className="w-5 h-5 mr-2" />
+                          {period} Period
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-gray-700">{description as string}</p>
+                      </CardContent>
+                    </Card>
+                  )
+                )}
+              </div>
+
+              <div>
+                <h3 className="text-2xl text-gray-900 mb-6">
+                  Major Civilizations
+                </h3>
+                <div className="space-y-6">
+                  {region.civilizations.map(
+                    (civilization: any, index: number) => (
                       <Card key={index}>
-                        <CardHeader>
-                          <CardTitle className="capitalize">
-                            {category}
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-2">
-                            {(items as string[]).map(
-                              (item: string, itemIndex: number) => (
-                                <div
-                                  key={itemIndex}
-                                  className="flex items-center text-gray-700"
-                                >
-                                  <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
-                                  {item}
-                                </div>
-                              )
-                            )}
+                        <CardContent className="p-6">
+                          <div className="flex items-start justify-between mb-4">
+                            <div>
+                              <h4 className="text-xl text-gray-900 mb-1">
+                                {civilization.name}
+                              </h4>
+                              <Badge variant="outline" className="text-xs">
+                                {civilization.period}
+                              </Badge>
+                            </div>
+                          </div>
+
+                          <p className="text-gray-700 mb-4">
+                            {civilization.description}
+                          </p>
+
+                          <div className="grid md:grid-cols-2 gap-6">
+                            <div>
+                              <h5 className="text-gray-900 mb-2">
+                                Key Achievements
+                              </h5>
+                              <div className="space-y-1">
+                                {civilization.achievements.map(
+                                  (achievement: string, achIndex: number) => (
+                                    <div
+                                      key={achIndex}
+                                      className="flex items-center text-sm text-gray-600"
+                                    >
+                                      <div className="w-2 h-2 bg-amber-500 rounded-full mr-2"></div>
+                                      {achievement}
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            </div>
+
+                            <div>
+                              <h5 className="text-gray-900 mb-2">Legacy</h5>
+                              <p className="text-sm text-gray-600">
+                                {civilization.legacy}
+                              </p>
+                            </div>
                           </div>
                         </CardContent>
                       </Card>
@@ -1121,177 +1374,113 @@ export default function RegionDetail() {
                   )}
                 </div>
               </div>
-            </TabsContent>
+            </div>
+          </TabsContent>
 
-            <TabsContent value="geography" className="space-y-8">
-              <div className="max-w-4xl mx-auto">
-                {/* Regional Map Card */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center">
-                      <Globe className="w-5 h-5 mr-2" />
-                      {region.name} Regional Map
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <RegionalMap
-                      regionId={regionId!}
-                      regionName={region.name}
-                    />
-                    <p className="text-sm text-gray-600 mt-4">
-                      Interactive map showing the countries and major
-                      geographical features of {region.name}. Click on country
-                      markers to explore more details.
-                    </p>
-                  </CardContent>
-                </Card>
+          <TabsContent value="culture">
+            <div className="space-y-8">
+              <div className="text-center">
+                <h2 className="text-3xl text-gray-900 mb-4">
+                  Cultural Heritage
+                </h2>
+                <p className="text-gray-600">
+                  Explore the rich cultural traditions, arts, and customs that
+                  define {region.name}.
+                </p>
+              </div>
 
-                {/* Geographic Information */}
-                <div className="grid md:grid-cols-2 gap-6">
-                  <Card>
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {Object.entries(region.culture).map(([category, items]) => (
+                  <Card key={category}>
                     <CardHeader>
-                      <CardTitle>Landscapes & Features</CardTitle>
+                      <CardTitle className="capitalize text-lg">
+                        {category === "cuisine"
+                          ? "Traditional Cuisine"
+                          : category}
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-3">
-                        {region.geography.landscapes.map(
-                          (landscape: string, index: number) => (
+                      <div className="space-y-2">
+                        {(items as string[]).map(
+                          (item: string, index: number) => (
                             <div
                               key={index}
-                              className="flex items-center text-gray-700"
+                              className="flex items-center text-sm"
                             >
-                              {getGeographyIcon(landscape)}
-                              <span className="ml-3">{landscape}</span>
+                              <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                              <span className="text-gray-700">{item}</span>
                             </div>
                           )
                         )}
                       </div>
                     </CardContent>
                   </Card>
+                ))}
+              </div>
+            </div>
+          </TabsContent>
 
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Climate & Key Features</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div>
-                        <h4 className="text-sm text-gray-900 mb-2">Climate:</h4>
-                        <p className="text-gray-700">
-                          {region.geography.climate}
-                        </p>
+          <TabsContent value="sites">
+            <div className="space-y-8">
+              <div className="text-center">
+                <h2 className="text-3xl text-gray-900 mb-4">
+                  Featured Heritage Sites
+                </h2>
+                <p className="text-gray-600">
+                  Discover the most significant historical and cultural sites
+                  across {region.name}.
+                </p>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {region.featuredSites.map((site: any, index: number) => (
+                  <Card
+                    key={index}
+                    className="hover:shadow-lg transition-shadow"
+                  >
+                    <CardContent className="p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <h3 className="text-xl text-gray-900 mb-2">
+                            {site.name}
+                          </h3>
+                          <div className="flex items-center space-x-2 mb-2">
+                            <Badge variant="outline" className="text-xs">
+                              {site.type}
+                            </Badge>
+                            <span className="text-sm text-gray-500 flex items-center">
+                              <MapPin className="w-3 h-3 mr-1" />
+                              {site.location}
+                            </span>
+                          </div>
+                          <p className="text-gray-700 text-sm">
+                            {site.description}
+                          </p>
+                        </div>
                       </div>
 
-                      <div>
-                        <h4 className="text-sm text-gray-900 mb-2">
-                          Notable Features:
-                        </h4>
-                        <div className="space-y-2">
-                          {region.geography.features.map(
-                            (feature: string, index: number) => (
-                              <div
-                                key={index}
-                                className="flex items-center text-gray-700"
-                              >
-                                <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
-                                {feature}
-                              </div>
-                            )
-                          )}
+                      <div className="flex items-center justify-between pt-4 border-t">
+                        <Button variant="outline" size="sm">
+                          <BookOpen className="w-4 h-4 mr-2" />
+                          Learn More
+                        </Button>
+                        <div className="flex space-x-2">
+                          <Button variant="ghost" size="sm">
+                            <Heart className="w-4 h-4" />
+                          </Button>
+                          <Button variant="ghost" size="sm">
+                            <Share2 className="w-4 h-4" />
+                          </Button>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
-                </div>
+                ))}
               </div>
-            </TabsContent>
-
-            <TabsContent value="sites" className="space-y-8">
-              <div className="max-w-4xl mx-auto">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl text-gray-900">
-                    Featured Historical Sites
-                  </h2>
-                  <div className="flex space-x-4">
-                    <Select
-                      value={selectedCountry}
-                      onValueChange={setSelectedCountry}
-                    >
-                      <SelectTrigger className="w-40">
-                        <SelectValue placeholder="All Countries" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Countries</SelectItem>
-                        {region.countries.map((country: string) => (
-                          <SelectItem
-                            key={country}
-                            value={country.toLowerCase()}
-                          >
-                            {country}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  {region.featuredSites.map((site: any, index: number) => (
-                    <Card
-                      key={index}
-                      className="hover:shadow-lg transition-shadow cursor-pointer"
-                    >
-                      <CardContent className="p-6">
-                        <div className="space-y-4">
-                          <div className="flex items-start justify-between">
-                            <div>
-                              <h3 className="text-lg text-gray-900">
-                                {site.name}
-                              </h3>
-                              <div className="flex items-center text-gray-600 mt-1">
-                                <MapPin className="w-4 h-4 mr-1" />
-                                {site.location}
-                              </div>
-                            </div>
-                            <Badge variant="outline">{site.type}</Badge>
-                          </div>
-
-                          <p className="text-gray-700 text-sm">
-                            {site.description}
-                          </p>
-
-                          <div className="flex space-x-2">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="flex-1"
-                              asChild
-                            >
-                              <Link to="/interactive-map">
-                                <MapPin className="w-3 h-3 mr-1" />
-                                View on Map
-                              </Link>
-                            </Button>
-                            <Button size="sm" className="flex-1" asChild>
-                              <Link
-                                to={`/sites/${site.name
-                                  .toLowerCase()
-                                  .replace(/\s+/g, "-")}`}
-                              >
-                                <ArrowRight className="w-3 h-3 mr-1" />
-                                Learn More
-                              </Link>
-                            </Button>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </section>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
     </div>
   );
 }

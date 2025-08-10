@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   BookOpen,
   GraduationCap,
   Users,
   FileText,
   Play,
-  MapPin,
   Search,
   Download,
   Star,
@@ -14,7 +13,7 @@ import {
   Clock,
   Award,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
@@ -122,6 +121,7 @@ const recentUpdates = [
     date: "2024-01-15",
     description:
       "Explore the historic trading cities of the East African coast",
+    path: "/resources/virtual-tours",
   },
   {
     id: 2,
@@ -129,6 +129,7 @@ const recentUpdates = [
     type: "Teacher Guide",
     date: "2024-01-10",
     description: "Enhanced curriculum with new archaeological discoveries",
+    path: "/resources/teacher-guides",
   },
   {
     id: 3,
@@ -136,6 +137,7 @@ const recentUpdates = [
     type: "Student Activity",
     date: "2024-01-05",
     description: "Create and analyze West African bronze art techniques",
+    path: "/resources/student-activities",
   },
 ];
 
@@ -240,6 +242,44 @@ function CategoryCard({ category }: { category: any }) {
               Explore {category.title}
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Link>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function RecentUpdateCard({ update }: { update: any }) {
+  const navigate = useNavigate();
+
+  const handleViewUpdate = () => {
+    navigate(update.path);
+  };
+
+  return (
+    <Card className="hover:shadow-md transition-shadow">
+      <CardContent className="p-6">
+        <div className="flex items-start justify-between">
+          <div className="flex-1 pr-4">
+            <div className="flex items-center space-x-2 mb-2">
+              <Badge variant="outline">{update.type}</Badge>
+              <span className="text-sm text-gray-500">{update.date}</span>
+            </div>
+            <h4
+              className="text-lg text-gray-900 mb-2 hover:text-blue-600 transition-colors cursor-pointer"
+              onClick={handleViewUpdate}
+            >
+              {update.title}
+            </h4>
+            <p className="text-gray-600 text-sm">{update.description}</p>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleViewUpdate}
+            className="hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-colors flex-shrink-0"
+          >
+            <ArrowRight className="w-4 h-4" />
           </Button>
         </div>
       </CardContent>
@@ -451,27 +491,7 @@ export default function EducationalResources() {
 
               <div className="max-w-3xl mx-auto space-y-6">
                 {recentUpdates.map((update) => (
-                  <Card key={update.id}>
-                    <CardContent className="p-6">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-2 mb-2">
-                            <Badge variant="outline">{update.type}</Badge>
-                            <span className="text-sm text-gray-500">
-                              {update.date}
-                            </span>
-                          </div>
-                          <h4 className="text-lg text-gray-900 mb-2">
-                            {update.title}
-                          </h4>
-                          <p className="text-gray-600">{update.description}</p>
-                        </div>
-                        <Button variant="outline" size="sm">
-                          <ArrowRight className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <RecentUpdateCard key={update.id} update={update} />
                 ))}
               </div>
             </TabsContent>

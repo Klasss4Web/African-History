@@ -9,10 +9,10 @@ import {
   BookOpen,
   ArrowRight,
 } from "lucide-react";
-import { Card, CardContent } from "./ui/card";
+
 import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 import {
   Select,
   SelectContent,
@@ -20,9 +20,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { Card, CardContent } from "./ui/card";
 import { useNavigation } from "./Navigation";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 const regionStats = {
   totalCountries: 54,

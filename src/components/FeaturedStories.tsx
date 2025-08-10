@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Heart,
   MessageCircle,
@@ -11,10 +12,7 @@ import {
   Filter,
   Search,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+
 import {
   Select,
   SelectContent,
@@ -22,9 +20,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Link } from "react-router-dom";
-import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
+import { Badge } from "./ui/badge";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { Card, CardContent } from "./ui/card";
 import AnimatedCounter from "./AnimatedCounter";
+import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 
 const stories = [
   {

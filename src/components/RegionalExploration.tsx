@@ -1,8 +1,10 @@
+import { Link, useNavigate } from "react-router-dom";
+
 import { MapPin, Users, Globe, ArrowRight, Sparkles } from "lucide-react";
-import { Card, CardContent } from "./ui/card";
+
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
+import { Card, CardContent } from "./ui/card";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 
 // Country flags mapping
@@ -45,6 +47,48 @@ const countryFlags: { [key: string]: string } = {
   Namibia: "🇳🇦",
   Zambia: "🇿🇲",
   Mozambique: "🇲🇿",
+};
+
+// Country code mapping for URLs
+const countryCodeMapping: { [key: string]: string } = {
+  // North Africa
+  Egypt: "egypt",
+  Libya: "libya",
+  Tunisia: "tunisia",
+  Algeria: "algeria",
+  Morocco: "morocco",
+  Sudan: "sudan",
+
+  // West Africa
+  Nigeria: "nigeria",
+  Ghana: "ghana",
+  Mali: "mali",
+  Senegal: "senegal",
+  "Burkina Faso": "burkina-faso",
+  "Ivory Coast": "ivory-coast",
+
+  // East Africa
+  Kenya: "kenya",
+  Tanzania: "tanzania",
+  Ethiopia: "ethiopia",
+  Uganda: "uganda",
+  Rwanda: "rwanda",
+  Somalia: "somalia",
+
+  // Central Africa
+  "Democratic Republic of Congo": "drc",
+  Cameroon: "cameroon",
+  "Central African Republic": "car",
+  Chad: "chad",
+  Gabon: "gabon",
+
+  // Southern Africa
+  "South Africa": "south-africa",
+  Zimbabwe: "zimbabwe",
+  Botswana: "botswana",
+  Namibia: "namibia",
+  Zambia: "zambia",
+  Mozambique: "mozambique",
 };
 
 const regions = [
@@ -135,6 +179,37 @@ const regions = [
   },
 ];
 
+function CountryChip({
+  country,
+  regionId,
+}: {
+  country: string;
+  regionId: number;
+}) {
+  const navigate = useNavigate();
+  const flag = countryFlags[country];
+  const countryCode = countryCodeMapping[country];
+
+  const handleCountryClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (countryCode) {
+      navigate(`/regions/${regionId}/countries/${countryCode}`);
+    }
+  };
+
+  return (
+    <Badge
+      variant="outline"
+      className="text-xs px-2 py-1 flex items-center gap-1 cursor-pointer hover:bg-blue-50 hover:border-blue-300 hover:text-blue-700 transition-colors"
+      onClick={handleCountryClick}
+    >
+      <span>{flag}</span>
+      {country}
+    </Badge>
+  );
+}
+
 function RegionCard({ region, index }: { region: any; index: number }) {
   return (
     <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden bg-white hover:scale-105">
@@ -177,21 +252,18 @@ function RegionCard({ region, index }: { region: any; index: number }) {
           {region.description}
         </p>
 
-        {/* Countries preview with flags */}
+        {/* Countries preview with clickable flags */}
         <div className="space-y-2">
           <h4 className="text-sm text-gray-900">Key Countries:</h4>
           <div className="flex flex-wrap gap-1">
             {region.countries
               .slice(0, 4)
               .map((country: string, countryIndex: number) => (
-                <Badge
+                <CountryChip
                   key={countryIndex}
-                  variant="outline"
-                  className="text-xs px-2 py-1 flex items-center gap-1"
-                >
-                  <span>{countryFlags[country]}</span>
-                  {country}
-                </Badge>
+                  country={country}
+                  regionId={region.id}
+                />
               ))}
             {region.countries.length > 4 && (
               <Badge
@@ -202,6 +274,10 @@ function RegionCard({ region, index }: { region: any; index: number }) {
               </Badge>
             )}
           </div>
+          <p className="text-xs text-gray-500 mt-1">
+            💡 Click on any country to explore its detailed history and tour
+            guides
+          </p>
         </div>
 
         {/* Highlights */}

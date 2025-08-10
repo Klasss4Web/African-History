@@ -17,13 +17,12 @@ import {
   Image as ImageIcon,
   Headphones,
 } from "lucide-react";
-
-import { Badge } from "./ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
 import AnimatedCounter from "./AnimatedCounter";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 // Enhanced Virtual Tours Data with real video content
 const virtualTours = [
@@ -263,7 +262,7 @@ function VirtualTourViewer({
           <div className="relative">
             <video
               src={scene.content}
-              className="w-full h-[80vh] object-cover"
+              className="w-full h-full object-cover"
               controls={true}
               autoPlay={false}
               muted={!audioEnabled}
@@ -288,7 +287,7 @@ function VirtualTourViewer({
             <ImageWithFallback
               src={scene.content}
               alt={scene.title}
-              className="w-full h-[80vh] object-cover"
+              className="w-full h-full object-cover"
             />
             <div className="absolute top-4 left-4">
               <Badge className="bg-blue-600 text-white">
@@ -303,7 +302,7 @@ function VirtualTourViewer({
           <ImageWithFallback
             src={scene.content}
             alt={scene.title}
-            className="w-full h-[80vh] object-cover"
+            className="w-full h-full object-cover"
           />
         );
     }
@@ -314,7 +313,7 @@ function VirtualTourViewer({
       className={`${isFullscreen ? "fixed inset-0 z-50" : "relative"} bg-black`}
     >
       {/* Tour Viewer */}
-      <div className="relative h-[90vh]">
+      <div className="relative h-[70vh]">
         {renderSceneContent()}
 
         {/* Hotspots - only show for 360 and image scenes */}
@@ -331,7 +330,7 @@ function VirtualTourViewer({
           ))}
 
         {/* Navigation Controls */}
-        <div className="absolute top-10 left-4 flex space-x-2">
+        <div className="absolute top-4 left-4 flex space-x-2">
           <Button
             size="sm"
             variant="secondary"
@@ -404,7 +403,7 @@ function VirtualTourViewer({
         </div>
 
         {/* Scene Title */}
-        <div className="absolute bottom-12 left-4">
+        <div className="absolute bottom-16 left-4">
           <div className="bg-black/70 text-white p-4 rounded-lg">
             <div className="flex items-center mb-1">
               {scene.type === "video" && (

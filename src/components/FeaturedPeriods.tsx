@@ -6,12 +6,13 @@ import {
   Crown,
   Scroll,
 } from "lucide-react";
-import { Card, CardContent } from "./ui/card";
+import { Link } from "react-router-dom";
+
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
-import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
+import { Card, CardContent } from "./ui/card";
 import AnimatedCounter from "./AnimatedCounter";
+import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 
 const periods = [
   {

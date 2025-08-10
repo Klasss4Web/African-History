@@ -14,9 +14,9 @@ import { Badge } from "./ui/badge";
 import { Link, useNavigate } from "react-router-dom";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 import AnimatedCounter from "./AnimatedCounter";
-import { useLanguage } from "../utils/LanguageContext.tsx";
+import { useLanguage } from "../utils/LanguageContext";
 import { routePreloader, commonRoutes } from "../utils/routePreloader";
-import { navigationAnalytics } from "../utils/navigationAnalytics.ts";
+import { navigationAnalytics } from "../utils/navigationAnalytics";
 
 // Featured sites data for carousel
 const featuredSites = [
