@@ -6,7 +6,8 @@ import {
   Facebook,
   Instagram,
   Youtube,
-  // Globe,
+  Globe,
+  Flag,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
@@ -82,6 +83,13 @@ export default function Footer() {
                 className="block text-gray-400 hover:text-white text-sm transition-colors"
               >
                 African Regions
+              </Link>
+              <Link
+                to="/countries"
+                className="block text-gray-400 hover:text-white text-sm transition-colors flex items-center"
+              >
+                <Flag className="w-3 h-3 mr-2" />
+                All Countries
               </Link>
               <Link
                 to="/stories"

@@ -5,6 +5,7 @@ import {
   Eye,
   Filter,
   Search,
+  Calendar,
   Users,
   Star,
   ExternalLink,
@@ -12,7 +13,7 @@ import {
   BookOpen,
   Award,
 } from "lucide-react";
-import { Card, CardContent } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -30,7 +31,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import AnimatedCounter from "./AnimatedCounter";
 
 // Research papers data

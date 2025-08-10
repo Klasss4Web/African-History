@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   BookOpen,
   Download,
@@ -9,16 +10,16 @@ import {
   Filter,
   Search,
   FileText,
-  Video,
-  Image,
   Award,
   ChevronRight,
-  Play,
+  Lock,
+  CreditCard,
+  Gift,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+
 import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 import {
   Select,
   SelectContent,
@@ -26,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { Card, CardContent } from "./ui/card";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
@@ -41,6 +43,10 @@ const teacherGuides = [
     difficulty: "Intermediate",
     rating: 4.8,
     downloads: 1240,
+    price: 0, // Free
+    isPremium: false,
+    hasSample: true,
+    sampleFile: "egypt-sample.pdf",
     description:
       "Comprehensive unit covering Egyptian dynasties, culture, religion, and daily life with interactive activities and assessments.",
     objectives: [
@@ -104,6 +110,9 @@ const teacherGuides = [
     difficulty: "Advanced",
     rating: 4.9,
     downloads: 890,
+    price: 29.99, // Premium content
+    isPremium: true,
+    hasSample: false,
     description:
       "In-depth exploration of Ghana, Mali, and Songhai empires focusing on trade networks, Islamic influence, and cultural achievements.",
     objectives: [
@@ -176,6 +185,10 @@ const teacherGuides = [
     difficulty: "Intermediate",
     rating: 4.6,
     downloads: 567,
+    price: 19.99, // Premium content
+    isPremium: true,
+    hasSample: true,
+    sampleFile: "zimbabwe-sample.pdf",
     description:
       "Study of Great Zimbabwe, Mapungubwe, and other southern African civilizations, focusing on architecture, trade, and social organization.",
     objectives: [
@@ -240,7 +253,222 @@ const teacherGuides = [
     lastUpdated: "2024-01-10",
     tags: ["Southern Africa", "Archaeology", "Trade", "Middle School"],
   },
+  {
+    id: 4,
+    title: "Ethiopian Highlands and Ancient Kingdoms",
+    grade: "6-8",
+    duration: "2 weeks",
+    subject: "World History",
+    difficulty: "Intermediate",
+    rating: 4.7,
+    downloads: 423,
+    price: 24.99, // Premium content
+    isPremium: true,
+    hasSample: false,
+    description:
+      "Explore the Kingdom of Aksum, Ethiopian Orthodox Christianity, and the unique cultural heritage of the Ethiopian highlands.",
+    objectives: [
+      "Understand the rise of the Aksumite Empire",
+      "Analyze the adoption of Christianity in Ethiopia",
+      "Examine the rock churches of Lalibela",
+      "Evaluate Ethiopia's resistance to colonization",
+    ],
+    materials: [
+      "Virtual tour of Lalibela churches",
+      "Timeline of Ethiopian dynasties",
+      "Primary source readings from travelers",
+      "Cultural comparison activities",
+    ],
+    preview: {
+      image:
+        "https://images.unsplash.com/photo-1652355008626-22da23215341?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwdHJhZGl0aW9uYWwlMjBhcnQlMjB0ZXh0aWxlfGVufDF8fHx8MTc1NDQ2OTg1OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      content: `
+# Ethiopian Highlands Unit Plan
+
+## Week 1: The Aksumite Empire
+- Geographic advantages of the highlands
+- Trade connections with Rome and India
+- Religious transformation
+
+### Lesson 1: Crossroads of Civilizations
+**Essential Question:** How did Ethiopia become a major trading power?
+
+**Preview Content Only - Full lesson plans available with purchase**
+      `,
+      lessons: [
+        {
+          title: "Crossroads of Civilizations - Aksum's Rise",
+          duration: "45 minutes",
+          activities: ["Trade route analysis", "Archaeological evidence"],
+          materials: ["Maps", "Artifact photos"],
+        },
+      ],
+    },
+    author: "Dr. Tekle Haile",
+    lastUpdated: "2024-01-08",
+    tags: ["Ethiopia", "Christianity", "Aksum", "Middle School"],
+  },
 ];
+
+// Access Request Dialog Component
+function AccessRequestDialog({
+  guide,
+  isOpen,
+  onClose,
+}: {
+  guide: any;
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  const [email, setEmail] = useState("");
+  const [school, setSchool] = useState("");
+  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    // Simulate API call
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    setIsSubmitted(true);
+    setIsSubmitting(false);
+  };
+
+  const handlePurchase = () => {
+    // Simulate payment process
+    alert(`Redirecting to payment for ${guide.title} - $${guide.price}`);
+    onClose();
+  };
+
+  if (isSubmitted) {
+    return (
+      <Dialog open={isOpen} onOpenChange={onClose}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2 text-green-600">
+              <Award className="w-5 h-5" />
+              <span>Request Submitted!</span>
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div className="text-center">
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Award className="w-8 h-8 text-green-600" />
+              </div>
+              <p className="text-gray-700">
+                Your access request has been submitted successfully. We'll
+                review your request and get back to you within 24-48 hours.
+              </p>
+            </div>
+
+            <div className="bg-blue-50 p-4 rounded-lg">
+              <h4 className="text-sm text-blue-900 mb-2">What happens next?</h4>
+              <ul className="text-sm text-blue-800 space-y-1">
+                <li>• We'll verify your educator status</li>
+                <li>• You'll receive access credentials via email</li>
+                <li>• Download and start using the materials immediately</li>
+              </ul>
+            </div>
+
+            <Button onClick={onClose} className="w-full">
+              Got it, thanks!
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center space-x-2">
+            <Lock className="w-5 h-5" />
+            <span>Request Access</span>
+          </DialogTitle>
+        </DialogHeader>
+
+        <div className="space-y-4">
+          <div className="bg-amber-50 border border-amber-200 p-4 rounded-lg">
+            <h4 className="text-amber-900 mb-2">{guide.title}</h4>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-amber-700">Premium Content</span>
+              <span className="text-amber-900 font-medium">${guide.price}</span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <Button
+              onClick={handlePurchase}
+              className="bg-green-600 hover:bg-green-700 flex items-center justify-center"
+            >
+              <CreditCard className="w-4 h-4 mr-2" />
+              Purchase Now
+            </Button>
+            <Button variant="outline" onClick={() => setIsSubmitted(false)}>
+              Request Educator Access
+            </Button>
+          </div>
+
+          <div className="text-xs text-gray-500 text-center">
+            <p>Educators can request free access with verification</p>
+          </div>
+
+          {/* Educator Access Form (hidden by default, can be shown by clicking Request Access) */}
+          <form onSubmit={handleSubmit} className="space-y-4 border-t pt-4">
+            <div>
+              <label className="block text-sm text-gray-700 mb-1">
+                Email Address
+              </label>
+              <Input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your.email@school.edu"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm text-gray-700 mb-1">
+                School/Institution
+              </label>
+              <Input
+                value={school}
+                onChange={(e) => setSchool(e.target.value)}
+                placeholder="Your school name"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm text-gray-700 mb-1">
+                How will you use this resource?
+              </label>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Briefly describe your teaching context and how you plan to use this resource..."
+                className="w-full p-2 border border-gray-300 rounded-md text-sm"
+                rows={3}
+                required
+              />
+            </div>
+
+            <Button type="submit" disabled={isSubmitting} className="w-full">
+              {isSubmitting ? "Submitting..." : "Submit Request"}
+            </Button>
+          </form>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 function GuidePreview({
   guide,
@@ -258,6 +486,12 @@ function GuidePreview({
           <DialogTitle className="flex items-center space-x-2">
             <Eye className="w-5 h-5" />
             <span>Preview: {guide.title}</span>
+            {guide.isPremium && (
+              <Badge className="bg-amber-600 text-white ml-2">
+                <Lock className="w-3 h-3 mr-1" />
+                Premium
+              </Badge>
+            )}
           </DialogTitle>
         </DialogHeader>
 
@@ -271,6 +505,13 @@ function GuidePreview({
             <div className="absolute top-4 left-4">
               <Badge className="bg-blue-600">Grade {guide.grade}</Badge>
             </div>
+            {guide.isPremium && (
+              <div className="absolute top-4 right-4">
+                <Badge className="bg-amber-600 text-white">
+                  <Lock className="w-3 h-3 mr-1" />${guide.price}
+                </Badge>
+              </div>
+            )}
           </div>
 
           <Tabs defaultValue="overview" className="w-full">
@@ -321,6 +562,16 @@ function GuidePreview({
                 <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono">
                   {guide.preview.content}
                 </pre>
+                {guide.isPremium && (
+                  <div className="mt-4 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+                    <div className="flex items-center text-amber-700">
+                      <Lock className="w-4 h-4 mr-2" />
+                      <span className="text-sm">
+                        Full content available with purchase or educator access
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             </TabsContent>
 
@@ -363,6 +614,15 @@ function GuidePreview({
                   </CardContent>
                 </Card>
               ))}
+
+              {guide.isPremium && guide.preview.lessons.length < 3 && (
+                <div className="text-center p-6 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
+                  <Lock className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                  <p className="text-gray-600">
+                    Additional lesson plans available with full access
+                  </p>
+                </div>
+              )}
             </TabsContent>
           </Tabs>
 
@@ -370,10 +630,17 @@ function GuidePreview({
             <Button variant="outline" onClick={onClose}>
               Close Preview
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700">
-              <Download className="w-4 h-4 mr-2" />
-              Download Full Guide
-            </Button>
+            {guide.isPremium ? (
+              <Button className="bg-amber-600 hover:bg-amber-700">
+                <Lock className="w-4 h-4 mr-2" />
+                Get Access - ${guide.price}
+              </Button>
+            ) : (
+              <Button className="bg-blue-600 hover:bg-blue-700">
+                <Download className="w-4 h-4 mr-2" />
+                Download Free
+              </Button>
+            )}
           </div>
         </div>
       </DialogContent>
@@ -386,6 +653,8 @@ export default function TeacherGuides() {
   const [selectedGrade, setSelectedGrade] = useState("all");
   const [selectedSubject, setSelectedSubject] = useState("all");
   const [previewGuide, setPreviewGuide] = useState<any>(null);
+  const [accessRequestGuide, setAccessRequestGuide] = useState<any>(null);
+  const navigate = useNavigate();
 
   const filteredGuides = teacherGuides.filter((guide) => {
     const matchesSearch =
@@ -399,6 +668,35 @@ export default function TeacherGuides() {
 
     return matchesSearch && matchesGrade && matchesSubject;
   });
+
+  const handleDownload = (guide: any) => {
+    if (guide.isPremium) {
+      setAccessRequestGuide(guide);
+    } else {
+      // Handle free download
+      const fileName = `${guide.title.toLowerCase().replace(/\s+/g, "-")}.pdf`;
+      // Simulate download
+      const link = document.createElement("a");
+      link.href = "/sample-files/" + fileName;
+      link.download = fileName;
+      link.click();
+
+      // Show success message
+      alert(`Downloaded: ${guide.title} 📚`);
+    }
+  };
+
+  const handleSampleDownload = (guide: any) => {
+    if (guide.hasSample && guide.sampleFile) {
+      // Simulate sample download
+      const link = document.createElement("a");
+      link.href = "/sample-files/" + guide.sampleFile;
+      link.download = guide.sampleFile;
+      link.click();
+
+      alert(`Sample downloaded: ${guide.sampleFile} 📄`);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -529,14 +827,29 @@ export default function TeacherGuides() {
                       {guide.duration}
                     </Badge>
                   </div>
+                  {guide.isPremium && (
+                    <div className="absolute bottom-3 right-3">
+                      <Badge className="bg-amber-600 text-white">
+                        <Lock className="w-3 h-3 mr-1" />
+                        Premium
+                      </Badge>
+                    </div>
+                  )}
                 </div>
 
                 <CardContent className="p-6">
                   <div className="space-y-4">
                     <div>
-                      <h3 className="text-xl text-gray-900 mb-1">
-                        {guide.title}
-                      </h3>
+                      <div className="flex items-start justify-between">
+                        <h3 className="text-xl text-gray-900 mb-1">
+                          {guide.title}
+                        </h3>
+                        {guide.isPremium && (
+                          <span className="text-lg text-amber-600 font-medium">
+                            ${guide.price}
+                          </span>
+                        )}
+                      </div>
                       <p className="text-sm text-gray-600">{guide.subject}</p>
                     </div>
 
@@ -577,7 +890,24 @@ export default function TeacherGuides() {
                       <div>By {guide.author}</div>
                     </div>
 
-                    <div className="flex space-x-2">
+                    {/* Sample Download Button for Premium Content */}
+                    {guide.hasSample && guide.isPremium && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="w-full border-green-500 text-green-700 hover:bg-green-50"
+                        onClick={() => handleSampleDownload(guide)}
+                      >
+                        <Gift className="w-4 h-4 mr-2" />
+                        Download Free Sample
+                      </Button>
+                    )}
+
+                    <div
+                      className={`flex space-x-2 ${
+                        guide.hasSample && guide.isPremium ? "pt-2" : ""
+                      }`}
+                    >
                       <Button
                         variant="outline"
                         size="sm"
@@ -589,10 +919,24 @@ export default function TeacherGuides() {
                       </Button>
                       <Button
                         size="sm"
-                        className="flex-1 bg-green-600 hover:bg-green-700"
+                        className={`flex-1 ${
+                          guide.isPremium
+                            ? "bg-amber-600 hover:bg-amber-700"
+                            : "bg-green-600 hover:bg-green-700"
+                        }`}
+                        onClick={() => handleDownload(guide)}
                       >
-                        <Download className="w-4 h-4 mr-2" />
-                        Download
+                        {guide.isPremium ? (
+                          <>
+                            <Lock className="w-4 h-4 mr-2" />
+                            Get Access
+                          </>
+                        ) : (
+                          <>
+                            <Download className="w-4 h-4 mr-2" />
+                            Download
+                          </>
+                        )}
                       </Button>
                     </div>
                   </div>
@@ -670,6 +1014,15 @@ export default function TeacherGuides() {
           guide={previewGuide}
           isOpen={!!previewGuide}
           onClose={() => setPreviewGuide(null)}
+        />
+      )}
+
+      {/* Access Request Modal */}
+      {accessRequestGuide && (
+        <AccessRequestDialog
+          guide={accessRequestGuide}
+          isOpen={!!accessRequestGuide}
+          onClose={() => setAccessRequestGuide(null)}
         />
       )}
     </div>

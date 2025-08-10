@@ -1,12 +1,13 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   ArrowLeft,
   Clock,
   Users,
   Star,
   Play,
-  Camera,
   Info,
+  Award,
+  Globe,
 } from "lucide-react";
 
 import { Badge } from "./ui/badge";
@@ -29,7 +30,7 @@ const tourGuidesData = {
         languages: ["Arabic", "English", "French"],
         avatar:
           "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&crop=face&fit=crop",
-        bio: "Expert Egyptologist with PhD from Cairo University. Specializes in pharaonic history and hieroglyphic interpretation.",
+        bio: "Expert Egyptologist with PhD from Cairo University. Specializes in pharaonic history and hieroglyphic interpretation with over 450 successful tours.",
         tours: [
           "Pyramids of Giza",
           "Valley of the Kings",
@@ -44,6 +45,8 @@ const tourGuidesData = {
           "Egyptology PhD",
           "UNESCO Heritage Expert",
         ],
+        availability: "Available",
+        responseTime: "Within 2 hours",
       },
       {
         id: 2,
@@ -54,7 +57,7 @@ const tourGuidesData = {
         languages: ["Arabic", "English", "German"],
         avatar:
           "https://images.unsplash.com/photo-1494790108755-2616b332c717?w=150&h=150&crop=face&fit=crop",
-        bio: "Specialist in Islamic architecture and Coptic Christian heritage. Expert on medieval Cairo and religious monuments.",
+        bio: "Specialist in Islamic architecture and Coptic Christian heritage. Expert on medieval Cairo and religious monuments with deep cultural knowledge.",
         tours: [
           "Islamic Cairo",
           "Coptic Quarter",
@@ -69,6 +72,8 @@ const tourGuidesData = {
           "Tourism Ministry License",
           "Religious Heritage Specialist",
         ],
+        availability: "Available",
+        responseTime: "Within 4 hours",
       },
     ],
   },
@@ -85,7 +90,7 @@ const tourGuidesData = {
         languages: ["Amharic", "English", "Italian"],
         avatar:
           "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&crop=face&fit=crop",
-        bio: "Expert on Aksumite civilization and Ethiopian Orthodox heritage. Fluent in ancient Ge'ez script and traditions.",
+        bio: "Expert on Aksumite civilization and Ethiopian Orthodox heritage. Fluent in ancient Ge'ez script and traditional Ethiopian customs.",
         tours: [
           "Lalibela Rock Churches",
           "Aksum Obelisks",
@@ -100,6 +105,8 @@ const tourGuidesData = {
           "Orthodox History Specialist",
           "UNESCO Guide",
         ],
+        availability: "Available",
+        responseTime: "Within 3 hours",
       },
       {
         id: 4,
@@ -110,7 +117,7 @@ const tourGuidesData = {
         languages: ["Amharic", "English", "Oromo"],
         avatar:
           "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&crop=face&fit=crop",
-        bio: "Cultural anthropologist specializing in Ethiopian tribal customs and traditional practices across different ethnic groups.",
+        bio: "Cultural anthropologist specializing in Ethiopian tribal customs and traditional practices across different ethnic groups and regions.",
         tours: [
           "Omo Valley Tribes",
           "Coffee Ceremony Experience",
@@ -125,6 +132,8 @@ const tourGuidesData = {
           "Tribal Heritage Expert",
           "Coffee Culture Specialist",
         ],
+        availability: "Available",
+        responseTime: "Within 6 hours",
       },
     ],
   },
@@ -141,7 +150,7 @@ const tourGuidesData = {
         languages: ["English", "Twi", "French"],
         avatar:
           "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&crop=face&fit=crop",
-        bio: "Expert on Ghana's independence movement and colonial period. Specialized knowledge of Ashanti Kingdom and gold trade.",
+        bio: "Expert on Ghana's independence movement and colonial period. Specialized knowledge of Ashanti Kingdom and West African gold trade routes.",
         tours: [
           "Cape Coast Castle",
           "Elmina Castle",
@@ -156,6 +165,8 @@ const tourGuidesData = {
           "Colonial History Expert",
           "Heritage Tourism License",
         ],
+        availability: "Available",
+        responseTime: "Within 1 hour",
       },
     ],
   },
@@ -163,8 +174,25 @@ const tourGuidesData = {
 
 export default function TourGuide() {
   const { countryCode } = useParams();
+  const navigate = useNavigate();
   const countryData =
     tourGuidesData[countryCode as keyof typeof tourGuidesData];
+
+  const handleBookTour = (guideId: number) => {
+    navigate(`/tour-booking/${countryCode}/${guideId}`);
+  };
+
+  const handleViewProfile = (guideId: number) => {
+    navigate(`/contributors/${guideId}`);
+  };
+
+  const handleStartPlanning = () => {
+    navigate(`/tour-planning/${countryCode}`);
+  };
+
+  const handleLearnMoreCountry = () => {
+    navigate(`/regions/1/countries/${countryCode}`);
+  };
 
   if (!countryData) {
     return (
@@ -253,7 +281,7 @@ export default function TourGuide() {
         </Card>
 
         {/* Guides List */}
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-8 mb-8">
           {countryData.guides.map((guide) => (
             <Card key={guide.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
@@ -290,6 +318,16 @@ export default function TourGuide() {
                           {guide.price}
                         </div>
                         <div className="text-xs text-gray-500">per hour</div>
+                        <Badge
+                          variant={
+                            guide.availability === "Available"
+                              ? "default"
+                              : "secondary"
+                          }
+                          className="text-xs mt-1"
+                        >
+                          {guide.availability}
+                        </Badge>
                       </div>
                     </div>
                   </div>
@@ -346,11 +384,17 @@ export default function TourGuide() {
                         key={index}
                         className="flex items-center text-xs text-gray-600"
                       >
-                        <div className="w-1 h-1 bg-green-500 rounded-full mr-2"></div>
+                        <Award className="w-3 h-3 text-green-500 mr-2" />
                         {cert}
                       </div>
                     ))}
                   </div>
+                </div>
+
+                {/* Response Time */}
+                <div className="flex items-center text-xs text-gray-500 bg-gray-50 p-2 rounded">
+                  <Clock className="w-3 h-3 mr-1" />
+                  Responds {guide.responseTime}
                 </div>
 
                 {/* Stats */}
@@ -361,19 +405,24 @@ export default function TourGuide() {
                       <AnimatedCounter target={guide.totalTours} /> tours
                     </div>
                     <div className="flex items-center">
-                      <Camera className="w-4 h-4 mr-1" />
+                      <Globe className="w-4 h-4 mr-1" />
                       {guide.languages_spoken} languages
                     </div>
                   </div>
 
                   <div className="flex gap-2">
-                    <Button size="sm" variant="outline">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleViewProfile(guide.id)}
+                    >
                       <Info className="w-4 h-4 mr-1" />
                       Profile
                     </Button>
                     <Button
                       size="sm"
                       className="bg-amber-600 hover:bg-amber-700"
+                      onClick={() => handleBookTour(guide.id)}
                     >
                       <Play className="w-4 h-4 mr-1" />
                       Book Tour
@@ -386,7 +435,7 @@ export default function TourGuide() {
         </div>
 
         {/* Call to Action */}
-        <Card className="mt-8 bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
+        <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
           <CardContent className="p-8 text-center">
             <h3 className="text-2xl text-gray-900 mb-4">
               Ready to Explore {countryData.name}?
@@ -397,11 +446,19 @@ export default function TourGuide() {
               Book your personalized historical tour today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-amber-600 hover:bg-amber-700">
+              <Button
+                size="lg"
+                className="bg-amber-600 hover:bg-amber-700"
+                onClick={handleStartPlanning}
+              >
                 <Play className="w-4 h-4 mr-2" />
                 Start Planning Your Tour
               </Button>
-              <Button size="lg" variant="outline">
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={handleLearnMoreCountry}
+              >
                 <Info className="w-4 h-4 mr-2" />
                 Learn More About {countryData.name}
               </Button>

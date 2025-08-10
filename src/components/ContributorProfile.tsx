@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   ArrowLeft,
   MapPin,
@@ -10,12 +10,12 @@ import {
   Trophy,
   BookOpen,
 } from "lucide-react";
-import { Button } from "./ui/button";
+
 import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import AnimatedCounter from "./AnimatedCounter";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { Link } from "react-router-dom";
-import AnimatedCounter from "./AnimatedCounter";
 
 // Sample contributor data - in a real app this would come from an API
 const contributorData = {

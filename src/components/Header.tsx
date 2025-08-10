@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Search, Menu, X, Globe } from "lucide-react";
-
-import { Input } from "./ui/input";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useLanguage } from "../utils/LanguageContext";
 import { AfricanMap } from "./icons/african-map";

@@ -20,6 +20,7 @@ import StoryDetail from "./components/StoryDetail";
 import EducationalResources from "./components/EducationalResources";
 import InteractiveMap from "./components/InteractiveMap";
 import CountryDetail from "./components/CountryDetail";
+import Countries from "./components/Countries";
 import StudentActivities from "./components/StudentActivities";
 import VirtualTours from "./components/VirtualTours";
 import TeacherGuides from "./components/TeacherGuides";
@@ -32,6 +33,8 @@ import ArtifactMatcher from "./components/ArtifactMatcher";
 import { ComingSoon } from "./components/ComingSoonView";
 import ContributorProfile from "./components/ContributorProfile";
 import TourGuide from "./components/TourGuide";
+import TourBooking from "./components/TourBooking";
+import TourPlanning from "./components/TourPlanning";
 import { LanguageProvider } from "./utils/LanguageContext";
 import { navigationAnalytics } from "./utils/navigationAnalytics";
 import { routePreloader } from "./utils/routePreloader";
@@ -99,11 +102,13 @@ function NavigationTracker() {
     const preloadRoutes = [];
 
     if (location.pathname === "/") {
-      preloadRoutes.push("/timeline", "/regions", "/stories");
+      preloadRoutes.push("/timeline", "/regions", "/stories", "/countries");
     } else if (location.pathname.startsWith("/timeline")) {
       preloadRoutes.push("/regions", "/interactive-map");
     } else if (location.pathname.startsWith("/regions")) {
-      preloadRoutes.push("/timeline", "/stories");
+      preloadRoutes.push("/timeline", "/stories", "/countries");
+    } else if (location.pathname.startsWith("/countries")) {
+      preloadRoutes.push("/regions", "/interactive-map");
     } else if (location.pathname.startsWith("/resources")) {
       preloadRoutes.push(
         "/resources/virtual-tours",
@@ -184,7 +189,7 @@ export default function App() {
             path="/regions/:regionId/countries/:countryCode"
             element={
               <AppLayout>
-                <CountryDetail countryCode="NG" />
+                <CountryDetail />
               </AppLayout>
             }
           />
@@ -193,6 +198,30 @@ export default function App() {
             element={
               <AppLayout>
                 <TourGuide />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/countries"
+            element={
+              <AppLayout>
+                <Countries />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/tour-booking/:countryCode/:guideId"
+            element={
+              <AppLayout>
+                <TourBooking />
+              </AppLayout>
+            }
+          />
+          <Route
+            path="/tour-planning/:countryCode"
+            element={
+              <AppLayout>
+                <TourPlanning />
               </AppLayout>
             }
           />

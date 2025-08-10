@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Heart,
   Github,
@@ -10,17 +11,14 @@ import {
   Users,
   Code,
   BookOpen,
-  Camera,
   MapPin,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { Avatar } from "./ui/avatar";
-import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
-import { Link, useNavigate } from "react-router-dom";
 import AnimatedCounter from "./AnimatedCounter";
+import { Card, CardContent, CardHeader } from "./ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 // Enhanced Contributors data with real sample contributors
 const contributors = [
