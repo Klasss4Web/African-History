@@ -39,8 +39,51 @@ import AnimatedCounter from "./AnimatedCounter";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 import { LeafletMap } from "./LeafletMap";
 
+type Coordinates = { lat: number; lng: number };
+
+type Site = {
+  id: number;
+  name: string;
+  location: string;
+  coordinates: Coordinates;
+  period: string;
+  type: string;
+  significance: string;
+  description: string;
+  image: string;
+  category: string;
+  rating: number;
+  visitors: string;
+  region: string;
+  era?: string;
+  features?: string[];
+  visitInfo?: {
+    accessibility: string;
+    bestTime: string;
+    duration: string;
+    entrance: string;
+  };
+  relatedStories?: number[];
+  virtualTour?: boolean;
+};
+
+type TradeRoute = {
+  id: number;
+  name: string;
+  description: string;
+  path: (Coordinates & { name: string })[];
+  period: string;
+  commodities: string[];
+  cities: string[];
+};
+
+type HistoricalSites = {
+  sites: Site[];
+  tradeRoutes: TradeRoute[];
+};
+
 // Historical sites data with coordinates
-const historicalSites = {
+const historicalSites: HistoricalSites = {
   sites: [
     {
       id: 1,
@@ -262,46 +305,6 @@ const historicalSites = {
     },
   ],
 };
-
-function SiteMarker({
-  site,
-  onClick,
-  isSelected,
-}: {
-  site: any;
-  onClick: () => void;
-  isSelected: boolean;
-}) {
-  return (
-    <div
-      className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-200 hover:scale-110 ${
-        isSelected ? "scale-125 z-20" : "z-10"
-      }`}
-      style={{ left: site?.coordinates?.lat, top: site?.coordinates?.lng }}
-      onClick={onClick}
-    >
-      <div className={`relative ${isSelected ? "animate-pulse" : ""}`}>
-        <div
-          className={`w-4 h-4 rounded-full ${
-            site.category === "Ancient Architecture"
-              ? "bg-amber-500"
-              : site.category === "Medieval Architecture"
-              ? "bg-green-500"
-              : site.category === "Religious Architecture"
-              ? "bg-blue-500"
-              : "bg-purple-500"
-          } border-2 border-white shadow-lg`}
-        ></div>
-
-        {isSelected && (
-          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap bg-black text-white px-2 py-1 rounded text-xs">
-            {site.name}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
 
 function TradeRoute({ route, isVisible }: { route: any; isVisible: boolean }) {
   if (!isVisible) return null;
@@ -702,15 +705,6 @@ export default function InteractiveMap() {
                             isVisible={showTradeRoutes}
                           />
                         ))}
-                        {/* Site markers */}
-                        {/* {filteredSites.map((site, index) => (
-                          <SiteMarker
-                            key={site.id}
-                            site={site}
-                            onClick={() => handleSiteClick(site)}
-                            isSelected={selectedSite?.id === site.id}
-                          />
-                        ))} */}
                       </div>
                     </Card>
                     {/* Legend */}
