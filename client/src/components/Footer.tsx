@@ -6,13 +6,12 @@ import {
   Facebook,
   Instagram,
   Youtube,
-  Globe,
   Flag,
 } from "lucide-react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
 import { LanguageStats } from "./LanguageSwitcher";
-import { AfricanMap } from "./icons/african-map";
+import { LogoFooter } from "./Logo";
 
 export default function Footer() {
   return (
@@ -21,16 +20,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-600 rounded-lg flex items-center justify-center">
-                {/* <Globe className="w-6 h-6 text-white" /> */}
-                <AfricanMap />
-              </div>
-              <div>
-                <h3 className="text-xl">AfricanHistory</h3>
-                <p className="text-sm text-gray-400">Explore Our Heritage</p>
-              </div>
-            </div>
+            <LogoFooter />
             <p className="text-gray-400 text-sm">
               Discover the rich history and diverse cultures of Africa through
               interactive storytelling, educational resources, and immersive
@@ -40,28 +30,28 @@ export default function Footer() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-gray-400 hover:text-white"
+                className="text-gray-400 hover:text-white hover:bg-amber-600/20"
               >
                 <Twitter className="w-4 h-4" />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-gray-400 hover:text-white"
+                className="text-gray-400 hover:text-white hover:bg-amber-600/20"
               >
                 <Facebook className="w-4 h-4" />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-gray-400 hover:text-white"
+                className="text-gray-400 hover:text-white hover:bg-amber-600/20"
               >
                 <Instagram className="w-4 h-4" />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-gray-400 hover:text-white"
+                className="text-gray-400 hover:text-white hover:bg-amber-600/20"
               >
                 <Youtube className="w-4 h-4" />
               </Button>
@@ -70,48 +60,48 @@ export default function Footer() {
 
           {/* Explore */}
           <div className="space-y-4">
-            <h4 className="text-lg">Explore</h4>
+            <h4 className="text-lg font-medium text-amber-400">Explore</h4>
             <div className="space-y-2">
               <Link
                 to="/timeline"
-                className="block text-gray-400 hover:text-white text-sm transition-colors"
+                className="block text-gray-400 hover:text-amber-400 text-sm transition-colors"
               >
                 Interactive Timeline
               </Link>
               <Link
                 to="/regions"
-                className="block text-gray-400 hover:text-white text-sm transition-colors"
+                className="block text-gray-400 hover:text-amber-400 text-sm transition-colors"
               >
                 African Regions
               </Link>
               <Link
                 to="/countries"
-                className="block text-gray-400 hover:text-white text-sm transition-colors flex items-center"
+                className="block text-gray-400 hover:text-amber-400 text-sm transition-colors flex items-center"
               >
                 <Flag className="w-3 h-3 mr-2" />
                 All Countries
               </Link>
               <Link
                 to="/stories"
-                className="block text-gray-400 hover:text-white text-sm transition-colors"
+                className="block text-gray-400 hover:text-amber-400 text-sm transition-colors"
               >
                 Historical Stories
               </Link>
               <Link
                 to="/people"
-                className="block text-gray-400 hover:text-white text-sm transition-colors"
+                className="block text-gray-400 hover:text-amber-400 text-sm transition-colors"
               >
                 Historical Figures
               </Link>
               <Link
                 to="/interactive-map"
-                className="block text-gray-400 hover:text-white text-sm transition-colors"
+                className="block text-gray-400 hover:text-amber-400 text-sm transition-colors"
               >
                 Interactive Map
               </Link>
               <Link
                 to="/contributors"
-                className="block text-gray-400 hover:text-white text-sm transition-colors"
+                className="block text-gray-400 hover:text-amber-400 text-sm transition-colors"
               >
                 Contributors
               </Link>
@@ -120,35 +110,37 @@ export default function Footer() {
 
           {/* Educational Resources */}
           <div className="space-y-4">
-            <h4 className="text-lg">Educational Resources</h4>
+            <h4 className="text-lg font-medium text-amber-400">
+              Educational Resources
+            </h4>
             <div className="space-y-2">
               <Link
                 to="/resources"
-                className="block text-gray-400 hover:text-white text-sm transition-colors"
+                className="block text-gray-400 hover:text-amber-400 text-sm transition-colors"
               >
                 Resource Center
               </Link>
               <Link
                 to="/resources/teacher-guides"
-                className="block text-gray-400 hover:text-white text-sm transition-colors"
+                className="block text-gray-400 hover:text-amber-400 text-sm transition-colors"
               >
                 Teacher Guides
               </Link>
               <Link
                 to="/resources/student-activities"
-                className="block text-gray-400 hover:text-white text-sm transition-colors"
+                className="block text-gray-400 hover:text-amber-400 text-sm transition-colors"
               >
                 Student Activities
               </Link>
               <Link
                 to="/resources/virtual-tours"
-                className="block text-gray-400 hover:text-white text-sm transition-colors"
+                className="block text-gray-400 hover:text-amber-400 text-sm transition-colors"
               >
                 Virtual Tours
               </Link>
               <Link
                 to="/resources/research-papers"
-                className="block text-gray-400 hover:text-white text-sm transition-colors"
+                className="block text-gray-400 hover:text-amber-400 text-sm transition-colors"
               >
                 Research Papers
               </Link>
@@ -157,7 +149,7 @@ export default function Footer() {
 
           {/* Connect */}
           <div className="space-y-4">
-            <h4 className="text-lg">Connect</h4>
+            <h4 className="text-lg font-medium text-amber-400">Connect</h4>
             <div className="space-y-3">
               <div className="flex items-center space-x-2 text-gray-400 text-sm">
                 <Mail className="w-4 h-4" />
@@ -169,7 +161,7 @@ export default function Footer() {
               </div>
             </div>
             <div className="space-y-2">
-              <Button className="w-full bg-amber-600 hover:bg-amber-700">
+              <Button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 transition-all duration-200 shadow-lg hover:shadow-xl">
                 <BookOpen className="w-4 h-4 mr-2" />
                 Newsletter
               </Button>
@@ -187,20 +179,34 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-gray-400 text-sm mb-4 md:mb-0">
-            © 2024 AfricanHistory. All rights reserved.
+        {/* Bottom Footer */}
+        <div className="border-t border-gray-800 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="text-gray-400 text-sm">
+              © 2024 AfricanHistory. All rights reserved.
+            </div>
+            <div className="flex space-x-6 text-gray-400 text-sm">
+              <a href="#" className="hover:text-amber-400 transition-colors">
+                Privacy Policy
+              </a>
+              <a href="#" className="hover:text-amber-400 transition-colors">
+                Terms of Service
+              </a>
+              <a href="#" className="hover:text-amber-400 transition-colors">
+                Accessibility
+              </a>
+            </div>
           </div>
-          <div className="flex space-x-6 text-gray-400 text-sm">
-            <a href="#" className="hover:text-white transition-colors">
-              Privacy Policy
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
-              Terms of Service
-            </a>
-            <a href="#" className="hover:text-white transition-colors">
-              Accessibility
-            </a>
+
+          {/* Heritage Accent */}
+          <div className="mt-6 flex justify-center">
+            <div className="flex space-x-2 opacity-40">
+              <div className="w-2 h-2 bg-amber-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+              <div className="w-2 h-2 bg-amber-600 rounded-full"></div>
+            </div>
           </div>
         </div>
       </div>

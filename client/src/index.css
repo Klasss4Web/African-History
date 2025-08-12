@@ -1,3 +1,11 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* * {
+  padding: 0;
+} */
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -126,6 +134,47 @@
 
   body {
     @apply bg-background text-foreground;
+    /* Prevent layout shifts caused by scrollbar appearance/disappearance */
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+  }
+
+  /* Prevent layout shifts in navigation dropdowns */
+  .nav-dropdown-container {
+    position: relative;
+  }
+
+  .nav-dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 50;
+    /* Ensure dropdowns don't affect document flow */
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* Smooth transitions for dropdowns */
+  .nav-dropdown-enter {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    transition: all 0.15s ease-out;
+  }
+
+  .nav-dropdown-enter-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  .nav-dropdown-exit {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: all 0.1s ease-in;
+  }
+
+  .nav-dropdown-exit-active {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
   }
 }
 
@@ -186,4 +235,70 @@
 
 html {
   font-size: var(--font-size);
+}
+
+/* Additional navigation-specific styles */
+@layer components {
+  .navigation-dropdown {
+    /* Ensure proper stacking and positioning */
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 224px; /* w-56 equivalent */
+    background: white;
+    border: 1px solid rgb(229, 231, 235); /* border-gray-200 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+      0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+    z-index: 50;
+    padding: 0.25rem 0; /* py-1 */
+    /* Prevent any overflow issues */
+    overflow: hidden;
+    /* Smooth appearance */
+    animation: dropdown-appear 0.15s ease-out;
+  }
+
+  @keyframes dropdown-appear {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .navigation-dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem; /* px-3 py-2 */
+    font-size: 0.875rem; /* text-sm */
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .navigation-dropdown-item:hover {
+    background-color: rgb(249, 250, 251); /* hover:bg-gray-50 */
+  }
+
+  .navigation-dropdown-item.active {
+    background-color: rgb(254, 243, 199); /* bg-amber-50 */
+    color: rgb(180, 83, 9); /* text-amber-700 */
+  }
+
+  .navigation-dropdown-separator {
+    height: 1px;
+    background-color: rgb(243, 244, 246); /* border-gray-100 */
+    margin: 0.25rem 0; /* my-1 */
+  }
+}
+
+body {
+  min-width: 100%;
+  min-height: 100vh;
 }
