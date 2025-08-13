@@ -346,7 +346,7 @@ export default function RegionalExploration() {
         </div>
 
         {/* Regions Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-12">
           {regions.map((region) => (
             <RegionCard key={region.id} region={region} />
           ))}
