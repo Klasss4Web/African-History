@@ -39,6 +39,7 @@ import { LanguageProvider } from "./utils/LanguageContext";
 import { navigationAnalytics } from "./utils/navigationAnalytics";
 import { routePreloader } from "./utils/routePreloader";
 import { offlineSupport } from "./utils/offlineSupport";
+import { AnimatedHeading, AnimatedParagraph } from "./components/AnimatedText";
 
 function HomePage() {
   return (
@@ -56,14 +57,20 @@ function RegionsPage() {
     <div className="min-h-screen bg-gray-50 py-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
+          <AnimatedHeading
+            className="text-4xl lg:text-5xl text-gray-900 mb-4"
+            delay={0}
+          >
             African Regions
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          </AnimatedHeading>
+          <AnimatedParagraph
+            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            delay={0.3}
+          >
             Explore the diverse regions of Africa and their unique histories,
             from the ancient civilizations of the north to the kingdoms of the
             south.
-          </p>
+          </AnimatedParagraph>
         </div>
         <RegionalExploration />
       </div>
@@ -76,13 +83,22 @@ function StoriesPage() {
     <div className="min-h-screen bg-gray-50 py-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
+          {/* <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
             African Stories
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          </h1> */}
+          <AnimatedHeading
+            className="text-4xl lg:text-5xl text-gray-900 mb-4"
+            delay={0}
+          >
+            African Stories
+          </AnimatedHeading>
+          <AnimatedParagraph
+            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            delay={0.3}
+          >
             Discover fascinating stories from across African history and
             culture.
-          </p>
+          </AnimatedParagraph>
         </div>
         <FeaturedStories />
       </div>

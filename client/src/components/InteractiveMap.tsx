@@ -38,44 +38,7 @@ import {
 import AnimatedCounter from "./AnimatedCounter";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 import { LeafletMap } from "./LeafletMap";
-
-type Coordinates = { lat: number; lng: number };
-
-type Site = {
-  id: number;
-  name: string;
-  location: string;
-  coordinates: Coordinates;
-  period: string;
-  type: string;
-  significance: string;
-  description: string;
-  image: string;
-  category: string;
-  rating: number;
-  visitors: string;
-  region: string;
-  era?: string;
-  features?: string[];
-  visitInfo?: {
-    accessibility: string;
-    bestTime: string;
-    duration: string;
-    entrance: string;
-  };
-  relatedStories?: number[];
-  virtualTour?: boolean;
-};
-
-type TradeRoute = {
-  id: number;
-  name: string;
-  description: string;
-  path: (Coordinates & { name: string })[];
-  period: string;
-  commodities: string[];
-  cities: string[];
-};
+import type { Site, TradeRoute } from "@/types/shared";
 
 type HistoricalSites = {
   sites: Site[];
@@ -109,7 +72,7 @@ const historicalSites: HistoricalSites = {
       location: "Zimbabwe",
       coordinates: { lat: -20.2666, lng: 30.9333 },
       period: "Medieval (1100-1450 CE)",
-      type: "Stone City",
+      type: "Historic City",
       significance: "Largest ancient structure south of the Sahara",
       description:
         "Medieval city built of stone without mortar, capital of the Kingdom of Zimbabwe.",
@@ -127,7 +90,7 @@ const historicalSites: HistoricalSites = {
       location: "Ethiopia",
       coordinates: { lat: 12.0336, lng: 39.0479 },
       period: "Medieval (12th-13th century)",
-      type: "Religious Complex",
+      type: "Religious Site",
       significance: "Monolithic rock-cut churches",
       description:
         "Eleven medieval monolithic cave churches carved directly into volcanic rock.",
@@ -163,7 +126,7 @@ const historicalSites: HistoricalSites = {
       location: "Egypt",
       coordinates: { lat: 525, lng: 190 },
       period: "Ancient (1550-1077 BCE)",
-      type: "Royal Necropolis",
+      type: "Funerary Complex",
       significance: "Burial place of Egyptian pharaohs",
       description:
         "Valley containing tombs of pharaohs and nobles from the New Kingdom period.",
@@ -180,7 +143,7 @@ const historicalSites: HistoricalSites = {
       location: "Sudan",
       coordinates: { lat: 570, lng: 250 },
       period: "Ancient (300 BCE - 350 CE)",
-      type: "Royal Cemetery",
+      type: "Funerary Complex",
       significance: "Pyramids of the Kingdom of Kush",
       description:
         "Royal cemetery of the Kushite rulers with over 200 pyramids.",
@@ -1036,8 +999,11 @@ export default function InteractiveMap() {
               {filteredSites
                 .sort((a, b) => {
                   // Simple chronological sorting by era start year
-                  const aYear = parseInt(a?.era?.match(/\d+/) || [0]);
-                  const bYear = parseInt(b?.era?.match(/\d+/) || [0]);
+                  // const aYear = parseInt(a?.era?.match(/\d+/) || [0]);
+                  // const bYear = parseInt(b?.era?.match(/\d+/) || [0]);
+                  // return aYear - bYear;
+                  const aYear = parseInt(a?.era?.match(/\d+/)?.[0] ?? "0", 10);
+                  const bYear = parseInt(b?.era?.match(/\d+/)?.[0] ?? "0", 10);
                   return aYear - bYear;
                 })
                 .map((site) => (

@@ -5,7 +5,6 @@ import {
   Eye,
   Filter,
   Search,
-  Calendar,
   Users,
   Star,
   ExternalLink,
@@ -13,7 +12,7 @@ import {
   BookOpen,
   Award,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -24,14 +23,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 import AnimatedCounter from "./AnimatedCounter";
+import { AnimatedHeading, AnimatedParagraph } from "./AnimatedText";
 
 // Research papers data
 const researchPapers = [
@@ -336,14 +330,20 @@ export default function ResearchPapers() {
               <BookOpen className="w-4 h-4 mr-2" />
               Academic Research
             </Badge>
-            <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
+            <AnimatedHeading
+              className="text-4xl lg:text-5xl text-gray-900 mb-4"
+              delay={0}
+            >
               Research Papers
-            </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            </AnimatedHeading>
+            <AnimatedParagraph
+              className="text-lg text-gray-600 max-w-3xl mx-auto"
+              delay={0.3}
+            >
               Access cutting-edge academic research in African history and
               archaeology. Discover peer-reviewed papers from leading scholars
               and emerging researchers worldwide.
-            </p>
+            </AnimatedParagraph>
           </div>
 
           {/* Research Stats with Animation */}
