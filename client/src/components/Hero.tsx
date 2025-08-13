@@ -1,31 +1,39 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   ArrowRight,
   BookOpen,
   Users,
   Globe,
   Sparkles,
-  ChevronLeft,
-  ChevronRight,
   Map,
   Calendar,
   Heart,
 } from "lucide-react";
-import { Button } from "./ui/button";
-import { Badge } from "./ui/badge";
-import { Card, CardContent } from "./ui/card";
+
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-  CarouselApi,
+  type CarouselApi,
 } from "./ui/carousel";
-import { Link } from "react-router-dom";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
+import { Card, CardContent } from "./ui/card";
+import AnimatedCounter from "./AnimatedCounter";
 import { LogoHero, HeritageSymbol } from "./Logo";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
-import AnimatedCounter from "./AnimatedCounter";
-import { useState, useEffect } from "react";
+
+import {
+  AnimatedHeading,
+  AnimatedParagraph,
+  AnimatedContainer,
+  AnimatedItem,
+  AnimatedText,
+} from "./AnimatedText";
+import { motion } from "motion/react";
 
 interface HeroSlide {
   id: string;
@@ -214,45 +222,84 @@ export default function Hero() {
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute top-20 left-10 transform rotate-12">
+        <motion.div
+          className="absolute top-20 left-10 transform rotate-12"
+          initial={{ opacity: 0, scale: 0.8, rotate: 0 }}
+          animate={{ opacity: 0.05, scale: 1, rotate: 12 }}
+          transition={{ duration: 2, delay: 1 }}
+        >
           <HeritageSymbol className="w-32 h-32 text-amber-600" />
-        </div>
-        <div className="absolute top-40 right-20 transform -rotate-12">
+        </motion.div>
+        <motion.div
+          className="absolute top-40 right-20 transform -rotate-12"
+          initial={{ opacity: 0, scale: 0.8, rotate: 0 }}
+          animate={{ opacity: 0.05, scale: 1, rotate: -12 }}
+          transition={{ duration: 2, delay: 1.5 }}
+        >
           <HeritageSymbol className="w-24 h-24 text-orange-600" />
-        </div>
-        <div className="absolute bottom-32 left-20 transform rotate-45">
+        </motion.div>
+        <motion.div
+          className="absolute bottom-32 left-20 transform rotate-45"
+          initial={{ opacity: 0, scale: 0.8, rotate: 0 }}
+          animate={{ opacity: 0.05, scale: 1, rotate: 45 }}
+          transition={{ duration: 2, delay: 2 }}
+        >
           <HeritageSymbol className="w-28 h-28 text-red-600" />
-        </div>
-        <div className="absolute bottom-20 right-10 transform -rotate-45">
+        </motion.div>
+        <motion.div
+          className="absolute bottom-20 right-10 transform -rotate-45"
+          initial={{ opacity: 0, scale: 0.8, rotate: 0 }}
+          animate={{ opacity: 0.05, scale: 1, rotate: -45 }}
+          transition={{ duration: 2, delay: 2.5 }}
+        >
           <HeritageSymbol className="w-20 h-20 text-yellow-600" />
-        </div>
+        </motion.div>
       </div>
 
       {/* Floating geometric shapes */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
-        <div
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-2 h-2 bg-amber-400 rounded-full animate-pulse"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 3 }}
+        />
+        <motion.div
           className="absolute top-1/3 right-1/3 w-3 h-3 bg-orange-400 rounded-full animate-pulse"
           style={{ animationDelay: "1s" }}
-        ></div>
-        <div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 3.2 }}
+        />
+        <motion.div
           className="absolute bottom-1/4 left-1/3 w-2 h-2 bg-red-400 rounded-full animate-pulse"
           style={{ animationDelay: "2s" }}
-        ></div>
-        <div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 3.4 }}
+        />
+        <motion.div
           className="absolute bottom-1/3 right-1/4 w-4 h-4 bg-yellow-400 rounded-full animate-pulse"
           style={{ animationDelay: "3s" }}
-        ></div>
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 3.6 }}
+        />
       </div>
 
       <div className="container mx-auto px-4 relative">
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen py-16">
           {/* Left Content */}
           <div className="space-y-8 text-center lg:text-left">
-            {/* Main Logo Display - Always Visible */}
-            <div className="flex justify-center lg:justify-start">
+            {/* Main Logo Display - Always Visible with Animation */}
+            <AnimatedText
+              className="flex justify-center lg:justify-start"
+              delay={0}
+              duration={1}
+              direction="fade"
+            >
               <LogoHero />
-            </div>
+            </AnimatedText>
 
             {/* Dynamic Content from Carousel */}
             <Carousel
@@ -260,73 +307,132 @@ export default function Hero() {
               className="w-full max-w-2xl mx-auto lg:mx-0"
             >
               <CarouselContent>
-                {heroSlides.map((slide, index) => (
+                {heroSlides.map((slide) => (
                   <CarouselItem key={slide.id}>
-                    <div className="space-y-6">
-                      {/* Featured Badge */}
-                      <div className="flex justify-center lg:justify-start">
-                        <Badge
-                          className={`bg-gradient-to-r ${currentTheme.badge} px-4 py-2 transition-all duration-500`}
+                    <AnimatedContainer staggerDelay={0.15} initialDelay={0.3}>
+                      <div className="space-y-6">
+                        {/* Featured Badge */}
+                        <AnimatedItem
+                          className="flex justify-center lg:justify-start"
+                          direction="fade"
                         >
-                          <Sparkles className="w-4 h-4 mr-2" />
-                          {slide.badge}
-                        </Badge>
-                      </div>
+                          <Badge
+                            className={`bg-gradient-to-r ${currentTheme.badge} px-4 py-2 transition-all duration-500`}
+                          >
+                            <Sparkles className="w-4 h-4 mr-2" />
+                            {slide.badge}
+                          </Badge>
+                        </AnimatedItem>
 
-                      {/* Title and Subtitle */}
-                      <div className="space-y-2">
-                        <h1 className="text-4xl lg:text-5xl text-gray-900 leading-tight">
-                          {slide.title}
-                        </h1>
-                        <h2 className="text-xl text-gray-700">
-                          {slide.subtitle}
-                        </h2>
-                      </div>
+                        {/* Title and Subtitle */}
+                        <div className="space-y-2">
+                          <AnimatedItem direction="up">
+                            <AnimatedHeading className="text-4xl lg:text-5xl text-gray-900 leading-tight">
+                              {slide.title}
+                            </AnimatedHeading>
+                          </AnimatedItem>
+                          <AnimatedItem direction="up">
+                            <AnimatedText
+                              className="text-xl text-gray-700"
+                              delay={0.2}
+                              stagger={true}
+                            >
+                              {slide.subtitle}
+                            </AnimatedText>
+                          </AnimatedItem>
+                        </div>
 
-                      {/* Description */}
-                      <p className="text-lg text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                        {slide.description}
-                      </p>
+                        {/* Description */}
+                        <AnimatedItem direction="up">
+                          <AnimatedParagraph className="text-lg text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
+                            {slide.description}
+                          </AnimatedParagraph>
+                        </AnimatedItem>
 
-                      {/* CTA Buttons */}
-                      <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                        <Button
-                          asChild
-                          size="lg"
-                          className={`bg-gradient-to-r ${currentTheme.button} shadow-lg hover:shadow-xl transition-all duration-200`}
-                        >
-                          <Link to={slide.ctaLink}>
-                            <BookOpen className="w-5 h-5 mr-2" />
-                            {slide.ctaText}
-                            <ArrowRight className="w-4 h-4 ml-2" />
-                          </Link>
-                        </Button>
-                        <Button
-                          asChild
-                          variant="outline"
-                          size="lg"
-                          className={currentTheme.accent}
-                        >
-                          <Link to="/regions">
-                            <Globe className="w-5 h-5 mr-2" />
-                            Browse Regions
-                          </Link>
-                        </Button>
+                        {/* CTA Buttons */}
+                        <AnimatedItem direction="up">
+                          <motion.div
+                            className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+                            initial="hidden"
+                            animate="visible"
+                            variants={{
+                              hidden: {},
+                              visible: {
+                                transition: {
+                                  staggerChildren: 0.1,
+                                  delayChildren: 0.8,
+                                },
+                              },
+                            }}
+                          >
+                            <motion.div
+                              variants={{
+                                hidden: { opacity: 0, y: 20 },
+                                visible: { opacity: 1, y: 0 },
+                              }}
+                            >
+                              <Button
+                                asChild
+                                size="lg"
+                                className={`bg-gradient-to-r ${currentTheme.button} shadow-lg hover:shadow-xl transition-all duration-200`}
+                              >
+                                <Link to={slide.ctaLink}>
+                                  <BookOpen className="w-5 h-5 mr-2" />
+                                  {slide.ctaText}
+                                  <ArrowRight className="w-4 h-4 ml-2" />
+                                </Link>
+                              </Button>
+                            </motion.div>
+                            <motion.div
+                              variants={{
+                                hidden: { opacity: 0, y: 20 },
+                                visible: { opacity: 1, y: 0 },
+                              }}
+                            >
+                              <Button
+                                asChild
+                                variant="outline"
+                                size="lg"
+                                className={currentTheme.accent}
+                              >
+                                <Link to="/regions">
+                                  <Globe className="w-5 h-5 mr-2" />
+                                  Browse Regions
+                                </Link>
+                              </Button>
+                            </motion.div>
+                          </motion.div>
+                        </AnimatedItem>
                       </div>
-                    </div>
+                    </AnimatedContainer>
                   </CarouselItem>
                 ))}
               </CarouselContent>
             </Carousel>
 
-            {/* Popular/Trending Stats - Restored */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg">
-              <h3 className="text-sm font-medium text-gray-500 mb-4 text-center lg:text-left">
+            {/* Popular/Trending Stats - Restored with Animation */}
+            <AnimatedText
+              className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg"
+              delay={1.2}
+              direction="up"
+            >
+              <AnimatedHeading
+                className="text-sm font-medium text-gray-500 mb-4 text-center lg:text-left"
+                delay={1.4}
+              >
                 Popular Right Now
-              </h3>
-              <div className="grid grid-cols-2 gap-4">
-                {popularStats.map((stat, index) => (
-                  <div key={stat.label} className="flex items-center space-x-3">
+              </AnimatedHeading>
+              <AnimatedContainer
+                className="grid grid-cols-2 gap-4"
+                staggerDelay={0.1}
+                initialDelay={1.6}
+              >
+                {popularStats.map((stat) => (
+                  <AnimatedItem
+                    key={stat.label}
+                    className="flex items-center space-x-3"
+                    direction="left"
+                  >
                     <div className={`p-2 rounded-lg bg-gray-50 ${stat.color}`}>
                       <stat.icon className="w-4 h-4" />
                     </div>
@@ -338,35 +444,43 @@ export default function Hero() {
                         {stat.label} • {stat.count} views
                       </div>
                     </div>
-                  </div>
+                  </AnimatedItem>
                 ))}
-              </div>
-            </div>
+              </AnimatedContainer>
+            </AnimatedText>
 
             {/* Core Stats */}
-            <div className="grid grid-cols-3 gap-6 max-w-md mx-auto lg:mx-0">
-              <div className="text-center">
+            <AnimatedContainer
+              className="grid grid-cols-3 gap-6 max-w-md mx-auto lg:mx-0"
+              staggerDelay={0.2}
+              initialDelay={1.8}
+            >
+              <AnimatedItem className="text-center" direction="up">
                 <div className="text-2xl text-amber-600 mb-1">
                   <AnimatedCounter target={54} />
                 </div>
                 <div className="text-xs text-gray-600">Countries</div>
-              </div>
-              <div className="text-center">
+              </AnimatedItem>
+              <AnimatedItem className="text-center" direction="up">
                 <div className="text-2xl text-orange-600 mb-1">
                   <AnimatedCounter target={500} suffix="+" />
                 </div>
                 <div className="text-xs text-gray-600">Stories</div>
-              </div>
-              <div className="text-center">
+              </AnimatedItem>
+              <AnimatedItem className="text-center" direction="up">
                 <div className="text-2xl text-red-600 mb-1">
                   <AnimatedCounter target={16} />
                 </div>
                 <div className="text-xs text-gray-600">Languages</div>
-              </div>
-            </div>
+              </AnimatedItem>
+            </AnimatedContainer>
 
             {/* Educational Focus */}
-            <div className="flex items-center justify-center lg:justify-start space-x-6 text-sm text-gray-600">
+            <AnimatedText
+              className="flex items-center justify-center lg:justify-start space-x-6 text-sm text-gray-600"
+              delay={2.2}
+              direction="fade"
+            >
               <div className="flex items-center">
                 <Users className="w-4 h-4 mr-2 text-amber-600" />
                 <span>For Educators</span>
@@ -375,16 +489,21 @@ export default function Hero() {
                 <BookOpen className="w-4 h-4 mr-2 text-orange-600" />
                 <span>Interactive Learning</span>
               </div>
-            </div>
+            </AnimatedText>
           </div>
 
-          {/* Right Content - Image Carousel */}
-          <div className="relative">
+          {/* Right Content - Image Carousel with Animation */}
+          <AnimatedText
+            className="relative"
+            delay={0.5}
+            direction="right"
+            duration={0.8}
+          >
             <Card className="overflow-hidden shadow-2xl border-0 bg-gradient-to-br from-white to-amber-50">
               <CardContent className="p-0">
                 <Carousel setApi={setCarouselApi} className="w-full">
                   <CarouselContent>
-                    {heroSlides.map((slide, index) => (
+                    {heroSlides.map((slide) => (
                       <CarouselItem key={slide.id}>
                         <div className="relative">
                           <ImageWithFallback
@@ -397,26 +516,43 @@ export default function Hero() {
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
 
                           {/* Featured Content */}
-                          <div className="absolute bottom-6 left-6 right-6">
+                          <motion.div
+                            className="absolute bottom-6 left-6 right-6"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 1, duration: 0.6 }}
+                          >
                             <div className="bg-white/95 backdrop-blur-sm rounded-lg p-4">
-                              <h3 className="text-lg text-gray-900 mb-2">
-                                {slide.title}
-                              </h3>
-                              <p className="text-sm text-gray-600 mb-3 line-clamp-2">
-                                {slide.description}
-                              </p>
-                              <Button
-                                asChild
-                                size="sm"
-                                className={`bg-gradient-to-r ${currentTheme.button}`}
+                              <AnimatedHeading
+                                className="text-lg text-gray-900 mb-2"
+                                delay={1.2}
                               >
-                                <Link to={slide.ctaLink}>
-                                  Discover More
-                                  <ArrowRight className="w-3 h-3 ml-2" />
-                                </Link>
-                              </Button>
+                                {slide.title}
+                              </AnimatedHeading>
+                              <AnimatedParagraph
+                                className="text-sm text-gray-600 mb-3 line-clamp-2"
+                                delay={1.4}
+                              >
+                                {slide.description}
+                              </AnimatedParagraph>
+                              <motion.div
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 1.6, duration: 0.3 }}
+                              >
+                                <Button
+                                  asChild
+                                  size="sm"
+                                  className={`bg-gradient-to-r ${currentTheme.button}`}
+                                >
+                                  <Link to={slide.ctaLink}>
+                                    Discover More
+                                    <ArrowRight className="w-3 h-3 ml-2" />
+                                  </Link>
+                                </Button>
+                              </motion.div>
                             </div>
-                          </div>
+                          </motion.div>
                         </div>
                       </CarouselItem>
                     ))}
@@ -428,7 +564,12 @@ export default function Hero() {
                 </Carousel>
 
                 {/* Slide Indicators */}
-                <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                <motion.div
+                  className="absolute bottom-2 left-1/2 transform -translate-x-1/2 flex space-x-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2, duration: 0.5 }}
+                >
                   {heroSlides.map((_, index) => (
                     <button
                       key={index}
@@ -438,26 +579,41 @@ export default function Hero() {
                       }`}
                     />
                   ))}
-                </div>
+                </motion.div>
               </CardContent>
             </Card>
 
-            {/* Floating action cards */}
-            <div className="absolute -top-4 -right-4 bg-gradient-to-br from-orange-500 to-red-500 text-white p-3 rounded-lg shadow-lg">
+            {/* Floating action cards with Animation */}
+            <motion.div
+              className="absolute -top-4 -right-4 bg-gradient-to-br from-orange-500 to-red-500 text-white p-3 rounded-lg shadow-lg"
+              initial={{ opacity: 0, scale: 0, rotate: -10 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ delay: 1.5, duration: 0.5, type: "spring" }}
+            >
               <div className="text-xs">Virtual Tours</div>
               <div className="text-lg font-bold">Available</div>
-            </div>
+            </motion.div>
 
-            <div className="absolute -bottom-4 -left-4 bg-gradient-to-br from-amber-500 to-orange-500 text-white p-3 rounded-lg shadow-lg">
+            <motion.div
+              className="absolute -bottom-4 -left-4 bg-gradient-to-br from-amber-500 to-orange-500 text-white p-3 rounded-lg shadow-lg"
+              initial={{ opacity: 0, scale: 0, rotate: 10 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ delay: 1.8, duration: 0.5, type: "spring" }}
+            >
               <div className="text-xs">Free Access</div>
               <div className="text-lg font-bold">Always</div>
-            </div>
-          </div>
+            </motion.div>
+          </AnimatedText>
         </div>
 
         {/* Bottom accent */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-          <div className="flex space-x-2 opacity-60">
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 0.6, y: 0 }}
+          transition={{ delay: 2.5, duration: 0.5 }}
+        >
+          <div className="flex space-x-2">
             <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
             <div
               className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"
@@ -468,15 +624,20 @@ export default function Hero() {
               style={{ animationDelay: "1s" }}
             ></div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Scroll indicator */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-amber-400 rounded-full flex justify-center">
+      <motion.div
+        className="absolute bottom-4 left-1/2 transform -translate-x-1/2"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 3, duration: 0.5 }}
+      >
+        <div className="w-6 h-10 border-2 border-amber-400 rounded-full flex justify-center animate-bounce">
           <div className="w-1 h-3 bg-amber-400 rounded-full mt-2 animate-pulse"></div>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

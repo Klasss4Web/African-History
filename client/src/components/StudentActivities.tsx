@@ -23,6 +23,7 @@ import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { Label } from "./ui/label";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 import AnimatedCounter from "./AnimatedCounter";
+import { AnimatedHeading, AnimatedParagraph } from "./AnimatedText";
 
 // Activity data with artifact matcher included
 const activities = [
@@ -332,11 +333,17 @@ function TimelineActivity({
   );
   const [showResult, setShowResult] = useState(false);
 
-  const handleDragStart = (event: any, item: any) => {
+  const handleDragStart = (
+    _event: React.DragEvent<HTMLDivElement>,
+    item: any
+  ) => {
     setDraggedItem(item);
   };
 
-  const handleDrop = (event: any, position: number) => {
+  const handleDrop = (
+    event: React.DragEvent<HTMLDivElement>,
+    position: number
+  ) => {
     event.preventDefault();
     if (draggedItem) {
       const newTimeline = [...timeline];
@@ -349,7 +356,7 @@ function TimelineActivity({
     }
   };
 
-  const handleDragOver = (event: any) => {
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
 
@@ -637,14 +644,20 @@ export default function StudentActivities() {
               <Play className="w-4 h-4 mr-2" />
               Interactive Learning
             </Badge>
-            <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
+            <AnimatedHeading
+              className="text-4xl lg:text-5xl text-gray-900 mb-4"
+              delay={0}
+            >
               Student Activities
-            </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            </AnimatedHeading>
+            <AnimatedParagraph
+              className="text-lg text-gray-600 max-w-3xl mx-auto"
+              delay={0.3}
+            >
               Learn African history through fun, interactive activities and
               games. Test your knowledge, build timelines, and explore cultural
               artifacts.
-            </p>
+            </AnimatedParagraph>
           </div>
 
           {/* Enhanced Stats */}

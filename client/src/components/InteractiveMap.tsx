@@ -38,9 +38,15 @@ import {
 import AnimatedCounter from "./AnimatedCounter";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 import { LeafletMap } from "./LeafletMap";
+import type { Site, TradeRoute } from "@/types/shared";
+
+type HistoricalSites = {
+  sites: Site[];
+  tradeRoutes: TradeRoute[];
+};
 
 // Historical sites data with coordinates
-const historicalSites = {
+const historicalSites: HistoricalSites = {
   sites: [
     {
       id: 1,
@@ -66,7 +72,7 @@ const historicalSites = {
       location: "Zimbabwe",
       coordinates: { lat: -20.2666, lng: 30.9333 },
       period: "Medieval (1100-1450 CE)",
-      type: "Stone City",
+      type: "Historic City",
       significance: "Largest ancient structure south of the Sahara",
       description:
         "Medieval city built of stone without mortar, capital of the Kingdom of Zimbabwe.",
@@ -84,7 +90,7 @@ const historicalSites = {
       location: "Ethiopia",
       coordinates: { lat: 12.0336, lng: 39.0479 },
       period: "Medieval (12th-13th century)",
-      type: "Religious Complex",
+      type: "Religious Site",
       significance: "Monolithic rock-cut churches",
       description:
         "Eleven medieval monolithic cave churches carved directly into volcanic rock.",
@@ -120,7 +126,7 @@ const historicalSites = {
       location: "Egypt",
       coordinates: { lat: 525, lng: 190 },
       period: "Ancient (1550-1077 BCE)",
-      type: "Royal Necropolis",
+      type: "Funerary Complex",
       significance: "Burial place of Egyptian pharaohs",
       description:
         "Valley containing tombs of pharaohs and nobles from the New Kingdom period.",
@@ -137,7 +143,7 @@ const historicalSites = {
       location: "Sudan",
       coordinates: { lat: 570, lng: 250 },
       period: "Ancient (300 BCE - 350 CE)",
-      type: "Royal Cemetery",
+      type: "Funerary Complex",
       significance: "Pyramids of the Kingdom of Kush",
       description:
         "Royal cemetery of the Kushite rulers with over 200 pyramids.",
@@ -262,46 +268,6 @@ const historicalSites = {
     },
   ],
 };
-
-function SiteMarker({
-  site,
-  onClick,
-  isSelected,
-}: {
-  site: any;
-  onClick: () => void;
-  isSelected: boolean;
-}) {
-  return (
-    <div
-      className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-all duration-200 hover:scale-110 ${
-        isSelected ? "scale-125 z-20" : "z-10"
-      }`}
-      style={{ left: site?.coordinates?.lat, top: site?.coordinates?.lng }}
-      onClick={onClick}
-    >
-      <div className={`relative ${isSelected ? "animate-pulse" : ""}`}>
-        <div
-          className={`w-4 h-4 rounded-full ${
-            site.category === "Ancient Architecture"
-              ? "bg-amber-500"
-              : site.category === "Medieval Architecture"
-              ? "bg-green-500"
-              : site.category === "Religious Architecture"
-              ? "bg-blue-500"
-              : "bg-purple-500"
-          } border-2 border-white shadow-lg`}
-        ></div>
-
-        {isSelected && (
-          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap bg-black text-white px-2 py-1 rounded text-xs">
-            {site.name}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
 
 function TradeRoute({ route, isVisible }: { route: any; isVisible: boolean }) {
   if (!isVisible) return null;
@@ -702,15 +668,6 @@ export default function InteractiveMap() {
                             isVisible={showTradeRoutes}
                           />
                         ))}
-                        {/* Site markers */}
-                        {/* {filteredSites.map((site, index) => (
-                          <SiteMarker
-                            key={site.id}
-                            site={site}
-                            onClick={() => handleSiteClick(site)}
-                            isSelected={selectedSite?.id === site.id}
-                          />
-                        ))} */}
                       </div>
                     </Card>
                     {/* Legend */}
@@ -1042,8 +999,11 @@ export default function InteractiveMap() {
               {filteredSites
                 .sort((a, b) => {
                   // Simple chronological sorting by era start year
-                  const aYear = parseInt(a?.era?.match(/\d+/) || [0]);
-                  const bYear = parseInt(b?.era?.match(/\d+/) || [0]);
+                  // const aYear = parseInt(a?.era?.match(/\d+/) || [0]);
+                  // const bYear = parseInt(b?.era?.match(/\d+/) || [0]);
+                  // return aYear - bYear;
+                  const aYear = parseInt(a?.era?.match(/\d+/)?.[0] ?? "0", 10);
+                  const bYear = parseInt(b?.era?.match(/\d+/)?.[0] ?? "0", 10);
                   return aYear - bYear;
                 })
                 .map((site) => (

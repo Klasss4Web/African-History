@@ -23,6 +23,7 @@ import {
 } from "./ui/select";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 import AnimatedCounter from "./AnimatedCounter";
+import { AnimatedHeading, AnimatedParagraph } from "./AnimatedText";
 
 // Historical figures data with authentic images
 const historicalFigures = [
@@ -313,14 +314,20 @@ export default function HistoricalFigures() {
               <Crown className="w-4 h-4 mr-2" />
               Historical Personalities
             </Badge>
-            <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
+            <AnimatedHeading
+              className="text-4xl lg:text-5xl text-gray-900 mb-4"
+              delay={0}
+            >
               Historical Figures
-            </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            </AnimatedHeading>
+            <AnimatedParagraph
+              className="text-lg text-gray-600 max-w-3xl mx-auto"
+              delay={0.3}
+            >
               Discover the remarkable leaders, innovators, and visionaries who
               shaped African history. From ancient pharaohs to modern freedom
               fighters, explore their lives and lasting legacies.
-            </p>
+            </AnimatedParagraph>
           </div>
 
           {/* Animated Stats */}

@@ -23,6 +23,11 @@ import { Badge } from "./ui/badge";
 import { Progress } from "./ui/progress";
 import AnimatedCounter from "./AnimatedCounter";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
+import {
+  AnimatedHeading,
+  AnimatedParagraph,
+  AnimatedText,
+} from "./AnimatedText";
 
 // Enhanced Virtual Tours Data with real video content
 const virtualTours = [
@@ -516,14 +521,20 @@ export default function VirtualTours() {
               <Eye className="w-4 h-4 mr-2" />
               360° Virtual Experience
             </Badge>
-            <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
+            <AnimatedHeading
+              className="text-4xl lg:text-5xl text-gray-900 mb-4"
+              delay={0}
+            >
               Virtual Tours
-            </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            </AnimatedHeading>
+            <AnimatedParagraph
+              className="text-lg text-gray-600 max-w-3xl mx-auto"
+              delay={0}
+            >
               Explore Africa's most significant historical sites from anywhere
               in the world. Experience immersive tours with expert narration,
               interactive hotspots, and multimedia content.
-            </p>
+            </AnimatedParagraph>
           </div>
 
           {/* Enhanced Stats with Animation */}
@@ -584,13 +595,13 @@ export default function VirtualTours() {
                 color: "text-purple-500",
               },
             ].map((feature, index) => (
-              <div key={index} className="text-center">
+              <AnimatedText key={index} className="text-center">
                 <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-md">
                   <feature.icon className={`w-6 h-6 ${feature.color}`} />
                 </div>
                 <h3 className="text-gray-900 mb-1">{feature.label}</h3>
                 <p className="text-sm text-gray-600">{feature.desc}</p>
-              </div>
+              </AnimatedText>
             ))}
           </div>
         </div>

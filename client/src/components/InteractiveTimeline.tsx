@@ -1,17 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Calendar,
-  MapPin,
-  Users,
-  Filter,
-  Search,
-  ArrowRight,
-} from "lucide-react";
-import { Card, CardContent } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
+import { Calendar, MapPin, Filter, Search, ArrowRight } from "lucide-react";
+
 import {
   Select,
   SelectContent,
@@ -19,7 +9,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
+import { Badge } from "./ui/badge";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 import { Slider } from "./ui/slider";
+import { Card, CardContent } from "./ui/card";
+import {
+  AnimatedHeading,
+  AnimatedParagraph,
+  AnimatedText,
+} from "./AnimatedText";
 
 const timelineData = [
   {
@@ -183,13 +182,19 @@ export default function InteractiveTimeline() {
             <Calendar className="w-4 h-4 mr-2" />
             Interactive Timeline
           </Badge>
-          <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
+          <AnimatedHeading
+            className="text-4xl lg:text-5xl text-gray-900 mb-4"
+            delay={0}
+          >
             African History Timeline
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          </AnimatedHeading>
+          <AnimatedParagraph
+            className="text-lg text-gray-600 max-w-3xl mx-auto"
+            delay={0.3}
+          >
             Explore 5,000 years of African civilization through an interactive
             timeline of major events, kingdoms, and cultural achievements.
-          </p>
+          </AnimatedParagraph>
         </div>
 
         {/* Filters */}
@@ -276,7 +281,10 @@ export default function InteractiveTimeline() {
 
           <div className="space-y-8">
             {filteredEvents.map((event, index) => (
-              <div key={index} className="relative flex items-start space-x-8">
+              <AnimatedText
+                key={index}
+                className="relative flex items-start space-x-8"
+              >
                 {/* Timeline dot */}
                 <div className="flex-shrink-0 w-16 flex flex-col items-center">
                   <div className="w-4 h-4 bg-amber-500 rounded-full border-4 border-white shadow-lg z-10"></div>
@@ -322,7 +330,7 @@ export default function InteractiveTimeline() {
                     </div>
                   </CardContent>
                 </Card>
-              </div>
+              </AnimatedText>
             ))}
           </div>
         </div>
