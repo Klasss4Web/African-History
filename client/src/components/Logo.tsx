@@ -1,4 +1,4 @@
-import { Globe, BookOpen, Map } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface LogoProps {

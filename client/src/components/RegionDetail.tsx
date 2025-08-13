@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   MapPin,
@@ -928,10 +927,10 @@ function CountryChip({
 
 // Regional map component
 function RegionalMap({
-  regionId,
+  // regionId,
   regionName,
 }: {
-  regionId: number;
+  // regionId: number;
   regionName: string;
 }) {
   return (
@@ -957,8 +956,6 @@ function RegionalMap({
 
 export default function RegionDetail() {
   const { id } = useParams<{ id: string }>();
-  const [selectedCountry, setSelectedCountry] = useState<string>("all");
-  const [selectedPeriod, setSelectedPeriod] = useState<string>("all");
 
   const regionId = id ? parseInt(id) : null;
   const region = regionId ? regionData[regionId] : null;
@@ -1164,7 +1161,10 @@ export default function RegionDetail() {
               </div>
 
               <div className="space-y-6">
-                <RegionalMap regionId={regionId!} regionName={region.name} />
+                <RegionalMap
+                  // regionId={regionId!}
+                  regionName={region.name}
+                />
 
                 <Card>
                   <CardHeader>
@@ -1300,21 +1300,19 @@ export default function RegionDetail() {
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
-                {Object.entries(region.history).map(
-                  ([period, description], index) => (
-                    <Card key={period}>
-                      <CardHeader>
-                        <CardTitle className="capitalize flex items-center">
-                          <Calendar className="w-5 h-5 mr-2" />
-                          {period} Period
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <p className="text-gray-700">{description as string}</p>
-                      </CardContent>
-                    </Card>
-                  )
-                )}
+                {Object.entries(region.history).map(([period, description]) => (
+                  <Card key={period}>
+                    <CardHeader>
+                      <CardTitle className="capitalize flex items-center">
+                        <Calendar className="w-5 h-5 mr-2" />
+                        {period} Period
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-700">{description as string}</p>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
 
               <div>
