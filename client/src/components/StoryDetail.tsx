@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   Clock,
   User,
@@ -362,7 +362,6 @@ const comments = [
 
 export default function StoryDetail() {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [newComment, setNewComment] = useState("");
