@@ -157,7 +157,9 @@ const contributorData = {
 
 export default function ContributorProfile() {
   const { id } = useParams();
-  const contributor = contributorData[id as keyof typeof contributorData];
+  const numericId = Number(id) as keyof typeof contributorData;
+
+  const contributor = contributorData[numericId];
 
   if (!contributor) {
     return (

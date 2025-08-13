@@ -337,11 +337,6 @@ function ContributorCard({ contributor }: { contributor: any }) {
     return daysDiff <= 7; // Within a week
   };
 
-  const handleSendWishes = () => {
-    // Mock birthday wishes functionality
-    alert(`Birthday wishes sent to ${contributor.name}! 🎉`);
-  };
-
   const handleViewProfile = () => {
     navigate(`/contributors/${contributor.id}`);
   };
@@ -461,8 +456,6 @@ function ContributorCard({ contributor }: { contributor: any }) {
 }
 
 function AppreciationPost({ post }: { post: any }) {
-  const navigate = useNavigate();
-
   const getPostIcon = () => {
     switch (post.type) {
       case "birthday":

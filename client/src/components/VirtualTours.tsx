@@ -234,7 +234,7 @@ function VirtualTourViewer({
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [progress, setProgress] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [, setIsPlaying] = useState(false);
 
   const handleHotspotClick = (hotspot: any) => {
     setSelectedHotspot(hotspot);
@@ -254,9 +254,9 @@ function VirtualTourViewer({
     }
   };
 
-  const togglePlayback = () => {
-    setIsPlaying(!isPlaying);
-  };
+  // const togglePlayback = () => {
+  //   setIsPlaying(!isPlaying);
+  // };
 
   const scene = tour.scenes[currentScene];
 

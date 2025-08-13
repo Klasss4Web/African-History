@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   BookOpen,
   Download,
@@ -659,7 +658,6 @@ export default function TeacherGuides() {
   const [selectedSubject, setSelectedSubject] = useState("all");
   const [previewGuide, setPreviewGuide] = useState<any>(null);
   const [accessRequestGuide, setAccessRequestGuide] = useState<any>(null);
-  const navigate = useNavigate();
 
   const filteredGuides = teacherGuides.filter((guide) => {
     const matchesSearch =

@@ -210,7 +210,7 @@ function CountryChip({
   );
 }
 
-function RegionCard({ region, index }: { region: any; index: number }) {
+function RegionCard({ region }: { region: any }) {
   return (
     <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden bg-white hover:scale-105">
       <div className="relative">
@@ -347,8 +347,8 @@ export default function RegionalExploration() {
 
         {/* Regions Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {regions.map((region, index) => (
-            <RegionCard key={region.id} region={region} index={index} />
+          {regions.map((region) => (
+            <RegionCard key={region.id} region={region} />
           ))}
         </div>
 
