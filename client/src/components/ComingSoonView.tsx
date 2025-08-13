@@ -35,7 +35,7 @@ export const ComingSoonView = ({
 };
 
 import { useState } from "react";
-import { Construction, Github, Mail, Bell, CheckCircle } from "lucide-react";
+import { Construction, Github, Bell, CheckCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card, CardContent } from "./ui/card";

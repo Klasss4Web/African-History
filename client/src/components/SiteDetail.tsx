@@ -363,7 +363,7 @@ export default function SiteDetail() {
                         </h4>
                         {typeof value === "object" ? (
                           <div className="grid md:grid-cols-2 gap-4">
-                            {Object.entries(value).map(
+                            {Object.entries(value as object).map(
                               ([subKey, subValue], subIndex) => (
                                 <div
                                   key={subIndex}

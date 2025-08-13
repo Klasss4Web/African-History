@@ -14,8 +14,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { Avatar } from "./ui/avatar";
+import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import { Progress } from "./ui/progress";
 
 // Mock leaderboard data

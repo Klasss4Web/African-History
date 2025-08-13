@@ -176,7 +176,7 @@ const stories = [
   },
 ];
 
-function StoryCard({ story, index }: { story: any; index: number }) {
+function StoryCard({ story }: { story: any; index: number }) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
