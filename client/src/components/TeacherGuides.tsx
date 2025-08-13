@@ -31,6 +31,11 @@ import { Card, CardContent } from "./ui/card";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import {
+  AnimatedHeading,
+  AnimatedParagraph,
+  AnimatedText,
+} from "./AnimatedText";
 
 // Teacher guides data
 const teacherGuides = [
@@ -711,14 +716,20 @@ export default function TeacherGuides() {
               <BookOpen className="w-4 h-4 mr-2" />
               Educator Resources
             </Badge>
-            <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
+            <AnimatedHeading
+              className="text-4xl lg:text-5xl text-gray-900 mb-4"
+              delay={0}
+            >
               Teacher Guides
-            </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            </AnimatedHeading>
+            <AnimatedParagraph
+              className="text-lg text-gray-600 max-w-3xl mx-auto"
+              delay={0.3}
+            >
               Comprehensive curriculum guides designed by education experts to
               bring African history to life in your classroom. Complete with
               lesson plans, activities, and assessments.
-            </p>
+            </AnimatedParagraph>
           </div>
 
           {/* Quick Stats */}
@@ -805,7 +816,7 @@ export default function TeacherGuides() {
       {/* Teacher Guides Grid */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <AnimatedText className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredGuides.map((guide) => (
               <Card
                 key={guide.id}
@@ -943,7 +954,7 @@ export default function TeacherGuides() {
                 </CardContent>
               </Card>
             ))}
-          </div>
+          </AnimatedText>
 
           {filteredGuides.length === 0 && (
             <div className="text-center py-12">

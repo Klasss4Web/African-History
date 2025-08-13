@@ -20,6 +20,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Input } from "./ui/input";
 import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 import AnimatedCounter from "./AnimatedCounter";
+import {
+  AnimatedHeading,
+  AnimatedParagraph,
+  AnimatedText,
+} from "./AnimatedText";
 
 const resourceCategories = [
   {
@@ -304,14 +309,20 @@ export default function EducationalResources() {
               <BookOpen className="w-4 h-4 mr-2" />
               Educational Hub
             </Badge>
-            <h1 className="text-4xl lg:text-5xl text-gray-900 mb-4">
+            <AnimatedHeading
+              className="text-4xl lg:text-5xl text-gray-900 mb-4"
+              delay={0}
+            >
               Educational Resources
-            </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            </AnimatedHeading>
+            <AnimatedParagraph
+              className="text-lg text-gray-600 max-w-3xl mx-auto"
+              delay={0.3}
+            >
               Comprehensive educational materials designed to bring African
               history to life. From teacher guides to virtual tours, discover
               resources for every learning style and level.
-            </p>
+            </AnimatedParagraph>
           </div>
 
           {/* Quick Stats with Animation */}
@@ -381,11 +392,11 @@ export default function EducationalResources() {
                   </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <AnimatedText className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
                   {resourceCategories.map((category) => (
                     <CategoryCard key={category.id} category={category} />
                   ))}
-                </div>
+                </AnimatedText>
               </div>
 
               {/* Learning Paths */}

@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    /* === File Locations === */
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    /* === Module & Target === */
+    "target": "ES2022", // Modern JS features for Node 18+
+    "module": "Node16", // Node ESM-compatible output
+    "moduleResolution": "Node16", // ESM resolution rules
+    "types": ["node"], // Include Node.js type definitions
+
+    /* === Interop & Imports === */
+    "esModuleInterop": true, // Allow default imports from CommonJS
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true, // Allow importing JSON files
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true, // Needed for ESM in TS 5+
+
+    /* === Output & Debugging === */
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    /* === Type Safety === */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "skipLibCheck": true,
+
+    /* === Best Practices === */
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
