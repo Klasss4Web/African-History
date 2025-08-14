@@ -108,7 +108,6 @@ export default function Header() {
               </div>
             </form>
 
-            {/* Search Icon for Mobile */}
             <Button
               variant="ghost"
               size="sm"

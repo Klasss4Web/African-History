@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import importData from "./routes/dataImport.ts";
 import connectToDataBase from "./configs/database.ts";
 import { errorHandler, notFound } from "./middleware/errors.ts";
+import storyRoute from "./routes/storyRoute.ts";
 // import sgMail from "@sendgrid/mail";
 
 dotenv.config();
@@ -21,7 +22,8 @@ app.use(express.json());
 // export const sendMail = sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 // API
-app.use("/api/import", importData);
+app.use("/api/v1/import", importData);
+app.use("/api/v1/stories", storyRoute);
 
 //ERROR HANDLER
 app.use(notFound);
