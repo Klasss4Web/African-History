@@ -41,6 +41,8 @@ import { routePreloader } from "./utils/routePreloader";
 import { offlineSupport } from "./utils/offlineSupport";
 import { AnimatedHeading, AnimatedParagraph } from "./components/AnimatedText";
 import { useLastVisited } from "./hooks/useLastVisited";
+import { registerPeriodicSync } from "./helpers/serviceWorker";
+
 
 function HomePage() {
   useLastVisited("/", "Home Page");
@@ -199,6 +201,7 @@ export default function App() {
     } else {
       console.log("Dynamic Shortcuts not supported. Using manifest.json only.");
     }
+    registerPeriodicSync();
   }, []);
 
   return (

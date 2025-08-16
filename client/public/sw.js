@@ -72,14 +72,15 @@ self.addEventListener("notificationclick", (event) => {
 });
 
 // NODE SERVER
-const webPush = require("web-push");
+// const webPush = require("web-push");
 
 // Generate these once and keep secret
-webPush.setVapidDetails(
-  "mailto:you@example.com",
-  process.env.VAPID_PUBLIC_KEY,
-  process.env.VAPID_PRIVATE_KEY
-);
+// webPush.setVapidDetails(
+//   "mailto:you@example.com",
+//   process.env.VAPID_PUBLIC_KEY,
+//   process.env.VAPID_PRIVATE_KEY
+// );
+
 
 // Example: push daily history event
 // function sendDailyUpdate(subscription) {
@@ -91,3 +92,29 @@ webPush.setVapidDetails(
 
 //   webPush.sendNotification(subscription, payload).catch(console.error);
 // }
+
+//periodic sync event to update using the notification api
+self.addEventListener("periodicsync", (event) => {
+  if (event.tag === "african-history-daily") {
+    event.waitUntil(updateDailyHistory());
+  }
+});
+
+async function updateDailyHistory() {
+  try {
+    const res = await fetch("/api/daily-history"); // Adjust the endpoint as needed
+    if (!res.ok) {
+      throw new Error("Failed to fetch daily history");
+    }
+    const data = await res.json();
+
+    // Show notification with today’s history
+    self.registration.showNotification("This Day in African History", {
+      body: data.message,
+      icon: "/pwa-192x192.png",
+    });
+  } catch (err) {
+    console.error("Failed to fetch daily history:", err);
+  }
+}
+
