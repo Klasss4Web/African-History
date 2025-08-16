@@ -1,4 +1,5 @@
-const CACHE_NAME = "african-history-v1";
+const CACHE_NAME = `african-history-${Date.now()}`;
+
 const urlsToCache = [
   "/",
   "/static/js/bundle.js",
@@ -8,6 +9,9 @@ const urlsToCache = [
 
 // Install event - pre-cache files
 self.addEventListener("install", (event) => {
+  console.log("Service Worker: Installing...");
+  // Skip waiting to activate the new service worker immediately
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache))
   );
