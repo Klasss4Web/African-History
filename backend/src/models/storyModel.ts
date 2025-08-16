@@ -1,4 +1,17 @@
-import mongoose, { Document, Model, Schema } from "mongoose";
+import mongoose, { Document, Model, Schema, Types } from "mongoose";
+
+interface IReply {
+  author: string;
+  content: string;
+}
+export interface IComment extends Document {
+  author: string;
+  content: string;
+  avatar?: string;
+  date?: Date;
+  likes?: number;
+  replies?: IReply[];
+}
 
 export interface IStory extends Document {
   _id: string;
@@ -10,14 +23,36 @@ export interface IStory extends Document {
   author: string;
   readTime: string;
   publishedAt: Date;
-  likes: number;
-  comments: number;
-  views: number;
+  comments: Types.DocumentArray<IComment>;
   featured: boolean;
   tags: string[];
   image: string;
   color: string;
+  content: string;
+  stats: {
+    likes: number;
+    comments: number;
+    views: number;
+    bookmarks: number;
+  };
 }
+
+const replySchema = new mongoose.Schema({
+  author: { type: String, required: true },
+  avatar: { type: String },
+  date: { type: Date, default: Date.now },
+  content: { type: String, required: true },
+  likes: { type: Number, default: 0 },
+});
+
+const commentSchema = new mongoose.Schema({
+  author: { type: String, required: true },
+  avatar: { type: String },
+  date: { type: Date, default: Date.now },
+  content: { type: String, required: true },
+  likes: { type: Number, default: 0 },
+  replies: [replySchema],
+});
 
 const StorySchema = new Schema<IStory>(
   {
@@ -30,6 +65,10 @@ const StorySchema = new Schema<IStory>(
       type: String,
       required: true,
       trim: true,
+    },
+    content: {
+      type: String,
+      required: true,
     },
     category: {
       type: String,
@@ -47,18 +86,6 @@ const StorySchema = new Schema<IStory>(
       type: Date,
       required: true,
     },
-    likes: {
-      type: Number,
-      default: 0,
-    },
-    comments: {
-      type: Number,
-      default: 0,
-    },
-    views: {
-      type: Number,
-      default: 0,
-    },
     featured: {
       type: Boolean,
       default: false,
@@ -75,6 +102,13 @@ const StorySchema = new Schema<IStory>(
       type: String,
       default: "#FFFFFF",
     },
+    stats: {
+      views: { type: Number, default: 0 },
+      likes: { type: Number, default: 0 },
+      comments: { type: Number, default: 0 },
+      bookmarks: { type: Number, default: 0 },
+    },
+    comments: [commentSchema],
   },
   {
     timestamps: true,

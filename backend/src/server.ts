@@ -29,7 +29,7 @@ app.use("/api/v1/stories", storyRoute);
 app.use(notFound);
 app.use(errorHandler);
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (_req: Request, res: Response) => {
   res.send("Hello from TypeScript + Express + Nodemon!");
 });
 
