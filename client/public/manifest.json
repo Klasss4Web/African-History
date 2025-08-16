@@ -1,14 +1,28 @@
 {
+  "id": "african-history",
+  "version": "1.0.0",
   "name": "African History",
   "short_name": "History",
-  "start_url": ".",
+  "description": "An educational platform for exploring African history and heritage",
+  "start_url": "/",
   "display": "standalone",
-  "description": "An educational app providing insights into African history and culture.",
-  "version": "1.0.0",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "lang": "en",
+  "scope": "/",
   "orientation": "portrait",
-  "background_color": "#f0f0f0",
-  "theme_color": "#333333",
-  "dir": "ltr",
-  "lang": "en-US",
-  "categories": ["education", "reference", "culture"]
+  "icons": [
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "dir": "auto",
+  "categories": ["books", "education", "games"]
 }
