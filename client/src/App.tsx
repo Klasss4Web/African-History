@@ -40,8 +40,10 @@ import { navigationAnalytics } from "./utils/navigationAnalytics";
 import { routePreloader } from "./utils/routePreloader";
 import { offlineSupport } from "./utils/offlineSupport";
 import { AnimatedHeading, AnimatedParagraph } from "./components/AnimatedText";
+import { useLastVisited } from "./hooks/useLastVisited";
 
 function HomePage() {
+  useLastVisited("/", "Home Page");
   return (
     <main className="">
       <Hero />
@@ -53,6 +55,7 @@ function HomePage() {
 }
 
 function RegionsPage() {
+  useLastVisited("/regions", "All Regions");
   return (
     <div className="min-h-screen bg-gray-50 py-16">
       <div className="container mx-auto px-4">
@@ -157,6 +160,47 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  useEffect(() => {
+    const nav: any = navigator;
+    const lastVisited = localStorage.getItem("lastVisited");
+
+    if (nav.shortcuts && typeof nav.shortcuts.add === "function") {
+      let dynamicShortcuts = [];
+
+      if (lastVisited) {
+        const { path, label } = JSON.parse(lastVisited);
+        dynamicShortcuts.push({
+          name: `Continue: ${label}`,
+          short_name: "Continue",
+          description: `Jump back to ${label}`,
+          url: path,
+          icons: [{ src: "/icons/book.png", sizes: "96x96" }],
+        });
+      }
+      // Add static-like items too
+      dynamicShortcuts.push(
+        {
+          name: "Explore Timelines",
+          short_name: "Timelines",
+          description: "Browse African history timelines",
+          url: "/regions",
+          icons: [{ src: "/icons/timeline.png", sizes: "96x96" }],
+        },
+        {
+          name: "Hero of the Day",
+          short_name: "Hero",
+          description: "Learn about today’s African hero",
+          url: "/",
+          icons: [{ src: "/icons/hero.png", sizes: "96x96" }],
+        }
+      );
+      nav.shortcuts.add(dynamicShortcuts);
+      console.log("Dynamic shortcuts updated:", dynamicShortcuts);
+    } else {
+      console.log("Dynamic Shortcuts not supported. Using manifest.json only.");
+    }
+  }, []);
+
   return (
     <LanguageProvider>
       <Router>
