@@ -194,7 +194,7 @@ export default function Navigation({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className={`h-10 px-3 transition-colors ${
+                  className={`h-10 px-3 transition-colors text-md ${
                     isActive(item.href) || isSubmenuActive(item.submenu)
                       ? "text-amber-700 bg-amber-50 hover:bg-amber-100"
                       : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"
@@ -272,7 +272,7 @@ export default function Navigation({
               asChild
               variant="ghost"
               size="sm"
-              className={`h-10 px-3 transition-colors ${
+              className={`h-10 px-3 transition-colors text-md ${
                 isActive(item.href)
                   ? "text-amber-700 bg-amber-50 hover:bg-amber-100"
                   : "text-gray-700 hover:text-gray-900 hover:bg-gray-100"

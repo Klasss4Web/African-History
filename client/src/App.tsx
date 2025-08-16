@@ -43,7 +43,7 @@ import { AnimatedHeading, AnimatedParagraph } from "./components/AnimatedText";
 
 function HomePage() {
   return (
-    <main>
+    <main className="">
       <Hero />
       <FeaturedPeriods />
       <RegionalExploration />
