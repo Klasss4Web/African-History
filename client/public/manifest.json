@@ -70,6 +70,7 @@
   },
   "dir": "auto",
   "categories": ["books", "education", "games"],
+  "permissions": ["periodic-background-sync"],
   "shortcuts": [
     {
       "name": "Open Timeline",
