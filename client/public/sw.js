@@ -51,3 +51,43 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+
+//push notification event
+self.addEventListener("push", (event) => {
+  const data = event.data
+    ? event.data.json()
+    : { title: "New Notification", body: "You have a new notification." };
+  const options = {
+    body: data.body,
+    icon: "/icon.png",
+    badge: "/badge.png",
+  };
+  event.waitUntil(self.registration.showNotification(data.title, options));
+});
+
+// Notification click event
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  event.waitUntil(clients.openWindow(event.notification.data.url || "/"));
+});
+
+// NODE SERVER
+const webPush = require("web-push");
+
+// Generate these once and keep secret
+webPush.setVapidDetails(
+  "mailto:you@example.com",
+  process.env.VAPID_PUBLIC_KEY,
+  process.env.VAPID_PRIVATE_KEY
+);
+
+// Example: push daily history event
+// function sendDailyUpdate(subscription) {
+//   const payload = JSON.stringify({
+//     title: "This Day in African History",
+//     body: "Nelson Mandela released – 1990",
+//     url: "/history/1990/mandela",
+//   });
+
+//   webPush.sendNotification(subscription, payload).catch(console.error);
+// }

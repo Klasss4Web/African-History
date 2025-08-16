@@ -10,7 +10,7 @@
   "theme_color": "#000000",
   "lang": "en",
   "scope": "/",
-  "orientation": "portrait",
+  "orientation": "any",
   "icons": [
     {
       "src": "/icons/icon-192.png",
@@ -23,6 +23,96 @@
       "type": "image/png"
     }
   ],
+  "file_handlers": [
+    {
+      "action": "/open-file",
+      "accept": {
+        "text/plain": [".txt"],
+        "application/json": [".json"],
+        "application/pdf": [".pdf"]
+      }
+    }
+  ],
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
+  "web_apps": [
+    {
+      "web_app_identity": "https://african-history.netlify.app/"
+    }
+  ],
+  "handle_links": "auto",
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "display_override": ["window-controls-overlay", "standalone", "browser"],
+  "protocol_handlers": [
+    {
+      "protocol": "web+africanhistory",
+      "url": "/?link=%s"
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "media",
+          "accept": ["image/*", "video/*"]
+        }
+      ]
+    }
+  },
   "dir": "auto",
-  "categories": ["books", "education", "games"]
+  "categories": ["books", "education", "games"],
+  "shortcuts": [
+    {
+      "name": "Open Timeline",
+      "short_name": "Timeline",
+      "description": "View African history timeline",
+      "url": "/timeline",
+      "icons": [{ "src": "/icons/timeline.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Random Fact",
+      "short_name": "Fact",
+      "description": "Get a random historical fact",
+      "url": "/fact",
+      "icons": [{ "src": "/icons/fact.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Search Heroes",
+      "short_name": "Heroes",
+      "description": "Find African historical heroes",
+      "url": "/heroes",
+      "icons": [{ "src": "/icons/hero.png", "sizes": "96x96" }]
+    }
+  ],
+  "widgets": [
+    {
+      "name": "Hero of the Day",
+      "description": "Quick access to today’s African hero",
+      "url": "/people",
+      "icons": [
+        { "src": "/icons/hero-96.png", "sizes": "96x96", "type": "image/png" }
+      ]
+    },
+    {
+      "name": "Timeline Preview",
+      "description": "Browse history timeline at a glance",
+      "url": "/timeline",
+      "icons": [
+        {
+          "src": "/icons/timeline-96.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
 }
