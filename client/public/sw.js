@@ -81,6 +81,7 @@ self.addEventListener("notificationclick", (event) => {
 //   process.env.VAPID_PRIVATE_KEY
 // );
 
+
 // Example: push daily history event
 // function sendDailyUpdate(subscription) {
 //   const payload = JSON.stringify({
@@ -116,3 +117,4 @@ async function updateDailyHistory() {
     console.error("Failed to fetch daily history:", err);
   }
 }
+

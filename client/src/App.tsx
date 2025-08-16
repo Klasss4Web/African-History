@@ -43,6 +43,7 @@ import { AnimatedHeading, AnimatedParagraph } from "./components/AnimatedText";
 import { useLastVisited } from "./hooks/useLastVisited";
 import { registerPeriodicSync } from "./helpers/serviceWorker";
 
+
 function HomePage() {
   useLastVisited("/", "Home Page");
   return (
