@@ -332,3 +332,124 @@
 [INFO] 2025-08-15T15:02:00.673Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
 [INFO] 2025-08-15T15:02:07.681Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
 [INFO] 2025-08-16T12:50:37.758Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T17:43:47.965Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T17:49:12.757Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T17:56:08.872Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T17:56:29.867Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T17:59:11.933Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T17:59:53.129Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:00:35.040Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:00:59.851Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:01:31.269Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:01:38.430Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:01:42.613Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:02:11.200Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:03:24.221Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:04:34.727Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:04:41.544Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:04:47.145Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:05:06.541Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:08:19.269Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:08:28.587Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:08:34.069Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:08:57.762Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:09:50.457Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:09:54.723Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:11:12.511Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:11:57.085Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:14:26.553Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:14:30.784Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:14:48.593Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:16:11.835Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:16:48.657Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:17:15.482Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:17:43.932Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:18:22.468Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:18:33.186Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:19:06.333Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:19:30.823Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:19:39.604Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:19:55.366Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:20:32.509Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:21:36.233Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-17T18:22:16.971Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T20:38:59.879Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T20:39:08.416Z - Stories fetched successfully
+[INFO] 2025-08-20T20:40:20.545Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T20:41:02.832Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T20:41:51.733Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T20:42:37.884Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T20:43:06.113Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T20:52:48.768Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T20:53:39.846Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T20:59:39.721Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:01:15.893Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:01:27.184Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:06:04.583Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:06:35.060Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:06:53.161Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:08:15.934Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:08:45.227Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:08:56.254Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:09:10.738Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:09:46.494Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:10:14.888Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:10:29.525Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:10:46.806Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:12:56.732Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:13:22.880Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:13:59.453Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:14:19.857Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:14:58.885Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:15:20.706Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:16:10.409Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:20:54.426Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:21:12.795Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:21:31.261Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:24:56.629Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:25:22.807Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:25:24.937Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T21:29:13.816Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T21:40:19.654Z - Imported 3 timelines successfully!
+[INFO] 2025-08-20T21:45:50.299Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:46:20.521Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:46:44.525Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:47:24.241Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T21:48:37.160Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:50:03.838Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:51:06.433Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T21:51:17.715Z - Timeline with ID 68a642b848ded6870ea569e3 fetched successfully
+[INFO] 2025-08-20T21:55:23.314Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:55:47.896Z - Imported 3 timelines successfully!
+[INFO] 2025-08-20T21:56:10.734Z - Imported 3 timelines successfully!
+[INFO] 2025-08-20T21:56:14.087Z - Imported 3 timelines successfully!
+[INFO] 2025-08-20T21:56:28.356Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T21:58:28.035Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:58:39.070Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T21:58:52.876Z - Imported 3 timelines successfully!
+[INFO] 2025-08-20T22:00:18.123Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T22:03:03.546Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T22:03:12.977Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T22:06:38.739Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T22:06:41.770Z - Imported 3 timelines successfully!
+[INFO] 2025-08-20T22:07:36.755Z - Imported 3 timelines successfully!
+[INFO] 2025-08-20T22:07:50.580Z - Imported 3 timelines successfully!
+[INFO] 2025-08-20T22:08:23.444Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T22:09:09.216Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T22:11:50.506Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T22:12:13.934Z - Timeline with ID undefined fetched successfully
+[INFO] 2025-08-20T22:12:29.853Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T22:13:35.091Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T22:14:09.057Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T22:15:06.884Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T22:15:08.151Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T22:15:22.308Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T22:16:27.628Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T22:16:58.885Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T22:17:28.651Z - MongoDB Connected: ac-6do1gxl-shard-00-01.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T22:18:09.581Z - MongoDB Connected: ac-6do1gxl-shard-00-02.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T22:18:23.594Z - MongoDB Connected: ac-6do1gxl-shard-00-00.vgtj4uh.mongodb.net
+[INFO] 2025-08-20T22:18:34.784Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T22:19:02.317Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T22:19:07.611Z - Historical timelines fetched successfully
+[INFO] 2025-08-20T22:19:13.076Z - Historical timelines fetched successfully

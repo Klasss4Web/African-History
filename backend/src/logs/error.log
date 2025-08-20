@@ -38,3 +38,24 @@
 [ERROR] 2025-08-15T11:14:59.942Z - Error fetching story with ID 689cea69d3ee0c8c24c8f514: MongoServerError: FieldPath cannot be constructed with empty string
 [ERROR] 2025-08-15T12:26:13.054Z - Error fetching story with ID 689cea69d3ee0c8c24c8f514: MongoServerError: Cannot increment with non-numeric argument: {stats: { views: 1 }}
 [ERROR] 2025-08-16T12:47:11.134Z - MongoDB Connection Error: Could not connect to any servers in your MongoDB Atlas cluster. One common reason is that you're trying to access the database from an IP that isn't whitelisted. Make sure your current IP address is on your Atlas cluster's IP whitelist: https://www.mongodb.com/docs/atlas/security-whitelist/
+[ERROR] 2025-08-16T22:23:25.439Z - MongoDB Connection Error: querySrv ECONNREFUSED _mongodb._tcp.cluster0.vgtj4uh.mongodb.net
+[ERROR] 2025-08-17T08:28:50.732Z - MongoDB Connection Error: Could not connect to any servers in your MongoDB Atlas cluster. One common reason is that you're trying to access the database from an IP that isn't whitelisted. Make sure your current IP address is on your Atlas cluster's IP whitelist: https://www.mongodb.com/docs/atlas/security-whitelist/
+[ERROR] 2025-08-20T20:33:45.964Z - MongoDB Connection Error: Could not connect to any servers in your MongoDB Atlas cluster. One common reason is that you're trying to access the database from an IP that isn't whitelisted. Make sure your current IP address is on your Atlas cluster's IP whitelist: https://www.mongodb.com/docs/atlas/security-whitelist/
+[ERROR] 2025-08-20T20:36:38.196Z - MongoDB Connection Error: Could not connect to any servers in your MongoDB Atlas cluster. One common reason is that you're trying to access the database from an IP that isn't whitelisted. Make sure your current IP address is on your Atlas cluster's IP whitelist: https://www.mongodb.com/docs/atlas/security-whitelist/
+[ERROR] 2025-08-20T21:17:17.595Z - Error importing timelines: ValidationError: year: Path `year` is required., region: Path `region` is required., time: Path `time` is required.
+[ERROR] 2025-08-20T21:25:39.687Z - Error importing timelines: MongoBulkWriteError: E11000 duplicate key error collection: test.timelines index: slug_1 dup key: { slug: null }
+[ERROR] 2025-08-20T21:29:08.411Z - 405 - POST /api/v1/timelines
+[ERROR] 2025-08-20T21:33:06.298Z - Error importing timelines: MongoBulkWriteError: E11000 duplicate key error collection: test.timelines index: slug_1 dup key: { slug: null }
+[ERROR] 2025-08-20T21:47:17.829Z - 405 - POST /api/v1/timelines
+[ERROR] 2025-08-20T21:47:32.883Z - Error importing timelines: TypeError: this.isModified is not a function
+[ERROR] 2025-08-20T21:48:40.541Z - Error importing timelines: MongoBulkWriteError: E11000 duplicate key error collection: test.timelines index: slug_1 dup key: { slug: null }
+[ERROR] 2025-08-20T21:50:53.385Z - Timeline with ID 68a640c3537764ca11877e08 not found
+[ERROR] 2025-08-20T22:03:35.775Z - Error importing timelines: TypeError: this.isModified is not a function
+[ERROR] 2025-08-20T22:08:41.213Z - Error fetching timeline with ID colonial-period: CastError: Cast to ObjectId failed for value "colonial-period" (type string) at path "_id" for model "Timeline"
+[ERROR] 2025-08-20T22:08:51.793Z - Error fetching timeline with ID colonial-period: CastError: Cast to ObjectId failed for value "colonial-period" (type string) at path "_id" for model "Timeline"
+[ERROR] 2025-08-20T22:13:09.594Z - Error fetching timelines: CastError: Cast to number failed for value "i" (type string) at path "year" for model "Timeline"
+[ERROR] 2025-08-20T22:13:52.616Z - Error fetching timelines: CastError: Cast to number failed for value "i" (type string) at path "year" for model "Timeline"
+[ERROR] 2025-08-20T22:15:34.442Z - Error fetching timelines: CastError: Cast to number failed for value "i" (type string) at path "year" for model "Timeline"
+[ERROR] 2025-08-20T22:17:26.590Z - Error fetching timelines: CastError: Cast to number failed for value "i" (type string) at path "year" for model "Timeline"
+[ERROR] 2025-08-20T22:17:27.861Z - Error fetching timelines: CastError: Cast to number failed for value "i" (type string) at path "year" for model "Timeline"
+[ERROR] 2025-08-20T22:18:08.124Z - Error fetching timelines: CastError: Cast to number failed for value "i" (type string) at path "year" for model "Timeline"
