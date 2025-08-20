@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import User from "../models/userModel.ts";
 
 import asyncHandler from "express-async-handler";
@@ -6,6 +6,12 @@ import generateToken from "../utils/generateToken.ts";
 import { adminOnly, protect } from "../middleware/authMiddleware.ts";
 
 // import sgMail from "@sendgrid/mail";
+
+interface CustomRequest extends Request {
+  user?: {
+    _id: string;
+  };
+}
 
 const userRoute = express.Router();
 
@@ -140,9 +146,9 @@ userRoute.post(
 userRoute.get(
   "/profile",
   protect,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: CustomRequest, res: Response) => {
     // res.send("User Profile")
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req?.user?._id);
 
     if (user) {
       res.json({
@@ -164,9 +170,9 @@ userRoute.get(
 userRoute.put(
   "/profile",
   protect,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: CustomRequest, res: Response) => {
     // res.send("User Profile")
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user?._id);
 
     if (user) {
       user.name = req?.body?.name || user?.name;
@@ -196,9 +202,9 @@ userRoute.put(
   "/admin/profile",
   protect,
   adminOnly,
-  asyncHandler(async (req, res) => {
+  asyncHandler(async (req: CustomRequest, res: Response) => {
     // res.send("User Profile")
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req?.user?._id);
 
     if (user) {
       user.name = req?.body?.name || user?.name;

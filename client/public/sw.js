@@ -102,9 +102,7 @@ self.addEventListener("periodicsync", (event) => {
 
 async function updateDailyHistory() {
   try {
-    const res = await fetch("/api/daily-history", {
-      minInterval: 10 * 60 * 1000, // 1 day in ms
-    });
+    const res = await fetch("/api/daily-history"); // Adjust the endpoint as needed
     if (!res.ok) {
       throw new Error("Failed to fetch daily history");
     }

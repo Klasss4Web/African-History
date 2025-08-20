@@ -1,12 +1,15 @@
 import express, { type Request, type Response } from "express";
 
-// import products from "./data/product.js";
 import cors from "cors";
 import dotenv from "dotenv";
+
 import importData from "./routes/dataImport.ts";
-import connectToDataBase from "./configs/database.ts";
-import { errorHandler, notFound } from "./middleware/errors.ts";
 import storyRoute from "./routes/storyRoute.ts";
+import timelineRoute from "./routes/timelineRoute.ts";
+import connectToDataBase from "./configs/database.ts";
+import notificationRoute from "./routes/notificationRoute.ts";
+import { errorHandler, notFound } from "./middleware/errors.ts";
+
 // import sgMail from "@sendgrid/mail";
 
 dotenv.config();
@@ -24,6 +27,8 @@ app.use(express.json());
 // API
 app.use("/api/v1/import", importData);
 app.use("/api/v1/stories", storyRoute);
+app.use("/api/v1/timelines", timelineRoute);
+app.use("/api/v1/push-notification", notificationRoute);
 
 //ERROR HANDLER
 app.use(notFound);
