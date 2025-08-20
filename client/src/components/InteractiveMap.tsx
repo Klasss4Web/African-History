@@ -35,10 +35,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "./ui/dialog";
-import AnimatedCounter from "./AnimatedCounter";
-import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
+
 import { LeafletMap } from "./LeafletMap";
+import AnimatedCounter from "./AnimatedCounter";
 import type { Site, TradeRoute } from "@/types/shared";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { ImageWithFallback } from "./fallbacks/ImageWithFallback";
 
 type HistoricalSites = {
   sites: Site[];
@@ -429,6 +431,8 @@ export default function InteractiveMap() {
   const [regionFilter, setRegionFilter] = useState("all");
   const [periodFilter, setPeriodFilter] = useState("all");
   const [viewMode, setViewMode] = useState("sites");
+
+  useScrollToTop();
 
   const regions = [
     ...new Set(historicalSites.sites.map((site) => site.region)),

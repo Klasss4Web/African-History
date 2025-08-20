@@ -42,6 +42,7 @@ import { offlineSupport } from "./utils/offlineSupport";
 import { AnimatedHeading, AnimatedParagraph } from "./components/AnimatedText";
 import { useLastVisited } from "./hooks/useLastVisited";
 import { registerPeriodicSync } from "./helpers/serviceWorker";
+import { subscribeToPush } from "./helpers/pushNotification";
 
 function HomePage() {
   useLastVisited("/", "Home Page");
@@ -145,6 +146,19 @@ function NavigationTracker() {
   useEffect(() => {
     offlineSupport.preloadEssentialContent();
   }, []);
+  useEffect(() => {
+    if ("Notification" in window && navigator.serviceWorker) {
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          console.log("✅ Notifications enabled!");
+        } else if (permission === "denied") {
+          console.log("❌ Notifications denied by user.");
+        } else {
+          console.log("⚠️ Permission request dismissed (default).");
+        }
+      });
+    }
+  }, []);
 
   return null;
 }
@@ -200,6 +214,7 @@ export default function App() {
     } else {
       console.log("Dynamic Shortcuts not supported. Using manifest.json only.");
     }
+    subscribeToPush();
     registerPeriodicSync();
   }, []);
 

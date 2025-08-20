@@ -19,7 +19,7 @@ export async function subscribeToPush(): Promise<void> {
       });
 
     // Send subscription to backend
-    await fetch("/api/save-subscription", {
+    await fetch("/api/v1/push-notification/save-subscription", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(subscription),
