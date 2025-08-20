@@ -1,0 +1,17 @@
+.leaflet-animated {
+  stroke-dasharray: 10 10; /* dash pattern */
+  stroke-dashoffset: 1000; /* initial offset */
+  animation: dashmove 50s linear infinite;
+}
+
+@keyframes dashmove {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.marker-icon {
+  width: 25px;
+  height: 41px;
+  background-image: url("https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png");
+  background-size: cover;
+}

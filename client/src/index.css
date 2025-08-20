@@ -179,6 +179,18 @@
   }
 }
 
+.animated-polyline {
+  stroke-dasharray: 10;
+  stroke-dashoffset: 1000;
+  animation: dash 100s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 /**
  * Base typography. This is not applied to elements which have an ancestor with a Tailwind text class.
  */
