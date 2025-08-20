@@ -6,6 +6,8 @@ import logger from "../utils/logger.ts";
 import User from "../models/userModel.ts";
 import Story from "../models/storyModel.ts";
 import { stories } from "../data/stories.ts";
+import Timeline from "../models/timelineModel.ts";
+import { timelineData } from "../data/timelines.ts";
 
 const importData = express.Router();
 
@@ -40,7 +42,7 @@ importData.post(
         message: "Stories imported successfully!",
         total: importStories.length,
       });
-    } catch (error) {
+    } catch (error: { message: string } | any) {
       logger.error(`Error importing stories: ${error}`);
       res.status(500).send({
         message: "Error importing stories",
@@ -50,4 +52,29 @@ importData.post(
   })
 );
 
+importData.post(
+  "/timelines",
+  asyncHandler(async (_req, res) => {
+    try {
+      // Replaces deprecated `remove` method
+      await Timeline.deleteMany({});
+
+      const importedTimelines = await Timeline.insertMany(timelineData);
+      logger.info(
+        `Imported ${importedTimelines.length} timelines successfully!`
+      );
+      res.send({
+        importedTimelines,
+        message: "Bulk Timelines imported successfully!",
+        total: importedTimelines.length,
+      });
+    } catch (error: { message: string } | any) {
+      logger.error(`Error importing timelines: ${error}`);
+      res.status(500).send({
+        message: "Error importing timelines",
+        error: error.message,
+      });
+    }
+  })
+);
 export default importData;
