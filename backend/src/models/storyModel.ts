@@ -13,6 +13,12 @@ export interface IComment extends Document {
   replies?: IReply[];
 }
 
+export interface IRelatedStory {
+  storyId: Types.ObjectId; // Reference to another IStory
+  title: string;
+  readTime: string;
+}
+
 export interface IStory extends Document {
   _id: string;
   createdAt: Date;
@@ -21,6 +27,7 @@ export interface IStory extends Document {
   excerpt: string;
   category: string;
   author: string;
+  authorBio: string;
   readTime: string;
   publishedAt: Date;
   comments: Types.DocumentArray<IComment>;
@@ -35,6 +42,7 @@ export interface IStory extends Document {
     views: number;
     bookmarks: number;
   };
+  relatedStories: IRelatedStory[];
 }
 
 const replySchema = new mongoose.Schema({
@@ -68,7 +76,7 @@ const StorySchema = new Schema<IStory>(
     },
     content: {
       type: String,
-      required: true,
+      // required: true,
     },
     category: {
       type: String,
@@ -77,6 +85,10 @@ const StorySchema = new Schema<IStory>(
     author: {
       type: String,
       required: true,
+    },
+    authorBio: {
+      type: String,
+      // required: true,
     },
     readTime: {
       type: String,
@@ -109,6 +121,13 @@ const StorySchema = new Schema<IStory>(
       bookmarks: { type: Number, default: 0 },
     },
     comments: [commentSchema],
+    relatedStories: [
+      {
+        storyId: { type: Schema.Types.ObjectId, ref: "Story", required: false },
+        title: { type: String, required: false },
+        readTime: { type: String, required: false },
+      },
+    ],
   },
   {
     timestamps: true,
