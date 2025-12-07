@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -63,6 +64,12 @@ export default defineConfig({
       },
     }),
   ],
+  test: {
+    globals: true, // so you don’t need to import describe/it/expect everywhere
+    environment: "jsdom", // simulates a browser-like env
+    setupFiles: "./src/setupTests.js", // global test setup
+    css: true,
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

@@ -1,30 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 
-// Counter animation hook with intersection observer
 function useAnimatedCounter(target: number, duration: number = 2000) {
   const [count, setCount] = useState(0);
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(false); // ✅ Separate state for animation
   const elementRef = useRef<HTMLElement>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // 1. Observe the element and set shouldAnimate to true
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated) {
-          setHasAnimated(true);
-          let start = 0;
-          const increment = target / (duration / 16); // 60 FPS
-
-          const timer = setInterval(() => {
-            start += increment;
-            if (start >= target) {
-              setCount(target);
-              clearInterval(timer);
-            } else {
-              setCount(Math.floor(start));
-            }
-          }, 16);
-
-          return () => clearInterval(timer);
+        if (entry.isIntersecting) {
+          setShouldAnimate(true);
         }
       },
       { threshold: 0.1 }
@@ -39,7 +26,33 @@ function useAnimatedCounter(target: number, duration: number = 2000) {
         observer.unobserve(elementRef.current);
       }
     };
-  }, [target, duration, hasAnimated]);
+  }, []); // ✅ Empty dependency array to run only once
+
+  // 2. Start the animation when shouldAnimate becomes true
+  useEffect(() => {
+    if (shouldAnimate) {
+      let start = 0;
+      const increment = target / (duration / 16);
+
+      timerRef.current = setInterval(() => {
+        start += increment;
+        if (start >= target) {
+          setCount(target);
+          clearInterval(timerRef.current as NodeJS.Timeout);
+          timerRef.current = null;
+        } else {
+          setCount(Math.floor(start));
+        }
+      }, 16);
+    }
+
+    // 3. Cleanup: Clear the timer when the component unmounts
+    return () => {
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+    };
+  }, [shouldAnimate, target, duration]); // ✅ Reruns when shouldAnimate or props change
 
   return { count, elementRef };
 }
