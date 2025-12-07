@@ -59,3 +59,10 @@
 [ERROR] 2025-08-20T22:17:26.590Z - Error fetching timelines: CastError: Cast to number failed for value "i" (type string) at path "year" for model "Timeline"
 [ERROR] 2025-08-20T22:17:27.861Z - Error fetching timelines: CastError: Cast to number failed for value "i" (type string) at path "year" for model "Timeline"
 [ERROR] 2025-08-20T22:18:08.124Z - Error fetching timelines: CastError: Cast to number failed for value "i" (type string) at path "year" for model "Timeline"
+[ERROR] 2025-09-07T20:37:49.110Z - Error importing stories: ValidationError: authorBio: Path `authorBio` is required., content: Path `content` is required.
+[ERROR] 2025-09-07T20:38:53.390Z - Error importing stories: ValidationError: content: Path `content` is required.
+[ERROR] 2025-09-07T20:39:29.235Z - Error importing stories: ValidationError: comments: Cast to embedded failed for value "156" (type number) at path "comments" because of "ObjectParameterError", relatedStories.0.storyId: Path `storyId` is required., relatedStories.1.storyId: Path `storyId` is required., relatedStories.2.storyId: Path `storyId` is required.
+[ERROR] 2025-09-07T20:41:45.284Z - Error importing stories: ValidationError: relatedStories.0.storyId: Path `storyId` is required., relatedStories.1.storyId: Path `storyId` is required., relatedStories.2.storyId: Path `storyId` is required.
+[ERROR] 2025-09-07T20:42:43.946Z - Error importing stories: ValidationError: comments.0.date: Cast to date failed for value "2 days ago" (type string) at path "date", comments.1.date: Cast to date failed for value "1 week ago" (type string) at path "date", comments.1.replies.0.date: Cast to date failed for value "6 days ago" (type string) at path "date", comments.2.date: Cast to date failed for value "3 days ago" (type string) at path "date"
+[ERROR] 2025-09-07T20:44:53.347Z - 404 - GET /api/v1/i/stories
+[ERROR] 2025-09-07T20:44:53.352Z - 404 - Not Found: /api/v1/i/stories - GET /api/v1/i/stories
