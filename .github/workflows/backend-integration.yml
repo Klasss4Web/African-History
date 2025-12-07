@@ -25,4 +25,4 @@ jobs:
           node-version: 18
 
       - name: install deps
-        runs: npm ci
+        run: npm ci
