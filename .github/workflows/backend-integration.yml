@@ -3,14 +3,14 @@ name: backend-CI
 on:
   pull_request:
     branches: [main, master]
-    paths: backend/**
+    paths: "backend/**"
   push:
     master: [main, master]
-    paths: backend/**
+    paths: "backend/**"
 
 defaults:
   run:
-    working-directory: backend/**
+    working-directory: backend/
 
 jobs:
   build:
