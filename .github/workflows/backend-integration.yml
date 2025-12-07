@@ -1,7 +1,7 @@
 name: backend-CI
 
 on:
-  pull_requests:
+  pull_request:
     branches: [main, master]
     paths: backend/**
   push:
@@ -9,7 +9,8 @@ on:
     paths: backend/**
 
 defaults:
-  working-directory: backend/**
+  run:
+    working-directory: backend/**
 
 jobs:
   build:
